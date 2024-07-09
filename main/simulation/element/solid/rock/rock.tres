@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Solid" load_steps=4 format=3 uid="uid://cwnhltdvq4ic4"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/solid.gd" id="1_ht5t6"]
+
+[sub_resource type="Gradient" id="Gradient_wramv"]
+offsets = PackedFloat32Array(0.0121951, 1)
+colors = PackedColorArray(0.329412, 0.254902, 0.203922, 1, 0.36, 0.32328, 0.2988, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2r1mv"]
+gradient = SubResource("Gradient_wramv")
+
+[resource]
+script = ExtResource("1_ht5t6")
+color_gradient = SubResource("GradientTexture1D_2r1mv")
+unique_name = "rock"
+ui_color = Color(0.33, 0.25476, 0.2046, 1)
+skip_proportion = 0.3

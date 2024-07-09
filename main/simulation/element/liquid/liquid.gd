@@ -5,7 +5,7 @@ class_name Liquid extends Element
 
 @export_group("Fluid dynamics")
 ## Thickness of the liquid.
-@export var viscosity: float
+@export_range(0, 1) var viscosity: float
 ## Denser fluids can sink through less dense fluids.
 @export var density: float 
 

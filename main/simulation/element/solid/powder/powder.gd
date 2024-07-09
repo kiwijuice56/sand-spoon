@@ -18,6 +18,3 @@ func process(sim: Simulation, row: int, col: int, _data: int) -> void:
 		sim.swap(row, col, row + 1, col - 1)
 	elif right:
 		sim.swap(row, col, row + 1, col + 1)
-
-func get_default_data(_sim: Simulation, _row: int, _col: int) -> int:
-	return set_byte(0, 1, randi_range(0, 255))

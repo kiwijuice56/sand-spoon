@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://0hq7inj0b37n"]
+[gd_scene load_steps=15 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="2_55j5a"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://bpc02af8uq6kh" path="res://main/simulation/element/solid/powder/sand/sand.tres" id="5_57l7a"]
 [ext_resource type="Resource" uid="uid://bbvp7saksab8l" path="res://main/simulation/element/liquid/oil/oil.tres" id="8_l1nvi"]
 [ext_resource type="PackedScene" uid="uid://p1cupggik6ba" path="res://main/ui/element_selector/element_selector.tscn" id="8_vvhhn"]
+[ext_resource type="Resource" uid="uid://cwnhltdvq4ic4" path="res://main/simulation/element/solid/rock/rock.tres" id="9_bp35h"]
 
 [sub_resource type="Environment" id="Environment_f0vau"]
 background_mode = 3
@@ -57,10 +58,11 @@ size_flags_horizontal = 0
 size_flags_vertical = 2
 texture = SubResource("ImageTexture_guoq1")
 script = ExtResource("1_7t74s")
+debug_draw = true
 simulation_size = Vector2i(72, 60)
 simulation_scale = 6
 chunk_size = 12
-elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a"), ExtResource("5_4oxmv"), ExtResource("8_l1nvi")])
+elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a"), ExtResource("5_4oxmv"), ExtResource("8_l1nvi"), ExtResource("9_bp35h")])
 
 [node name="Painter" type="Node" parent="VBoxContainer/HBoxContainer/Simulation" node_paths=PackedStringArray("sim", "selector")]
 script = ExtResource("3_3diiu")
