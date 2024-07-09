@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Liquid" load_steps=4 format=3 uid="uid://bbvp7saksab8l"]
+
+[ext_resource type="Script" path="res://main/simulation/element/liquid/liquid.gd" id="1_7ljsl"]
+
+[sub_resource type="Gradient" id="Gradient_ombda"]
+colors = PackedColorArray(0.35, 0.2555, 0.14, 1, 0.45, 0.447075, 0.2745, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_p7pwv"]
+gradient = SubResource("Gradient_ombda")
+
+[resource]
+script = ExtResource("1_7ljsl")
+color_gradient = SubResource("GradientTexture1D_p7pwv")
+viscosity = 0.6
+density = 0.75
+unique_name = "oil"
+ui_color = Color(0.55, 0.468967, 0.176, 1)
+skip_proportion = 0.3

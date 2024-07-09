@@ -87,9 +87,11 @@ func _process(_delta: float) -> void:
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y - 1, -1, -1):
 		if alive_count[i] == 0:
 			continue
+		var row_offset: int = i / simulation_size_chunk.x * chunk_size
+		var col_offset: int = i % simulation_size_chunk.x * chunk_size
 		for j in range(chunk_size * chunk_size - 1, -1, -1):
-			var row: int = j / chunk_size + i / simulation_size_chunk.x * chunk_size
-			var col: int = j % chunk_size + i % simulation_size_chunk.x * chunk_size
+			var row: int = j / chunk_size + row_offset
+			var col: int = j % chunk_size + col_offset
 			elements[cell_id[row * simulation_size.x + col]].process(self, row, col, _get_cell_data(row, col))
 	draw_cells()
 	if debug_draw:
@@ -117,9 +119,9 @@ func _set_cell_data(row: int, col: int, data: int) -> void:
 	cell_data[row * simulation_size.x + col] = data
 	chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
 
-## Returns the Element resource with the given element_name.
-func get_element_resource(element_name: String) -> Element:
-	return elements[name_id_map[element_name]]
+## Returns the Element resource at row, col.
+func get_element_resource(row: int, col: int) -> Element:
+	return elements[_get_cell_id(row, col)]
 
 ## Returns the element at row, col.
 func get_element(row: int, col: int) -> String:
@@ -140,7 +142,7 @@ func set_data(row: int, col: int, data: int) -> void:
 
 ## Returns whether the location row, col is in bounds.
 func in_bounds(row: int, col: int) -> bool:
-	return row >= 0 and col >= 0 and row < simulation_size.y and col < simulation_size.x
+	return row < simulation_size.y and col < simulation_size.x and row >= 0 and col >= 0
 
 ## Swap the element at row_1, col_1 with the element at row_2, col2.
 ## Assumes both cells are in bounds.

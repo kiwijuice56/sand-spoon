@@ -45,8 +45,8 @@ func paint_line(start: Vector2i, end: Vector2i, line_width: int, element_name: S
 	paint_circle(end, line_width, element_name)
 
 func paint_circle(center: Vector2i, radius: float, element_name: String) -> void:
-	var center_row: int = center.y - sim.global_position.y / sim.simulation_scale
-	var center_col: int = center.x - sim.global_position.x / sim.simulation_scale
+	var center_row: int = center.y - int(sim.global_position.y) / sim.simulation_scale
+	var center_col: int = center.x - int(sim.global_position.x) / sim.simulation_scale
 	if not sim.in_bounds(center_row, center_col):
 		return
 	for row in range(-radius, radius + 1):

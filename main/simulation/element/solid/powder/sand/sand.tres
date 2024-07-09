@@ -1,10 +1,18 @@
-[gd_resource type="Resource" script_class="Powder" load_steps=2 format=3 uid="uid://bpc02af8uq6kh"]
+[gd_resource type="Resource" script_class="Powder" load_steps=4 format=3 uid="uid://bpc02af8uq6kh"]
 
 [ext_resource type="Script" path="res://main/simulation/element/solid/powder/powder.gd" id="1_bvfnp"]
 
+[sub_resource type="Gradient" id="Gradient_dtbfd"]
+offsets = PackedFloat32Array(0, 0.929878, 1)
+colors = PackedColorArray(0.94, 0.574027, 0.2538, 1, 1, 0.701, 0.31, 1, 0.868985, 0.868985, 0.868985, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lxfk2"]
+gradient = SubResource("Gradient_dtbfd")
+width = 32
+
 [resource]
 script = ExtResource("1_bvfnp")
-color_variation = 0.05
+color_gradient = SubResource("GradientTexture1D_lxfk2")
 unique_name = "sand"
-color = Color(0.93, 0.65875, 0.279, 1)
+ui_color = Color(0.89, 0.5785, 0.267, 1)
 skip_proportion = 0.5

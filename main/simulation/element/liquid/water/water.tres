@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://main/simulation/element/liquid/liquid.gd" id="1_unh5v"]
 
 [sub_resource type="Gradient" id="Gradient_sydsh"]
-colors = PackedColorArray(0.2652, 0.44538, 0.78, 1, 0.47, 1, 0.911667, 1)
+colors = PackedColorArray(0.2652, 0.44538, 0.78, 1, 0.47, 0.902833, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3kkdy"]
 gradient = SubResource("Gradient_sydsh")
@@ -11,7 +11,8 @@ gradient = SubResource("Gradient_sydsh")
 [resource]
 script = ExtResource("1_unh5v")
 color_gradient = SubResource("GradientTexture1D_3kkdy")
-viscosity = 0.1
+viscosity = 0.8
+density = 1.0
 unique_name = "water"
-color = Color(0.41, 0.783667, 1, 1)
+ui_color = Color(0.2673, 0.475335, 0.81, 1)
 skip_proportion = 0.3
