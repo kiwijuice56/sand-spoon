@@ -1,6 +1,5 @@
-class_name Powder extends Element
+class_name Powder extends Solid
 
-@export var smoothness: float = 0.0
 @export var color_variation: float = 0.25
 
 var color_a: Color
@@ -13,14 +12,14 @@ func initialize() -> void:
 	color_c = color.lightened(2 * color_variation)
 
 func process(sim: Simulation, row: int, col: int, _data: int) -> void:
-	if Simulation.fast_randf() >= smoothness:
+	if Simulation.fast_randf() < skip_proportion:
 		return
 	
-	if sim.in_bounds(row + 1, col) and sim.get_element(row + 1, col) == "empty":
+	if sim.in_bounds(row + 1, col) and not sim.get_element_resource(sim.get_element(row + 1, col)) is Solid:
 		sim.swap(row, col, row + 1, col)
 		return
-	var right: bool = sim.in_bounds(row + 1, col + 1) and sim.get_element(row + 1, col + 1) == "empty"
-	var left: bool = sim.in_bounds(row + 1, col - 1) and sim.get_element(row + 1, col - 1) == "empty"
+	var right: bool = sim.in_bounds(row + 1, col + 1) and not sim.get_element_resource(sim.get_element(row + 1, col + 1)) is Solid
+	var left: bool = sim.in_bounds(row + 1, col - 1) and not sim.get_element_resource(sim.get_element(row + 1, col - 1)) is Solid
 	if left and right:
 		if Simulation.fast_randf() < 0.5:
 			left = false

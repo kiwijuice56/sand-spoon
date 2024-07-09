@@ -6,3 +6,4 @@
 script = ExtResource("1_m73bc")
 unique_name = "empty"
 color = Color(0.173755, 0.243404, 0.413107, 1)
+skip_proportion = 0.3

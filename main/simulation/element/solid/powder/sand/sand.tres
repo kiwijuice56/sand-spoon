@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="Powder" load_steps=2 format=3 uid="uid://bpc02af8uq6kh"]
 
-[ext_resource type="Script" path="res://main/simulation/element/powder/powder.gd" id="1_bvfnp"]
+[ext_resource type="Script" path="res://main/simulation/element/solid/powder/powder.gd" id="1_bvfnp"]
 
 [resource]
 script = ExtResource("1_bvfnp")
-smoothness = 0.5
 color_variation = 0.05
 unique_name = "sand"
-color = Color(0.93448, 0.746399, 0.342068, 1)
+color = Color(0.93, 0.65875, 0.279, 1)
+skip_proportion = 0.5

@@ -23,6 +23,8 @@ func _process(_delta: float) -> void:
 		current_element = "empty"
 	if Input.is_key_pressed(KEY_1):
 		current_element = "sand"
+	if Input.is_key_pressed(KEY_2):
+		current_element = "water"
 
 func paint_line(start: Vector2i, end: Vector2i, line_width: int, element_name: String) -> void:
 	if start.distance_to(end) > line_width / 2.0:
