@@ -1,61 +1,64 @@
 class_name Simulation extends TextureRect
 
-@export var width: int
-@export var height: int  
-var data: Array[Particle]
+@export var simulation_size: Vector2
+@export var elements: Array[Element]
+
+static var name_id_map: Dictionary
+static var id_name_map: PackedStringArray
+
+var cell_id: PackedByteArray
+var width: int
+var height: int
 
 func _ready() -> void:
-	data = []
-	data.resize(width * height)
-	for i in range(len(data)):
-		if randf() < 0.1:
-			data[i] = Sand.new()
-		else:
-			data[i] = Empty.new()
+	width = int(simulation_size.x)
+	height = int(simulation_size.y)
+	
+	name_id_map = {}
+	for i in range(len(elements)):
+		name_id_map[elements[i].unique_name] = i
+		id_name_map.append(elements[i].unique_name)
+	
+	cell_id = []
+	cell_id.resize(width * height)
 
 func _draw() -> void:
 	for i in range(width * height):
 		var row: int = i / width
 		var col: int = i % width
 		
-		draw_rect(Rect2(col, row, 1, 1), data[i].color)
-
-func _input(_event: InputEvent) -> void:
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		var mouse_position: Vector2 = get_viewport().get_mouse_position() / scale
-		var row: int = int(mouse_position.y)
-		var col: int = int(mouse_position.x)
-		paint_circle(row, col, 4, Sand.new())
+		draw_rect(Rect2(col, row, 1, 1), elements[cell_id[i]].get_color(self, row, col))
 
 func _process(_delta: float) -> void:
 	for i in range(width * height - 1, -1, -1):
 		var row: int = i / width
 		var col: int = i % width
 		
-		data[i].process(self, row, col)
+		elements[cell_id[i]].process(self, row, col)
 	queue_redraw()
 
-func paint_circle(center_row: int, center_col: int, radius: float, type: Particle) -> void:
-	if not in_bounds(center_row, center_col):
-		return
-	for row in range(-radius, radius + 1):
-		for col in range(-radius, radius + 1):
-			if row * row + col * col < radius * radius:
-				set_particle(row + center_row, col + center_col, type.duplicate())
+func _get_cell_id(row: int, col: int) -> int:
+	return cell_id[row * width + col]
 
-func get_particle(row: int, col: int) -> Particle:
-	return data[row * width + col]
+func _set_cell_id(row: int, col: int, element_id: int) -> void:
+	cell_id[row * width + col] = element_id
 
-func set_particle(row: int, col: int, particle: Particle) -> void:
-	data[row * width + col] = particle
+func get_element_resource(element_name: String) -> Element:
+	return elements[name_id_map[element_name]]
+
+func get_element(row: int, col: int) -> String:
+	return id_name_map[_get_cell_id(row, col)]
+
+func set_element(row: int, col: int, element_name: String) -> void:
+	_set_cell_id(row, col, name_id_map[element_name])
 
 func in_bounds(row: int, col: int) -> bool:
 	return row >= 0 and col >= 0 and row < height and col < width
 
-func swap(row1: int, col1: int, row2: int, col2: int) -> void:
-	var temp: Particle = get_particle(row1, col1)
-	set_particle(row1, col1, get_particle(row2, col2))
-	set_particle(row2, col2, temp)
+func swap(row_1: int, col_1: int, row_2: int, col_2: int) -> void:
+	var temp: int = _get_cell_id(row_1, col_1)
+	_set_cell_id(row_1, col_1, _get_cell_id(row_2, col_2))
+	_set_cell_id(row_2, col_2, temp)
 
-func rand() -> float:
+static func random() -> float:
 	return randf()

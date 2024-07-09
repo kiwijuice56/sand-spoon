@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Empty" load_steps=2 format=3 uid="uid://ywlrps0jvghj"]
+
+[ext_resource type="Script" path="res://main/simulation/element/empty/empty.gd" id="1_m73bc"]
+
+[resource]
+script = ExtResource("1_m73bc")
+unique_name = "empty"
+color = Color(0.221164, 0.249665, 0.504939, 1)

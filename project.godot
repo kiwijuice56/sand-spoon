@@ -17,7 +17,6 @@ config/icon="res://icon.svg"
 
 [debug]
 
-settings/stdout/print_fps=true
 gdscript/warnings/integer_division=0
 
 [display]
