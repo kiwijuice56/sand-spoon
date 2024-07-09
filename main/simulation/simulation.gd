@@ -21,8 +21,11 @@ static var name_id_map: Dictionary
 # Maps int IDs to Element unique_names.
 static var id_name_map: PackedStringArray
 
-# Stores the ID within each cell of the simulation as a flat array.
+# Stores the ID of each cell of the simulation as a flat array.
 var cell_id: PackedByteArray
+
+# Stores the data of each cell of the simulation as a flat array.
+var cell_data: PackedInt32Array
 
 # Stores the amount of alive cells within each chunk as a flat array.
 var alive_count: PackedByteArray
@@ -37,9 +40,12 @@ var image: Image
 var simulation_size_chunk: Vector2i
 
 func _ready() -> void:
+	randomize()
+	assert(simulation_size.x % chunk_size == 0 and simulation_size.y % chunk_size == 0)
 	_update_rect()
 	
-	assert(simulation_size.x % chunk_size == 0 and simulation_size.y % chunk_size == 0)
+	for element in elements:
+		element.initialize()
 	
 	name_id_map = {}
 	for i in range(len(elements)):
@@ -48,6 +54,9 @@ func _ready() -> void:
 	
 	cell_id = []
 	cell_id.resize(simulation_size.x * simulation_size.y)
+	
+	cell_data = []
+	cell_data.resize(simulation_size.x * simulation_size.y)
 	
 	simulation_size_chunk.x = ceil(simulation_size.x / float(chunk_size))
 	simulation_size_chunk.y = ceil(simulation_size.y / float(chunk_size))
@@ -81,7 +90,7 @@ func _process(_delta: float) -> void:
 		for j in range(chunk_size * chunk_size - 1, -1, -1):
 			var row: int = j / chunk_size + i / simulation_size_chunk.x * chunk_size
 			var col: int = j % chunk_size + i % simulation_size_chunk.x * chunk_size
-			elements[cell_id[row * simulation_size.x + col]].process(self, row, col)
+			elements[cell_id[row * simulation_size.x + col]].process(self, row, col, _get_cell_data(row, col))
 	draw_cells()
 	if debug_draw:
 		queue_redraw()
@@ -101,6 +110,13 @@ func _set_cell_id(row: int, col: int, element_id: int) -> void:
 	elif old_id > 0 and element_id == 0:
 		alive_count[row / chunk_size * simulation_size_chunk.x + col / chunk_size] -= 1
 
+func _get_cell_data(row: int, col: int) -> int:
+	return cell_data[row * simulation_size.x + col]
+
+func _set_cell_data(row: int, col: int, data: int) -> void:
+	cell_data[row * simulation_size.x + col] = data
+	chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
+
 ## Returns the Element resource with the given element_name.
 func get_element_resource(element_name: String) -> Element:
 	return elements[name_id_map[element_name]]
@@ -109,9 +125,18 @@ func get_element_resource(element_name: String) -> Element:
 func get_element(row: int, col: int) -> String:
 	return id_name_map[_get_cell_id(row, col)]
 
+## Returns the cell data at row, col.
+func get_data(row: int, col: int) -> int:
+	return _get_cell_data(row, col)
+
 ## Updates the element at row, col.
 func set_element(row: int, col: int, element_name: String) -> void:
 	_set_cell_id(row, col, name_id_map[element_name])
+	_set_cell_data(row, col, elements[_get_cell_id(row, col)].get_default_data(self, row, col))
+
+## Updates the cell data at row, col.
+func set_data(row: int, col: int, data: int) -> void:
+	_set_cell_data(row, col, data)
 
 ## Returns whether the location row, col is in bounds.
 func in_bounds(row: int, col: int) -> bool:
@@ -121,8 +146,11 @@ func in_bounds(row: int, col: int) -> bool:
 ## Assumes both cells are in bounds.
 func swap(row_1: int, col_1: int, row_2: int, col_2: int) -> void:
 	var temp: int = _get_cell_id(row_1, col_1)
+	var temp_data: int = _get_cell_data(row_1, col_1)
 	_set_cell_id(row_1, col_1, _get_cell_id(row_2, col_2))
+	_set_cell_data(row_1, col_1, _get_cell_data(row_2, col_2))
 	_set_cell_id(row_2, col_2, temp)
+	_set_cell_data(row_2, col_2, temp_data)
 
 ## Updates modified chunks in the image and texture. 
 func draw_cells() -> void:
@@ -133,7 +161,7 @@ func draw_cells() -> void:
 			var row: int = j / chunk_size + i / simulation_size_chunk.x * chunk_size
 			var col: int = j % chunk_size + i % simulation_size_chunk.x * chunk_size
 			
-			image.set_pixel(col, row, elements[cell_id[row * simulation_size.x + col]].get_color(self, row, col))
+			image.set_pixel(col, row, elements[cell_id[row * simulation_size.x + col]].get_color(self, row, col, _get_cell_data(row, col)))
 	chunk_update.fill(0)
 	texture.set_image(image)
 

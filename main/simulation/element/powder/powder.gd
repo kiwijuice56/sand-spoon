@@ -1,8 +1,18 @@
 class_name Powder extends Element
 
 @export var smoothness: float = 0.0
+@export var color_variation: float = 0.25
 
-func process(sim: Simulation, row: int, col: int) -> void:
+var color_a: Color
+var color_b: Color
+var color_c: Color
+
+func initialize() -> void:
+	color_a = color
+	color_b = color.lightened(color_variation)
+	color_c = color.lightened(2 * color_variation)
+
+func process(sim: Simulation, row: int, col: int, _data: int) -> void:
 	if Simulation.fast_randf() >= smoothness:
 		return
 	
@@ -20,4 +30,13 @@ func process(sim: Simulation, row: int, col: int) -> void:
 		sim.swap(row, col, row + 1, col - 1)
 	elif right:
 		sim.swap(row, col, row + 1, col + 1)
-	
+
+func get_color(_sim: Simulation, _row: int, _col: int, data: int) -> Color:
+	if data == 0:
+		return color_a
+	elif data == 1:
+		return color_b
+	return color_c
+
+func get_default_data(sim: Simulation, _row: int, _col: int) -> int:
+	return randi_range(0, 2)
