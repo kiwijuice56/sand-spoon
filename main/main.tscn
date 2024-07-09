@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://0hq7inj0b37n"]
+[gd_scene load_steps=13 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="2_55j5a"]
+[ext_resource type="Theme" uid="uid://dwfevn8ahgyc0" path="res://main/ui/theme.tres" id="2_dej03"]
 [ext_resource type="Script" path="res://main/painter/painter.gd" id="3_3diiu"]
 [ext_resource type="PackedScene" uid="uid://cly3oo4u8jasx" path="res://main/ui/fps_label/fps_label.tscn" id="3_54ca0"]
 [ext_resource type="Resource" uid="uid://bv0qbdwy81m1a" path="res://main/simulation/element/empty/empty.tres" id="4_oq8j5"]
@@ -31,32 +32,41 @@ image = SubResource("Image_8fq3f")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_f0vau")
 
-[node name="Simulation" type="TextureRect" parent="."]
-offset_right = 360.0
-offset_bottom = 360.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_dej03")
+theme_override_constants/separation = 0
+
+[node name="ElementSelector" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("sim") instance=ExtResource("8_vvhhn")]
+layout_mode = 2
+size_flags_horizontal = 3
+sim = NodePath("../Simulation")
+
+[node name="Simulation" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 2
 texture = SubResource("ImageTexture_guoq1")
 script = ExtResource("1_7t74s")
-simulation_size = Vector2i(72, 72)
-simulation_scale = 5
+simulation_size = Vector2i(72, 60)
+simulation_scale = 6
 chunk_size = 12
 elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a"), ExtResource("5_4oxmv")])
 
-[node name="Painter" type="Node" parent="Simulation" node_paths=PackedStringArray("sim", "selector")]
+[node name="Painter" type="Node" parent="VBoxContainer/HBoxContainer/Simulation" node_paths=PackedStringArray("sim", "selector")]
 script = ExtResource("3_3diiu")
 sim = NodePath("..")
 selector = NodePath("../../ElementSelector")
 brush_radius = 6
 line_step = 0.25
 
-[node name="FPSLabel" parent="." instance=ExtResource("3_54ca0")]
-anchors_preset = 2
-anchor_left = 0.0
-anchor_right = 0.0
-offset_left = 0.0
-offset_right = 40.0
-grow_horizontal = 1
-
-[node name="ElementSelector" parent="." node_paths=PackedStringArray("sim") instance=ExtResource("8_vvhhn")]
-sim = NodePath("../Simulation")
+[node name="FPSLabel" parent="VBoxContainer" instance=ExtResource("3_54ca0")]
+layout_mode = 2

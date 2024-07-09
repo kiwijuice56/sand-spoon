@@ -84,7 +84,7 @@ func _draw() -> void:
 			draw_rect(rect, Color.RED.lightened(alive_count[chunk_row * simulation_size_chunk.x + chunk_col] / float(chunk_size * chunk_size)), false)
 
 func _process(_delta: float) -> void:
-	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
+	for i in range(simulation_size_chunk.x * simulation_size_chunk.y - 1, -1, -1):
 		if alive_count[i] == 0:
 			continue
 		for j in range(chunk_size * chunk_size - 1, -1, -1):
@@ -96,7 +96,7 @@ func _process(_delta: float) -> void:
 		queue_redraw()
 
 func _update_rect() -> void:
-	size = simulation_size * simulation_scale
+	custom_minimum_size = simulation_size * simulation_scale
 
 func _get_cell_id(row: int, col: int) -> int:
 	return cell_id[row * simulation_size.x + col]

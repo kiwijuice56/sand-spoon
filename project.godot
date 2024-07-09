@@ -22,11 +22,12 @@ gdscript/warnings/integer_division=0
 
 [display]
 
-window/size/viewport_width=512
+window/size/viewport_width=560
 window/size/viewport_height=384
-window/size/window_width_override=512
+window/size/window_width_override=560
 window/size/window_height_override=384
 window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 window/vsync/vsync_mode=0
 
 [input]

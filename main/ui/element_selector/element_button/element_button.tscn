@@ -10,6 +10,10 @@
 
 [node name="ElementButton" type="Button"]
 custom_minimum_size = Vector2(128, 0)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
 focus_mode = 0
 theme_override_styles/hover = SubResource("StyleBoxFlat_rdljj")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_68s1g")
