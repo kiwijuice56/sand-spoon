@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://dunjk1ufcu5am"]
+
+[ext_resource type="Script" path="res://main/ui/element_selector/element_button/element_button.gd" id="1_hqlin"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdljj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_68s1g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5ys0"]
+
+[node name="ElementButton" type="Button"]
+custom_minimum_size = Vector2(128, 0)
+focus_mode = 0
+theme_override_styles/hover = SubResource("StyleBoxFlat_rdljj")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_68s1g")
+theme_override_styles/normal = SubResource("StyleBoxFlat_a5ys0")
+text = "sand"
+script = ExtResource("1_hqlin")

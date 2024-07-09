@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://p1cupggik6ba"]
+
+[ext_resource type="Script" path="res://main/ui/element_selector/element_selector.gd" id="1_kpay8"]
+[ext_resource type="PackedScene" uid="uid://dunjk1ufcu5am" path="res://main/ui/element_selector/element_button/element_button.tscn" id="2_72xpa"]
+
+[node name="ElementSelector" type="ScrollContainer"]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+grow_horizontal = 0
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+script = ExtResource("1_kpay8")
+element_button_scene = ExtResource("2_72xpa")
+
+[node name="ElementButtonContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://0hq7inj0b37n"]
+[gd_scene load_steps=12 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="2_55j5a"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://bv0qbdwy81m1a" path="res://main/simulation/element/empty/empty.tres" id="4_oq8j5"]
 [ext_resource type="Resource" uid="uid://ypa8f347pjrs" path="res://main/simulation/element/liquid/water/water.tres" id="5_4oxmv"]
 [ext_resource type="Resource" uid="uid://bpc02af8uq6kh" path="res://main/simulation/element/solid/powder/sand/sand.tres" id="5_57l7a"]
+[ext_resource type="PackedScene" uid="uid://p1cupggik6ba" path="res://main/ui/element_selector/element_selector.tscn" id="8_vvhhn"]
 
 [sub_resource type="Environment" id="Environment_f0vau"]
 background_mode = 3
@@ -31,20 +32,21 @@ image = SubResource("Image_8fq3f")
 environment = SubResource("Environment_f0vau")
 
 [node name="Simulation" type="TextureRect" parent="."]
-offset_right = 420.0
+offset_right = 360.0
 offset_bottom = 360.0
 size_flags_horizontal = 0
 size_flags_vertical = 2
 texture = SubResource("ImageTexture_guoq1")
 script = ExtResource("1_7t74s")
-simulation_size = Vector2i(84, 72)
+simulation_size = Vector2i(72, 72)
 simulation_scale = 5
 chunk_size = 12
 elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a"), ExtResource("5_4oxmv")])
 
-[node name="Painter" type="Node" parent="Simulation" node_paths=PackedStringArray("sim")]
+[node name="Painter" type="Node" parent="Simulation" node_paths=PackedStringArray("sim", "selector")]
 script = ExtResource("3_3diiu")
 sim = NodePath("..")
+selector = NodePath("../../ElementSelector")
 brush_radius = 6
 line_step = 0.25
 
@@ -55,3 +57,6 @@ anchor_right = 0.0
 offset_left = 0.0
 offset_right = 40.0
 grow_horizontal = 1
+
+[node name="ElementSelector" parent="." node_paths=PackedStringArray("sim") instance=ExtResource("8_vvhhn")]
+sim = NodePath("../Simulation")

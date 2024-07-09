@@ -1,12 +1,20 @@
 class_name Painter extends Node
 
 @export var sim: Simulation
+@export var selector: ElementSelector
+
 @export var brush_radius: int
 @export var line_step: float = 0.5
 
 var current_element: String = "sand"
 var is_tapping: bool = false
 var tap_start: Vector2i
+
+func _ready() -> void:
+	selector.element_selected.connect(_on_element_selected)
+
+func _on_element_selected(element: Element) -> void:
+	current_element = element.unique_name
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("tap"):

@@ -11,7 +11,7 @@ gradient = SubResource("Gradient_sydsh")
 [resource]
 script = ExtResource("1_unh5v")
 color_gradient = SubResource("GradientTexture1D_3kkdy")
-viscosity = 0.2
+viscosity = 0.1
 unique_name = "water"
 color = Color(0.41, 0.783667, 1, 1)
-skip_proportion = 0.6
+skip_proportion = 0.3
