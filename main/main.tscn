@@ -12,7 +12,7 @@ background_mode = 3
 glow_enabled = true
 glow_bloom = 0.15
 
-[sub_resource type="ImageTexture" id="ImageTexture_yl3r7"]
+[sub_resource type="ImageTexture" id="ImageTexture_guoq1"]
 
 [node name="Main" type="Node"]
 
@@ -20,16 +20,15 @@ glow_bloom = 0.15
 environment = SubResource("Environment_f0vau")
 
 [node name="Simulation" type="TextureRect" parent="."]
-offset_right = 96.0
-offset_bottom = 72.0
-scale = Vector2(4, 4)
+offset_right = 72.0
+offset_bottom = 60.0
+scale = Vector2(6, 6)
 size_flags_horizontal = 0
 size_flags_vertical = 2
-texture = SubResource("ImageTexture_yl3r7")
+texture = SubResource("ImageTexture_guoq1")
 stretch_mode = 2
 script = ExtResource("1_7t74s")
-debug_draw = true
-simulation_size = Vector2(72, 72)
+simulation_size = Vector2(72, 60)
 chunk_size = 12
 elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a")])
 

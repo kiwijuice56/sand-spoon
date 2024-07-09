@@ -10,6 +10,7 @@ static var id_name_map: PackedStringArray
 
 var cell_id: PackedByteArray
 var chunk_count: PackedByteArray
+var chunk_update: PackedByteArray
 var image: Image
 
 var width: int
@@ -36,6 +37,9 @@ func _ready() -> void:
 	chunk_count = []
 	chunk_count.resize(chunk_width * chunk_height)
 	
+	chunk_update = []
+	chunk_update.resize(chunk_width * chunk_height)
+	
 	image = Image.create_empty(width, height, false, Image.FORMAT_RGBA8)
 
 func _draw() -> void:
@@ -49,6 +53,7 @@ func _draw() -> void:
 			draw_rect(rect, Color.RED.lightened(chunk_count[chunk_row * chunk_width + chunk_col] / float(chunk_size * chunk_size)), false)
 
 func _process(_delta: float) -> void:
+	chunk_update.fill(0)
 	for i in range(chunk_width * chunk_height):
 		if chunk_count[i] == 0:
 			continue
@@ -66,6 +71,7 @@ func _get_cell_id(row: int, col: int) -> int:
 func _set_cell_id(row: int, col: int, element_id: int) -> void:
 	var old_id: int = cell_id[row * width + col]
 	cell_id[row * width + col] = element_id
+	chunk_update[row / chunk_size * chunk_width + col / chunk_size] = 1
 	if old_id == 0 and element_id > 0:
 		chunk_count[row / chunk_size * chunk_width + col / chunk_size] += 1
 	elif old_id > 0 and element_id == 0:
@@ -89,11 +95,14 @@ func swap(row_1: int, col_1: int, row_2: int, col_2: int) -> void:
 	_set_cell_id(row_2, col_2, temp)
 
 func draw_cells() -> void:
-	for i in range(width * height):
-		var row: int = i / width
-		var col: int = i % width
-		
-		image.set_pixel(col, row, elements[cell_id[i]].get_color(self, row, col))
+	for i in range(chunk_width * chunk_height):
+		if chunk_update[i] == 0:
+			continue
+		for j in range(0, chunk_size * chunk_size):
+			var row: int = j / chunk_size + i / chunk_width * chunk_size
+			var col: int = j % chunk_size + i % chunk_width * chunk_size
+			
+			image.set_pixel(col, row, elements[cell_id[row * width + col]].get_color(self, row, col))
 	
 	texture.set_image(image)
 
