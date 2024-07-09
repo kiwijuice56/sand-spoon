@@ -28,7 +28,9 @@ size_flags_vertical = 2
 texture = SubResource("ImageTexture_yl3r7")
 stretch_mode = 2
 script = ExtResource("1_7t74s")
+debug_draw = true
 simulation_size = Vector2(72, 72)
+chunk_size = 12
 elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a")])
 
 [node name="Painter" type="Node" parent="Simulation" node_paths=PackedStringArray("sim")]
