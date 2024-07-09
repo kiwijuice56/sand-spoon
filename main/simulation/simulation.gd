@@ -67,5 +67,5 @@ func swap(row_1: int, col_1: int, row_2: int, col_2: int) -> void:
 	_set_cell_id(row_1, col_1, _get_cell_id(row_2, col_2))
 	_set_cell_id(row_2, col_2, temp)
 
-static func random() -> float:
+static func fast_randf() -> float:
 	return randf()

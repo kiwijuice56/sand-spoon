@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_m73bc")
 unique_name = "empty"
-color = Color(0.221164, 0.249665, 0.504939, 1)
+color = Color(0, 0, 0, 1)
