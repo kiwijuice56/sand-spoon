@@ -1,4 +1,4 @@
-class_name Sand extends Element
+class_name Powder extends Element
 
 @export var smoothness: float = 0.0
 

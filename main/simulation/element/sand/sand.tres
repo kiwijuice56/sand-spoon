@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="Sand" load_steps=2 format=3 uid="uid://bpc02af8uq6kh"]
-
-[ext_resource type="Script" path="res://main/simulation/element/sand/sand.gd" id="1_bvfnp"]
-
-[resource]
-script = ExtResource("1_bvfnp")
-smoothness = 0.5
-unique_name = "sand"
-color = Color(1, 0.718167, 0.11, 1)
