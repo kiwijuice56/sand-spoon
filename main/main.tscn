@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://0hq7inj0b37n"]
+
+[ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
+[ext_resource type="Texture2D" uid="uid://s38imvofuc3v" path="res://main/ui/canvas.png" id="1_ygrpl"]
+[ext_resource type="PackedScene" uid="uid://cly3oo4u8jasx" path="res://main/ui/fps_label/fps_label.tscn" id="3_54ca0"]
+
+[sub_resource type="Environment" id="Environment_f0vau"]
+background_mode = 3
+glow_enabled = true
+glow_bloom = 0.15
+
+[node name="Main" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_f0vau")
+
+[node name="Simulation" type="TextureRect" parent="."]
+offset_right = 72.0
+offset_bottom = 72.0
+scale = Vector2(4, 4)
+size_flags_horizontal = 0
+size_flags_vertical = 2
+texture = ExtResource("1_ygrpl")
+stretch_mode = 2
+script = ExtResource("1_7t74s")
+width = 72
+height = 72
+
+[node name="FPSLabel" parent="." instance=ExtResource("3_54ca0")]
+anchors_preset = 2
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 0.0
+offset_right = 40.0
+grow_horizontal = 1
