@@ -1,17 +1,18 @@
 [gd_scene load_steps=9 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
-[ext_resource type="Texture2D" uid="uid://bk28kx0cd1bcc" path="res://main/ui/canvas.png" id="1_ygrpl"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="3_2pemr"]
 [ext_resource type="Script" path="res://main/painter/painter.gd" id="3_3diiu"]
 [ext_resource type="PackedScene" uid="uid://cly3oo4u8jasx" path="res://main/ui/fps_label/fps_label.tscn" id="3_54ca0"]
-[ext_resource type="Resource" uid="uid://ywlrps0jvghj" path="res://main/simulation/element/empty/empty.tres" id="4_oq8j5"]
-[ext_resource type="Resource" uid="uid://bpc02af8uq6kh" path="res://main/simulation/element/sand/sand.tres" id="5_57l7a"]
+[ext_resource type="Resource" uid="uid://bv0qbdwy81m1a" path="res://main/simulation/element/empty/empty.tres" id="4_oq8j5"]
+[ext_resource type="Resource" path="res://main/simulation/element/sand/sand.tres" id="5_57l7a"]
 
 [sub_resource type="Environment" id="Environment_f0vau"]
 background_mode = 3
 glow_enabled = true
 glow_bloom = 0.15
+
+[sub_resource type="ImageTexture" id="ImageTexture_yl3r7"]
 
 [node name="Main" type="Node"]
 
@@ -24,7 +25,7 @@ offset_bottom = 72.0
 scale = Vector2(4, 4)
 size_flags_horizontal = 0
 size_flags_vertical = 2
-texture = ExtResource("1_ygrpl")
+texture = SubResource("ImageTexture_yl3r7")
 stretch_mode = 2
 script = ExtResource("1_7t74s")
 simulation_size = Vector2(96, 72)

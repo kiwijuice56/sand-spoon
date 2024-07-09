@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Empty" load_steps=2 format=3 uid="uid://ywlrps0jvghj"]
+[gd_resource type="Resource" script_class="Empty" load_steps=2 format=3 uid="uid://bv0qbdwy81m1a"]
 
 [ext_resource type="Script" path="res://main/simulation/element/empty/empty.gd" id="1_m73bc"]
 

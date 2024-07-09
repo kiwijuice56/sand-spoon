@@ -7,6 +7,9 @@ static var name_id_map: Dictionary
 static var id_name_map: PackedStringArray
 
 var cell_id: PackedByteArray
+
+var image: Image
+
 var width: int
 var height: int
 
@@ -21,13 +24,17 @@ func _ready() -> void:
 	
 	cell_id = []
 	cell_id.resize(width * height)
+	
+	image = Image.create_empty(width, height, false, Image.FORMAT_RGBA8)
 
-func _draw() -> void:
+func draw() -> void:
 	for i in range(width * height):
 		var row: int = i / width
 		var col: int = i % width
 		
-		draw_rect(Rect2(col, row, 1, 1), elements[cell_id[i]].get_color(self, row, col))
+		image.set_pixel(col, row, elements[cell_id[i]].get_color(self, row, col))
+	
+	texture.set_image(image)
 
 func _process(_delta: float) -> void:
 	for i in range(width * height - 1, -1, -1):
@@ -35,7 +42,7 @@ func _process(_delta: float) -> void:
 		var col: int = i % width
 		
 		elements[cell_id[i]].process(self, row, col)
-	queue_redraw()
+	draw()
 
 func _get_cell_id(row: int, col: int) -> int:
 	return cell_id[row * width + col]
