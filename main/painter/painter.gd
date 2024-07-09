@@ -21,6 +21,11 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_released("tap"):
 		is_tapping = false
+	
+	if Input.is_key_pressed(KEY_0):
+		current_element = "empty"
+	if Input.is_key_pressed(KEY_1):
+		current_element = "sand"
 
 func paint_line(start: Vector2, end: Vector2, line_width: int, element_name: String) -> void:
 	if start.distance_to(end) > line_width / 2.0:

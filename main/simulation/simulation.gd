@@ -53,7 +53,6 @@ func _draw() -> void:
 			draw_rect(rect, Color.RED.lightened(chunk_count[chunk_row * chunk_width + chunk_col] / float(chunk_size * chunk_size)), false)
 
 func _process(_delta: float) -> void:
-	chunk_update.fill(0)
 	for i in range(chunk_width * chunk_height):
 		if chunk_count[i] == 0:
 			continue
@@ -103,7 +102,7 @@ func draw_cells() -> void:
 			var col: int = j % chunk_size + i % chunk_width * chunk_size
 			
 			image.set_pixel(col, row, elements[cell_id[row * width + col]].get_color(self, row, col))
-	
+	chunk_update.fill(0)
 	texture.set_image(image)
 
 static func fast_randf() -> float:
