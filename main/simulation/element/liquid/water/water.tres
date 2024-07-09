@@ -16,3 +16,5 @@ density = 1.0
 unique_name = "water"
 ui_color = Color(0.2673, 0.475335, 0.81, 1)
 skip_proportion = 0.3
+initial_temperature = 0
+conductivity = 0.5

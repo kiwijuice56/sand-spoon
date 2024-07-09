@@ -2,6 +2,7 @@ class_name Simulation extends TextureRect
 
 ## Draw chunk borders and other debug details.
 @export var debug_draw: bool
+@export var debug_heat_gradient: GradientTexture1D
 
 ## World width and height.
 @export var simulation_size: Vector2i
@@ -32,6 +33,9 @@ var alive_count: PackedByteArray
 
 # Stores 1 if a chunk was updated between draw calls, otherwise 0.
 var chunk_update: PackedByteArray
+
+var chunk_temp: PackedByteArray
+var chunk_temp_copy: PackedByteArray
 
 # Output image of the simulation.
 var image: Image
@@ -67,7 +71,19 @@ func _ready() -> void:
 	chunk_update.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	chunk_update.fill(1)
 	
+	chunk_temp = []
+	chunk_temp.resize(simulation_size_chunk.x * simulation_size_chunk.y)
+	chunk_temp.fill(128)
+	
+	chunk_temp_copy = []
+	chunk_temp_copy.resize(simulation_size_chunk.x * simulation_size_chunk.y)
+	chunk_temp_copy.fill(128)
+	
 	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBA8)
+	
+	for row in range(simulation_size.y):
+		for col in range(simulation_size.x):
+			set_element(row, col, "empty")
 
 func _draw() -> void:
 	if not debug_draw:
@@ -75,24 +91,49 @@ func _draw() -> void:
 	for chunk_row in range(simulation_size_chunk.y):
 		for chunk_col in range(simulation_size_chunk.x):
 			if alive_count[chunk_row * simulation_size_chunk.x + chunk_col] == 0:
-				continue
+				pass
 			var rect: Rect2 = Rect2(
 				chunk_col * chunk_size * simulation_scale, 
 				chunk_row * chunk_size * simulation_scale, 
 				chunk_size * simulation_scale, 
 				chunk_size * simulation_scale)
-			draw_rect(rect, Color.RED.lightened(alive_count[chunk_row * simulation_size_chunk.x + chunk_col] / float(chunk_size * chunk_size)), false)
+			draw_rect(rect, debug_heat_gradient.gradient.sample(chunk_temp[chunk_row * simulation_size_chunk.x + chunk_col] / 255.0), false, 3)
 
 func _process(_delta: float) -> void:
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y - 1, -1, -1):
 		if alive_count[i] == 0:
+			chunk_temp_copy[i] = chunk_temp[i]
 			continue
 		var row_offset: int = i / simulation_size_chunk.x * chunk_size
 		var col_offset: int = i % simulation_size_chunk.x * chunk_size
+		var chunk_avg_temp: int = 0
 		for j in range(chunk_size * chunk_size - 1, -1, -1):
 			var row: int = j / chunk_size + row_offset
 			var col: int = j % chunk_size + col_offset
-			elements[cell_id[row * simulation_size.x + col]].process(self, row, col, _get_cell_data(row, col))
+			var element: Element = elements[cell_id[row * simulation_size.x + col]]
+			var data: int = _get_cell_data(row, col)
+			chunk_avg_temp += element.get_byte(data, 0)
+			element.process(self, row, col, data)
+		chunk_avg_temp /= chunk_size * chunk_size
+		chunk_temp_copy[i] = chunk_avg_temp
+	
+	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
+		chunk_temp[i] = lerp(chunk_temp[i], chunk_temp_copy[i], 0.1)
+	for row in range(simulation_size_chunk.y):
+		for col in range(simulation_size_chunk.x):
+			var avg_temp: float = 0
+			for i in range(-1, 2):
+				for j in range(-1, 2):
+					var temp: int 
+					if row + i < 0 or col + j < 0 or row + i >= simulation_size_chunk.y or col + j >= simulation_size_chunk.x:
+						temp = 128
+					else:
+						temp = chunk_temp[(row + i) * simulation_size_chunk.x + (col + j)]
+					var weight: float = 0.45 if i == 0 and j == 0 else (0.55 / 8.0)
+					avg_temp += temp * weight
+			chunk_temp_copy[row * simulation_size_chunk.x + col] = lerp(chunk_temp[row * simulation_size_chunk.x + col], int(avg_temp), 0.5)
+	for i in range(len(chunk_temp)):
+		chunk_temp[i] = chunk_temp_copy[i]
 	draw_cells()
 	if debug_draw:
 		queue_redraw()
@@ -130,6 +171,9 @@ func get_element(row: int, col: int) -> String:
 ## Returns the cell data at row, col.
 func get_data(row: int, col: int) -> int:
 	return _get_cell_data(row, col)
+
+func get_chunk_temp(row: int, col: int) -> int:
+	return chunk_temp[row / chunk_size * simulation_size_chunk.x + col / chunk_size] 
 
 ## Updates the element at row, col.
 func set_element(row: int, col: int, element_name: String) -> void:

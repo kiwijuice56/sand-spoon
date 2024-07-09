@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://0hq7inj0b37n"]
+[gd_scene load_steps=17 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="2_55j5a"]
@@ -29,6 +29,13 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_guoq1"]
 image = SubResource("Image_8fq3f")
 
+[sub_resource type="Gradient" id="Gradient_vxs2k"]
+offsets = PackedFloat32Array(0, 0.186047, 0.415282, 0.677741, 0.893688)
+colors = PackedColorArray(0, 0, 0, 1, 0.355514, 0.109001, 0.157448, 1, 0.818384, 0.451556, 0.251233, 1, 0.897063, 0.783109, 0.462456, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7s7n0"]
+gradient = SubResource("Gradient_vxs2k")
+
 [node name="Main" type="Node"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -58,7 +65,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 2
 texture = SubResource("ImageTexture_guoq1")
 script = ExtResource("1_7t74s")
-debug_draw = true
+debug_heat_gradient = SubResource("GradientTexture1D_7s7n0")
 simulation_size = Vector2i(72, 60)
 simulation_scale = 6
 chunk_size = 12

@@ -7,5 +7,6 @@ class_name Solid extends Element
 func get_color(_sim: Simulation, _row: int, _col: int, data: int) -> Color:
 	return color_gradient.gradient.sample(get_byte(data, 1) / 255.0)
 
-func get_default_data(_sim: Simulation, _row: int, _col: int) -> int:
-	return set_byte(0, 1, randi_range(0, 255))
+func get_default_data(sim: Simulation, row: int, col: int) -> int:
+	var data: int = super.get_default_data(sim, row, col)
+	return set_byte(data, 1, randi_range(0, 255))

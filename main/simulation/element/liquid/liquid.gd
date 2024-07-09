@@ -14,13 +14,13 @@ var dispersion: int
 func initialize() -> void:
 	dispersion = 4 - int(3.0 * viscosity)
 
-func process(sim: Simulation, row: int, col: int, data: int) -> void:
-	if Simulation.fast_randf() < skip_proportion:
-		return
+func process(sim: Simulation, row: int, col: int, data: int) -> bool:
+	if not super.process(sim, row, col, data):
+		return false
 	
 	if can_swap(sim, row + 1, col, data):
 		sim.swap(row, col, row + 1, col)
-		return
+		return true
 	
 	var end: int = dispersion + 1
 	var dir: int = 1
@@ -32,8 +32,10 @@ func process(sim: Simulation, row: int, col: int, data: int) -> void:
 		if not can_swap(sim, row, col + i, data):
 			if not i - dir == 0:
 				sim.swap(row, col, row, col + i - dir)
-			return
+			return true
 	sim.swap(row, col, row, col + dispersion * dir)
+	
+	return true
 
 func get_color(sim: Simulation, row: int, _col: int, _data: int) -> Color:
 	return color_gradient.gradient.sample(1.0 - float(row) / sim.simulation_size.y)

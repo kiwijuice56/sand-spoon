@@ -1,12 +1,11 @@
 class_name Powder extends Solid
 
-func process(sim: Simulation, row: int, col: int, _data: int) -> void:
-	if Simulation.fast_randf() < skip_proportion:
-		return
-	
+func process(sim: Simulation, row: int, col: int, data: int) -> bool:
+	if not super.process(sim, row, col, data):
+		return false
 	if sim.in_bounds(row + 1, col) and not sim.get_element_resource(row + 1, col) is Solid:
 		sim.swap(row, col, row + 1, col)
-		return
+		return true
 	var right: bool = sim.in_bounds(row + 1, col + 1) and not sim.get_element_resource(row + 1, col + 1) is Solid
 	var left: bool = sim.in_bounds(row + 1, col - 1) and not sim.get_element_resource(row + 1, col - 1) is Solid
 	if left and right:
@@ -18,3 +17,5 @@ func process(sim: Simulation, row: int, col: int, _data: int) -> void:
 		sim.swap(row, col, row + 1, col - 1)
 	elif right:
 		sim.swap(row, col, row + 1, col + 1)
+	
+	return true

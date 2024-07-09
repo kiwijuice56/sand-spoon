@@ -7,3 +7,5 @@ script = ExtResource("1_m73bc")
 unique_name = "empty"
 ui_color = Color(0.1815, 0.310475, 0.55, 1)
 skip_proportion = 0.3
+initial_temperature = 128
+conductivity = 0.5
