@@ -46,7 +46,7 @@ func _draw() -> void:
 			if chunk_count[chunk_row * chunk_width + chunk_col] == 0:
 				continue
 			var rect: Rect2 = Rect2(chunk_col * chunk_size, chunk_row * chunk_size, chunk_size, chunk_size)
-			draw_rect(rect, Color.RED, false)
+			draw_rect(rect, Color.RED.lightened(chunk_count[chunk_row * chunk_width + chunk_col] / float(chunk_size * chunk_size)), false)
 
 func _process(_delta: float) -> void:
 	for i in range(chunk_width * chunk_height):

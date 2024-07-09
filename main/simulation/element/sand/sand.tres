@@ -4,5 +4,6 @@
 
 [resource]
 script = ExtResource("1_bvfnp")
+smoothness = 0.5
 unique_name = "sand"
 color = Color(1, 0.718167, 0.11, 1)

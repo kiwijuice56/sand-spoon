@@ -1,6 +1,11 @@
 class_name Sand extends Element
 
+@export var smoothness: float = 0.0
+
 func process(sim: Simulation, row: int, col: int) -> void:
+	if Simulation.fast_randf() >= smoothness:
+		return
+	
 	if sim.in_bounds(row + 1, col) and sim.get_element(row + 1, col) == "empty":
 		sim.swap(row, col, row + 1, col)
 		return

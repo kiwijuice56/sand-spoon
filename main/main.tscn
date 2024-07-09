@@ -36,6 +36,7 @@ elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5
 [node name="Painter" type="Node" parent="Simulation" node_paths=PackedStringArray("sim")]
 script = ExtResource("3_3diiu")
 sim = NodePath("..")
+brush_radius = 6
 
 [node name="FPSLabel" parent="." instance=ExtResource("3_54ca0")]
 anchors_preset = 2
