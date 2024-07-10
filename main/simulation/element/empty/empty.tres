@@ -1,15 +1,12 @@
-[gd_resource type="Resource" script_class="Empty" load_steps=3 format=3 uid="uid://bv0qbdwy81m1a"]
+[gd_resource type="Resource" script_class="Empty" load_steps=2 format=3 uid="uid://bv0qbdwy81m1a"]
 
 [ext_resource type="Script" path="res://main/simulation/element/empty/empty.gd" id="1_m73bc"]
-[ext_resource type="Texture2D" uid="uid://r4fwhna0jpy2" path="res://main/simulation/element/default_temperature_color_gradient.tres" id="2_a2njn"]
 
 [resource]
 script = ExtResource("1_m73bc")
 unique_name = "empty"
 ui_color = Color(0.106477, 0.125597, 0.2879, 1)
 skip_proportion = 0.3
-temperature_color_gradient = ExtResource("2_a2njn")
-temperature_color_alpha = 0.0
 initial_temperature = 128
 conductivity = 0.5
 high_heat_point = 255

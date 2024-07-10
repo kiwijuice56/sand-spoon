@@ -19,3 +19,5 @@ initial_temperature = 128
 conductivity = 0.1
 high_heat_point = 160
 high_heat_transformation = "glass"
+low_heat_point = 0
+low_heat_transformation = "empty"
