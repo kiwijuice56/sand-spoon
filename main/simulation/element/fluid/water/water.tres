@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Liquid" load_steps=4 format=3 uid="uid://ypa8f347pjrs"]
+[gd_resource type="Resource" script_class="Fluid" load_steps=4 format=3 uid="uid://ypa8f347pjrs"]
 
-[ext_resource type="Script" path="res://main/simulation/element/fluid/fluid.gd" id="1_unh5v"]
+[ext_resource type="Script" path="res://main/simulation/element/fluid/fluid.gd" id="1_fd75b"]
 
 [sub_resource type="Gradient" id="Gradient_sydsh"]
 colors = PackedColorArray(0.2652, 0.44538, 0.78, 1, 0.47, 0.902833, 1, 1)
@@ -9,17 +9,17 @@ colors = PackedColorArray(0.2652, 0.44538, 0.78, 1, 0.47, 0.902833, 1, 1)
 gradient = SubResource("Gradient_sydsh")
 
 [resource]
-script = ExtResource("1_unh5v")
+script = ExtResource("1_fd75b")
 color_gradient = SubResource("GradientTexture1D_3kkdy")
 viscosity = 0.8
 density = 1000.0
-gravity_up = true
+gravity_down = true
 unique_name = "water"
 ui_color = Color(0.2001, 0.590875, 0.87, 1)
 skip_proportion = 0.4
-initial_temperature = 128
+initial_temperature = 293.0
 conductivity = 0.2
-high_heat_point = 140
-high_heat_transformation = "empty"
-low_heat_point = 90
+high_heat_point = 373.0
+high_heat_transformation = "water vapor"
+low_heat_point = 273.0
 low_heat_transformation = "ice"

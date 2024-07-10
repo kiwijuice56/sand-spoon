@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Liquid" load_steps=4 format=3 uid="uid://bbvp7saksab8l"]
+[gd_resource type="Resource" script_class="Fluid" load_steps=4 format=3 uid="uid://bbvp7saksab8l"]
 
-[ext_resource type="Script" path="res://main/simulation/element/fluid/fluid.gd" id="1_7ljsl"]
+[ext_resource type="Script" path="res://main/simulation/element/fluid/fluid.gd" id="1_oo7gl"]
 
 [sub_resource type="Gradient" id="Gradient_ombda"]
 colors = PackedColorArray(0.35, 0.2555, 0.14, 1, 0.45, 0.447075, 0.2745, 1)
@@ -9,17 +9,17 @@ colors = PackedColorArray(0.35, 0.2555, 0.14, 1, 0.45, 0.447075, 0.2745, 1)
 gradient = SubResource("Gradient_ombda")
 
 [resource]
-script = ExtResource("1_7ljsl")
+script = ExtResource("1_oo7gl")
 color_gradient = SubResource("GradientTexture1D_p7pwv")
 viscosity = 0.6
 density = 750.0
-gravity_up = true
+gravity_down = true
 unique_name = "oil"
 ui_color = Color(0.55, 0.468967, 0.176, 1)
 skip_proportion = 0.3
-initial_temperature = 128
+initial_temperature = 293.0
 conductivity = 0.5
-high_heat_point = 255
+high_heat_point = -1.0
 high_heat_transformation = "empty"
-low_heat_point = 0
+low_heat_point = -1.0
 low_heat_transformation = "empty"

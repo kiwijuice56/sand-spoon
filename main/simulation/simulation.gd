@@ -34,8 +34,8 @@ var alive_count: PackedByteArray
 # Stores 1 if a chunk was updated between draw calls, otherwise 0.
 var chunk_update: PackedByteArray
 
-var chunk_temp: PackedByteArray
-var chunk_temp_copy: PackedByteArray
+var chunk_temp: PackedInt32Array
+var chunk_temp_copy: PackedInt32Array
 
 # Output image of the simulation.
 var image: Image
@@ -74,11 +74,11 @@ func _ready() -> void:
 	
 	chunk_temp = []
 	chunk_temp.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	chunk_temp.fill(128)
+	chunk_temp.fill(11217)
 	
 	chunk_temp_copy = []
 	chunk_temp_copy.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	chunk_temp_copy.fill(128)
+	chunk_temp_copy.fill(11217)
 	
 	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBAF)
 	
@@ -92,13 +92,13 @@ func _draw() -> void:
 	for chunk_row in range(simulation_size_chunk.y):
 		for chunk_col in range(simulation_size_chunk.x):
 			if alive_count[chunk_row * simulation_size_chunk.x + chunk_col] == 0:
-				continue
+				pass
 			var rect: Rect2 = Rect2(
 				chunk_col * chunk_size * simulation_scale, 
 				chunk_row * chunk_size * simulation_scale, 
 				chunk_size * simulation_scale, 
 				chunk_size * simulation_scale)
-			draw_rect(rect, debug_heat_gradient.gradient.sample(chunk_temp[chunk_row * simulation_size_chunk.x + chunk_col] / 255.0), false, 3)
+			draw_rect(rect, debug_heat_gradient.gradient.sample(chunk_temp[chunk_row * simulation_size_chunk.x + chunk_col] / 65535.0), false, 3)
 
 func _process(_delta: float) -> void:
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y - 1, -1, -1):
@@ -113,24 +113,23 @@ func _process(_delta: float) -> void:
 			var col: int = j % chunk_size + col_offset
 			var element: Element = elements[cell_id[row * simulation_size.x + col]]
 			var data: int = _get_cell_data(row, col)
-			chunk_avg_temp += element.get_byte(data, 0)
+			chunk_avg_temp += element.get_temperature(data)
 			element.process(self, row, col, data)
 		chunk_avg_temp /= chunk_size * chunk_size
 		chunk_temp_copy[i] = chunk_avg_temp
-	
+	#print(chunk_temp)
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
-		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) / 2
+		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) >> 1
 	for row in range(simulation_size_chunk.y):
 		for col in range(simulation_size_chunk.x):
-			var avg_temp: int = _get_chunk_temp(row, col, 128) 
-			avg_temp += _get_chunk_temp(row + 1, col, 128) 
-			avg_temp += _get_chunk_temp(row - 1, col, 128)
-			avg_temp += _get_chunk_temp(row, col + 1, 128)
-			avg_temp += _get_chunk_temp(row, col - 1, 128)
-			chunk_temp_copy[row * simulation_size_chunk.x + col] = (chunk_temp[row * simulation_size_chunk.x + col] + avg_temp / 5) / 2
+			var avg_temp: int = _get_chunk_temp(row, col, 11217) 
+			avg_temp += _get_chunk_temp(row + 1, col, 11217) 
+			avg_temp += _get_chunk_temp(row - 1, col, 11217)
+			avg_temp += _get_chunk_temp(row, col + 1, 11217)
+			avg_temp += _get_chunk_temp(row, col - 1, 11217)
+			chunk_temp_copy[row * simulation_size_chunk.x + col] = (chunk_temp[row * simulation_size_chunk.x + col] + avg_temp / 5) >> 1
 	for i in range(len(chunk_temp)):
 		chunk_temp[i] = chunk_temp_copy[i]
-	
 	draw_cells()
 	if debug_draw:
 		queue_redraw()

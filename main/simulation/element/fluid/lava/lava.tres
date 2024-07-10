@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Liquid" load_steps=4 format=3 uid="uid://c3gbiac6s4l27"]
+[gd_resource type="Resource" script_class="Fluid" load_steps=4 format=3 uid="uid://c3gbiac6s4l27"]
 
-[ext_resource type="Script" path="res://main/simulation/element/fluid/fluid.gd" id="1_epk2r"]
+[ext_resource type="Script" path="res://main/simulation/element/fluid/fluid.gd" id="1_n3dfq"]
 
 [sub_resource type="Gradient" id="Gradient_iwa17"]
 offsets = PackedFloat32Array(0, 0.461347, 1)
@@ -11,17 +11,17 @@ gradient = SubResource("Gradient_iwa17")
 use_hdr = true
 
 [resource]
-script = ExtResource("1_epk2r")
+script = ExtResource("1_n3dfq")
 color_gradient = SubResource("GradientTexture1D_05i4b")
 viscosity = 1.0
 density = 3100.0
-gravity_up = true
+gravity_down = true
 unique_name = "lava"
 ui_color = Color(0.89, 0.356, 0, 1)
 skip_proportion = 0.6
-initial_temperature = 255
+initial_temperature = 1300.0
 conductivity = 0.02
-high_heat_point = 255
+high_heat_point = -1.0
 high_heat_transformation = "empty"
-low_heat_point = 110
+low_heat_point = 600.0
 low_heat_transformation = "rock"

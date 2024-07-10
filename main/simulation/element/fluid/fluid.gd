@@ -14,6 +14,7 @@ var dispersion: int
 var gravity_dir: int 
 
 func initialize() -> void:
+	super.initialize()
 	dispersion = 4 - int(3.0 * viscosity)
 	gravity_dir = 1 if gravity_down else -1
 
