@@ -16,3 +16,5 @@ density = 0.75
 unique_name = "oil"
 ui_color = Color(0.55, 0.468967, 0.176, 1)
 skip_proportion = 0.3
+initial_temperature = 128
+conductivity = 0.5

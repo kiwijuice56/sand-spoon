@@ -17,4 +17,3 @@ ui_color = Color(0.33, 0.25476, 0.2046, 1)
 skip_proportion = 0.3
 initial_temperature = 128
 conductivity = 0.05
-color_is_temperature_dependent = false

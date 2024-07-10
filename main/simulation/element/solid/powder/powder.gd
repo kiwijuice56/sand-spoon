@@ -17,5 +17,4 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 		sim.swap(row, col, row + 1, col - 1)
 	elif right:
 		sim.swap(row, col, row + 1, col + 1)
-	
 	return true

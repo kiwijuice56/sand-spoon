@@ -9,8 +9,8 @@ colors = PackedColorArray(0.33, 0.2805, 0.2475, 1, 0.56, 0.48272, 0.4312, 1)
 gradient = SubResource("Gradient_qosj6")
 
 [sub_resource type="Gradient" id="Gradient_wbf5m"]
-offsets = PackedFloat32Array(0, 0.383721, 0.624031, 0.724806, 0.996212)
-colors = PackedColorArray(0.429, 0.66885, 0.78, 0.501961, 1, 1, 1, 0, 0.95, 0.1805, 0.1805, 0.556863, 0.88, 0.77836, 0.3256, 0.917647, 1, 1, 1, 0.894118)
+offsets = PackedFloat32Array(0, 0.428571, 0.624031, 0.724806, 0.996212)
+colors = PackedColorArray(0.429, 0.66885, 0.78, 0.501961, 1, 1, 1, 0, 1.1, 0.18, 0.18, 0.557, 2, 0.778, 0.326, 0.918, 2, 2, 2, 0.894)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_as7yr"]
 gradient = SubResource("Gradient_wbf5m")
@@ -20,7 +20,7 @@ script = ExtResource("1_xt6mq")
 heat_gradient = SubResource("GradientTexture1D_as7yr")
 color_gradient = SubResource("GradientTexture1D_53825")
 unique_name = "iron"
-ui_color = Color(0.560784, 0.482353, 0.431373, 1)
+ui_color = Color(0.56, 0.418227, 0.3864, 1)
 skip_proportion = 0.3
 initial_temperature = 128
 conductivity = 0.2

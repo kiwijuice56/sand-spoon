@@ -79,7 +79,7 @@ func _ready() -> void:
 	chunk_temp_copy.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	chunk_temp_copy.fill(128)
 	
-	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBA8)
+	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBAF)
 	
 	for row in range(simulation_size.y):
 		for col in range(simulation_size.x):
@@ -213,7 +213,6 @@ func draw_cells() -> void:
 		for j in range(0, chunk_size * chunk_size):
 			var row: int = j / chunk_size + i / simulation_size_chunk.x * chunk_size
 			var col: int = j % chunk_size + i % simulation_size_chunk.x * chunk_size
-			
 			image.set_pixel(col, row, elements[cell_id[row * simulation_size.x + col]].get_color(self, row, col, _get_cell_data(row, col)))
 	chunk_update.fill(0)
 	texture.set_image(image)

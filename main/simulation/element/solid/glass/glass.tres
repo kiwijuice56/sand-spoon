@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Solid" load_steps=4 format=3 uid="uid://c7b8cfugwtddk"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/solid.gd" id="1_4f7rg"]
+
+[sub_resource type="Gradient" id="Gradient_snu3c"]
+colors = PackedColorArray(0.521569, 0.631373, 0.658824, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qb12j"]
+gradient = SubResource("Gradient_snu3c")
+
+[resource]
+script = ExtResource("1_4f7rg")
+color_gradient = SubResource("GradientTexture1D_qb12j")
+unique_name = "glass"
+ui_color = Color(0.5214, 0.63228, 0.66, 1)
+skip_proportion = 0.3
+initial_temperature = 128
+conductivity = 0.1

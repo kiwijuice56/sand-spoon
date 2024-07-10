@@ -1,20 +1,20 @@
-[gd_resource type="Resource" script_class="Powder" load_steps=4 format=3 uid="uid://bpc02af8uq6kh"]
+[gd_resource type="Resource" script_class="Sand" load_steps=4 format=3 uid="uid://c0fsuf8jfda73"]
 
-[ext_resource type="Script" path="res://main/simulation/element/solid/powder/powder.gd" id="1_bvfnp"]
+[ext_resource type="Script" path="res://main/simulation/element/solid/powder/sand/sand.gd" id="1_s6qst"]
 
-[sub_resource type="Gradient" id="Gradient_dtbfd"]
-offsets = PackedFloat32Array(0, 0.929878, 1)
-colors = PackedColorArray(0.94, 0.574027, 0.2538, 1, 1, 0.701, 0.31, 1, 0.868985, 0.868985, 0.868985, 1)
+[sub_resource type="Gradient" id="Gradient_g8od7"]
+offsets = PackedFloat32Array(0.00809717, 0.92328, 1)
+colors = PackedColorArray(1, 0.673333, 0.3, 1, 1, 0.794167, 0.35, 1, 1, 0.8955, 0.67, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_lxfk2"]
-gradient = SubResource("Gradient_dtbfd")
-width = 32
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_omf6u"]
+gradient = SubResource("Gradient_g8od7")
 
 [resource]
-script = ExtResource("1_bvfnp")
-color_gradient = SubResource("GradientTexture1D_lxfk2")
+script = ExtResource("1_s6qst")
+glass_temperature = 160
+color_gradient = SubResource("GradientTexture1D_omf6u")
 unique_name = "sand"
-ui_color = Color(0.89, 0.5785, 0.267, 1)
-skip_proportion = 0.5
+ui_color = Color(1, 0.617333, 0.18, 1)
+skip_proportion = 0.4
 initial_temperature = 128
-conductivity = 0.05
+conductivity = 0.1
