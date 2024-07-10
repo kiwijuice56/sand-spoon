@@ -25,12 +25,12 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	var end: int = dispersion + 1
 	var dir: int = 1
 	if Simulation.fast_randf() < 0.5:
-		end = -dispersion - 1
+		end = -end
 		dir = -1
 	
 	for i in range(dir, end, dir):
 		if not can_swap(sim, row, col + i, data):
-			if not i - dir == 0:
+			if not i == dir:
 				sim.swap(row, col, row, col + i - dir)
 			return true
 	sim.swap(row, col, row, col + dispersion * dir)

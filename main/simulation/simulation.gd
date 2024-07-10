@@ -118,22 +118,18 @@ func _process(_delta: float) -> void:
 		chunk_temp_copy[i] = chunk_avg_temp
 	
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
-		chunk_temp[i] = lerp(chunk_temp[i], chunk_temp_copy[i], 0.1)
+		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) / 2
 	for row in range(simulation_size_chunk.y):
 		for col in range(simulation_size_chunk.x):
-			var avg_temp: float = 0
-			for i in range(-1, 2):
-				for j in range(-1, 2):
-					var temp: int 
-					if row + i < 0 or col + j < 0 or row + i >= simulation_size_chunk.y or col + j >= simulation_size_chunk.x:
-						temp = 128
-					else:
-						temp = chunk_temp[(row + i) * simulation_size_chunk.x + (col + j)]
-					var weight: float = 0.45 if i == 0 and j == 0 else (0.55 / 8.0)
-					avg_temp += temp * weight
-			chunk_temp_copy[row * simulation_size_chunk.x + col] = lerp(chunk_temp[row * simulation_size_chunk.x + col], int(avg_temp), 0.5)
+			var avg_temp: int = _get_chunk_temp(row, col, 128) 
+			avg_temp += _get_chunk_temp(row + 1, col, 128) 
+			avg_temp += _get_chunk_temp(row - 1, col, 128)
+			avg_temp += _get_chunk_temp(row, col + 1, 128)
+			avg_temp += _get_chunk_temp(row, col - 1, 128)
+			chunk_temp_copy[row * simulation_size_chunk.x + col] = (chunk_temp[row * simulation_size_chunk.x + col] + avg_temp / 5) / 2
 	for i in range(len(chunk_temp)):
 		chunk_temp[i] = chunk_temp_copy[i]
+	
 	draw_cells()
 	if debug_draw:
 		queue_redraw()
@@ -156,9 +152,15 @@ func _set_cell_id(row: int, col: int, element_id: int) -> void:
 func _get_cell_data(row: int, col: int) -> int:
 	return cell_data[row * simulation_size.x + col]
 
-func _set_cell_data(row: int, col: int, data: int) -> void:
+func _set_cell_data(row: int, col: int, data: int, update_color: bool = true) -> void:
 	cell_data[row * simulation_size.x + col] = data
-	chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
+	if update_color:
+		chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
+
+func _get_chunk_temp(row: int, col: int, default: int) -> int:
+	if row < 0 or col < 0 or row >= simulation_size_chunk.y or col >= simulation_size_chunk.x: 
+		return default
+	return chunk_temp[row * simulation_size_chunk.x + col]
 
 ## Returns the Element resource at row, col.
 func get_element_resource(row: int, col: int) -> Element:
@@ -173,6 +175,11 @@ func get_data(row: int, col: int) -> int:
 	return _get_cell_data(row, col)
 
 func get_chunk_temp(row: int, col: int) -> int:
+	if in_bounds(row + 1, col) and Simulation.fast_randf() < 0.5:
+		row += 1
+	if in_bounds(row, col + 1) and Simulation.fast_randf() < 0.5:
+		col += 1
+		
 	return chunk_temp[row / chunk_size * simulation_size_chunk.x + col / chunk_size] 
 
 ## Updates the element at row, col.
@@ -181,8 +188,8 @@ func set_element(row: int, col: int, element_name: String) -> void:
 	_set_cell_data(row, col, elements[_get_cell_id(row, col)].get_default_data(self, row, col))
 
 ## Updates the cell data at row, col.
-func set_data(row: int, col: int, data: int) -> void:
-	_set_cell_data(row, col, data)
+func set_data(row: int, col: int, data: int, update_color: bool = true) -> void:
+	_set_cell_data(row, col, data, update_color)
 
 ## Returns whether the location row, col is in bounds.
 func in_bounds(row: int, col: int) -> bool:

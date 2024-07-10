@@ -16,5 +16,5 @@ color_gradient = SubResource("GradientTexture1D_lxfk2")
 unique_name = "sand"
 ui_color = Color(0.89, 0.5785, 0.267, 1)
 skip_proportion = 0.5
-initial_temperature = 255
-conductivity = 0.5
+initial_temperature = 128
+conductivity = 0.05

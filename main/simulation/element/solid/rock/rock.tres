@@ -2,16 +2,19 @@
 
 [ext_resource type="Script" path="res://main/simulation/element/solid/solid.gd" id="1_ht5t6"]
 
-[sub_resource type="Gradient" id="Gradient_wramv"]
-offsets = PackedFloat32Array(0.0121951, 1)
-colors = PackedColorArray(0.329412, 0.254902, 0.203922, 1, 0.36, 0.32328, 0.2988, 1)
+[sub_resource type="Gradient" id="Gradient_vxs2k"]
+offsets = PackedFloat32Array(0, 0.893688)
+colors = PackedColorArray(0.329412, 0.254902, 0.203922, 1, 0.44, 0.35552, 0.2992, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_2r1mv"]
-gradient = SubResource("Gradient_wramv")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7dfe5"]
+gradient = SubResource("Gradient_vxs2k")
 
 [resource]
 script = ExtResource("1_ht5t6")
-color_gradient = SubResource("GradientTexture1D_2r1mv")
+color_gradient = SubResource("GradientTexture1D_7dfe5")
 unique_name = "rock"
 ui_color = Color(0.33, 0.25476, 0.2046, 1)
 skip_proportion = 0.3
+initial_temperature = 128
+conductivity = 0.05
+color_is_temperature_dependent = false

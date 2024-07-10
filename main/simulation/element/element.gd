@@ -17,13 +17,18 @@ class_name Element extends Resource
 @export_range(0, 255) var initial_temperature: int = 128
 @export var conductivity: float = 0.5
 
+var color_is_temperature_dependent: bool = false
+
 ## Called once per element while the simulation is initialized.
 func initialize() -> void:
 	pass
 
 func process(sim: Simulation, row: int, col: int, data: int) -> bool:
-	if sim.fast_randf() < skip_proportion:
+	if Simulation.fast_randf() < skip_proportion:
 		return false
+	if Simulation.fast_randf() < conductivity:
+		var new_temp: int = (get_byte(data, 0) + sim.get_chunk_temp(row, col)) / 2
+		sim.set_data(row, col, set_byte(data, 0, new_temp), color_is_temperature_dependent)
 	return true
 
 func get_color(_sim: Simulation, _row: int, _col: int, _data: int) -> Color:

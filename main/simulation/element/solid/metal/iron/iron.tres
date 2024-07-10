@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Metal" load_steps=6 format=3 uid="uid://clkis27cdr8nh"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/metal/metal.gd" id="1_xt6mq"]
+
+[sub_resource type="Gradient" id="Gradient_qosj6"]
+colors = PackedColorArray(0.33, 0.2805, 0.2475, 1, 0.56, 0.48272, 0.4312, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_53825"]
+gradient = SubResource("Gradient_qosj6")
+
+[sub_resource type="Gradient" id="Gradient_wbf5m"]
+offsets = PackedFloat32Array(0, 0.383721, 0.624031, 0.724806, 0.996212)
+colors = PackedColorArray(0.429, 0.66885, 0.78, 0.501961, 1, 1, 1, 0, 0.95, 0.1805, 0.1805, 0.556863, 0.88, 0.77836, 0.3256, 0.917647, 1, 1, 1, 0.894118)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_as7yr"]
+gradient = SubResource("Gradient_wbf5m")
+
+[resource]
+script = ExtResource("1_xt6mq")
+heat_gradient = SubResource("GradientTexture1D_as7yr")
+color_gradient = SubResource("GradientTexture1D_53825")
+unique_name = "iron"
+ui_color = Color(0.560784, 0.482353, 0.431373, 1)
+skip_proportion = 0.3
+initial_temperature = 128
+conductivity = 0.2
