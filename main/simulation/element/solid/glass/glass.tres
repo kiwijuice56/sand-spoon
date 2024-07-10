@@ -16,3 +16,5 @@ ui_color = Color(0.5214, 0.63228, 0.66, 1)
 skip_proportion = 0.3
 initial_temperature = 128
 conductivity = 0.1
+high_heat_point = 200
+high_heat_transformation = "lava"

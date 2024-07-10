@@ -1,0 +1,10 @@
+[gd_resource type="GradientTexture1D" load_steps=2 format=3 uid="uid://r4fwhna0jpy2"]
+
+[sub_resource type="Gradient" id="Gradient_jej32"]
+offsets = PackedFloat32Array(0, 0.518519, 0.613757, 0.712121, 0.792929, 0.99495)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0, 1.1, 0, 0, 0.301, 1.8, 0.683, 0, 0.468, 2, 0.917, 0, 0.692, 4, 1, 1, 1)
+metadata/_snap_count = 16
+
+[resource]
+gradient = SubResource("Gradient_jej32")
+use_hdr = true

@@ -70,7 +70,7 @@ elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5
 script = ExtResource("3_3diiu")
 sim = NodePath("..")
 selector = NodePath("../../ElementSelector")
-brush_radius = 5
+brush_radius = 2
 line_step = 0.25
 
 [node name="FPSLabel" parent="VBoxContainer" instance=ExtResource("3_54ca0")]

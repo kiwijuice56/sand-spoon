@@ -35,12 +35,12 @@ func _process(_delta: float) -> void:
 		current_element = "water"
 
 func paint_line(start: Vector2i, end: Vector2i, line_width: int, element_name: String) -> void:
-	if start.distance_to(end) > line_width / 2.0:
+	if start.distance_to(end) > line_width:
 		var point: Vector2 = start
 		var move_dir: Vector2 = Vector2(end - start).normalized()
 		var step: float = line_width * line_step
 		while point.distance_to(end) > step:
-			paint_circle(point, line_width / 2, element_name)
+			paint_circle(point, line_width, element_name)
 			point += move_dir * step
 	paint_circle(end, line_width, element_name)
 

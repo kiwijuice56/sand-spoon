@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="Solid" load_steps=4 format=3 uid="uid://bsleucppukqqv"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/solid.gd" id="1_34fcx"]
+
+[sub_resource type="Gradient" id="Gradient_5bmt2"]
+colors = PackedColorArray(0.55, 0.9175, 1, 1, 1.1, 1.1, 1.1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3md6k"]
+gradient = SubResource("Gradient_5bmt2")
+
+[resource]
+script = ExtResource("1_34fcx")
+color_gradient = SubResource("GradientTexture1D_3md6k")
+unique_name = "ice"
+ui_color = Color(0.54902, 0.917647, 1, 1)
+skip_proportion = 0.3
+initial_temperature = 70
+conductivity = 0.5
+high_heat_point = 128
+high_heat_transformation = "water"
+low_heat_point = 0
+low_heat_transformation = "empty"

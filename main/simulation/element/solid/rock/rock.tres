@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="Solid" load_steps=4 format=3 uid="uid://cwnhltdvq4ic4"]
+[gd_resource type="Resource" script_class="Solid" load_steps=5 format=3 uid="uid://cwnhltdvq4ic4"]
 
 [ext_resource type="Script" path="res://main/simulation/element/solid/solid.gd" id="1_ht5t6"]
+[ext_resource type="Texture2D" uid="uid://r4fwhna0jpy2" path="res://main/simulation/element/default_temperature_color_gradient.tres" id="2_nu3qg"]
 
 [sub_resource type="Gradient" id="Gradient_vxs2k"]
 offsets = PackedFloat32Array(0, 0.893688)
@@ -15,5 +16,11 @@ color_gradient = SubResource("GradientTexture1D_7dfe5")
 unique_name = "rock"
 ui_color = Color(0.33, 0.25476, 0.2046, 1)
 skip_proportion = 0.3
+temperature_color_gradient = ExtResource("2_nu3qg")
+temperature_color_alpha = 0.2
 initial_temperature = 128
 conductivity = 0.05
+high_heat_point = 180
+high_heat_transformation = "lava"
+low_heat_point = 0
+low_heat_transformation = "empty"

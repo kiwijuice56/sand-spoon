@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="Liquid" load_steps=4 format=3 uid="uid://c3gbiac6s4l27"]
+[gd_resource type="Resource" script_class="Liquid" load_steps=5 format=3 uid="uid://c3gbiac6s4l27"]
 
 [ext_resource type="Script" path="res://main/simulation/element/liquid/liquid.gd" id="1_epk2r"]
+[ext_resource type="Texture2D" uid="uid://r4fwhna0jpy2" path="res://main/simulation/element/default_temperature_color_gradient.tres" id="2_cujun"]
 
 [sub_resource type="Gradient" id="Gradient_iwa17"]
 offsets = PackedFloat32Array(0, 0.367647, 0.998127)
@@ -18,5 +19,11 @@ density = 3.1
 unique_name = "lava"
 ui_color = Color(0.89, 0.356, 0, 1)
 skip_proportion = 0.6
-initial_temperature = 200
-conductivity = 0.0
+temperature_color_gradient = ExtResource("2_cujun")
+temperature_color_alpha = 0.2
+initial_temperature = 255
+conductivity = 0.02
+high_heat_point = 255
+high_heat_transformation = "empty"
+low_heat_point = 110
+low_heat_transformation = "rock"

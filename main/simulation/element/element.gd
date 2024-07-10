@@ -15,7 +15,11 @@ class_name Element extends Resource
 
 @export_group("Heat")
 @export_range(0, 255) var initial_temperature: int = 128
-@export var conductivity: float = 0.5
+@export_range(0, 1) var conductivity: float = 0.5
+@export var high_heat_point: int = 160
+@export var high_heat_transformation: String = "empty"
+@export var low_heat_point: int = 0
+@export var low_heat_transformation: String = "empty"
 
 var color_is_temperature_dependent: bool = false
 
@@ -28,6 +32,12 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 		return false
 	if Simulation.fast_randf() < conductivity:
 		var new_temp: int = (get_byte(data, 0) + sim.get_chunk_temp(row, col)) / 2
+		if new_temp > high_heat_point:
+			sim.set_element(row, col, high_heat_transformation)
+			return false
+		if new_temp < low_heat_point:
+			sim.set_element(row, col, low_heat_transformation)
+			return false
 		sim.set_data(row, col, set_byte(data, 0, new_temp), color_is_temperature_dependent)
 	return true
 
