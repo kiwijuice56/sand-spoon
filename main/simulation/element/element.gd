@@ -16,7 +16,7 @@ class_name Element extends Resource
 @export_group("Heat")
 @export_range(0, 255) var initial_temperature: int = 128
 @export_range(0, 1) var conductivity: float = 0.5
-@export var high_heat_point: int = 160
+@export var high_heat_point: int = 255
 @export var high_heat_transformation: String = "empty"
 @export var low_heat_point: int = 0
 @export var low_heat_transformation: String = "empty"

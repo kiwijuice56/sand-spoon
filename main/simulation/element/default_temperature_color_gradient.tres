@@ -2,7 +2,7 @@
 
 [sub_resource type="Gradient" id="Gradient_jej32"]
 offsets = PackedFloat32Array(0, 0.518519, 0.619718, 0.730047, 0.840376, 0.99495)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0, 1.25, 0, 0, 0.305, 1.5, 0.667, 0, 0.528, 2, 0.955, 0.32, 0.849, 4, 1, 1, 0.926)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0, 1.25, 0, 0, 0.305, 1.5, 0.667, 0, 0.528, 1.75, 0.955, 0.32, 0.849, 2, 1, 1, 0.926)
 metadata/_snap_count = 16
 
 [resource]

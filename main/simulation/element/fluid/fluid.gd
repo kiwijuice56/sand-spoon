@@ -1,4 +1,4 @@
-class_name Liquid extends Element
+class_name Fluid extends Element
 
 ## Range of colors based on height.
 @export var color_gradient: GradientTexture1D
@@ -7,19 +7,22 @@ class_name Liquid extends Element
 ## Thickness of the liquid.
 @export_range(0, 1) var viscosity: float
 ## Denser fluids can sink through less dense fluids.
-@export var density: float 
+@export_range(0, 4000, 0.01, "or_greater", "suffix:kg/m^3") var density: float 
+@export var gravity_down: bool = true
 
 var dispersion: int
+var gravity_dir: int 
 
 func initialize() -> void:
 	dispersion = 4 - int(3.0 * viscosity)
+	gravity_dir = 1 if gravity_down else -1
 
 func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	if not super.process(sim, row, col, data):
 		return false
 	
-	if can_swap(sim, row + 1, col, data):
-		sim.swap(row, col, row + 1, col)
+	if can_swap(sim, row + gravity_dir, col, data):
+		sim.swap(row, col, row + gravity_dir, col)
 		return true
 	
 	var end: int = dispersion + 1
@@ -46,6 +49,6 @@ func can_swap(sim: Simulation, row: int, col: int, _data: int) -> bool:
 	var element: Element = sim.get_element_resource(row, col)
 	if element is Solid:
 		return false
-	if element is Liquid and element.density >= density:
+	if element is Fluid and element.density >= density:
 		return false
 	return true

@@ -66,6 +66,7 @@ func _ready() -> void:
 	simulation_size_chunk.y = ceil(simulation_size.y / float(chunk_size))
 	alive_count = []
 	alive_count.resize(simulation_size_chunk.x * simulation_size_chunk.y)
+	alive_count.fill(0)
 	
 	chunk_update = []
 	chunk_update.resize(simulation_size_chunk.x * simulation_size_chunk.y)
@@ -91,7 +92,7 @@ func _draw() -> void:
 	for chunk_row in range(simulation_size_chunk.y):
 		for chunk_col in range(simulation_size_chunk.x):
 			if alive_count[chunk_row * simulation_size_chunk.x + chunk_col] == 0:
-				pass
+				continue
 			var rect: Rect2 = Rect2(
 				chunk_col * chunk_size * simulation_scale, 
 				chunk_row * chunk_size * simulation_scale, 
