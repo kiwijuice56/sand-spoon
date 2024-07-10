@@ -19,10 +19,9 @@ create custom functionality.
 When extending this function, it is important to call the parent class's `process` function to preserve its functionality.
 If `process` quits early, it should return `false` if inheriting classes should also quit early.
 
-
 ### Sample code
 ```python
-MyElement extends Element
+class_name MyElement extends Element
 
 func process(sim: Simulation, row: int, col: int, data: int) -> bool:
     # Always keep this line. If `Element` transforms into
@@ -33,7 +32,7 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 
     # Temperature is stored in the first 16 bits of `data`
     # as a 16-bit integer.
-    var current_temperature = get_temperature(data)
+    var current_temperature: int = get_temperature(data)
 
     # However, temperature is simulated in different units
     # internally. Use the `convert_temperature` function
@@ -41,7 +40,7 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
     if current_temperature > convert_temperature(293.0):
         # Set the 3rd byte with new state information,
         # then pass into the simulation.
-        data = set_byte(2, 123)
+        data = set_byte(data, 2, get_byte(data, 2) + 1)
         sim.set_data(row, col, data)
     else:
         sim.set_element(row, col, "sand")
