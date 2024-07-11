@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Laser" load_steps=2 format=3 uid="uid://bqgjw8wry45l0"]
+
+[ext_resource type="Script" path="res://main/simulation/element/laser/laser.gd" id="1_4j56q"]
+
+[resource]
+script = ExtResource("1_4j56q")
+laser_color = Color(3, 1, 3, 1)
+reach = 2
+unique_name = "laser"
+hidden = false
+ui_color = Color(0.946388, 0.436045, 0.734792, 1)
+initial_temperature = 6000.0
+conductivity = 0.5
+high_heat_point = -1.0
+high_heat_transformation = "empty"
+low_heat_point = -1.0
+low_heat_transformation = "empty"
+explosion_resistance = 0.0
+decay_proportion = 0.2
+decay_transformation = "smoke"
+skip_proportion = 0.0
