@@ -66,23 +66,23 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 		sim.set_data(row, col, set_temperature(data, new_temp), color_is_temperature_dependent)
 	return true
 
-func get_temperature(data: int) -> int:
-	return data & 0xFFFF
-
-func set_temperature(data: int, temperature: int) -> int:
-	return (data & 0xFFFF0000) | temperature
-
-func convert_temperature(kelvin_temp: float) -> int:
-	return int(sqrt(kelvin_temp) * 65535.0/100.0)
-
 func get_color(_sim: Simulation, _row: int, _col: int, _data: int) -> Color:
 	return ui_color
 
 func get_default_data(_sim: Simulation, _row: int, _col: int) -> int:
 	return iinitial_temperature
 
-func get_byte(data: int, index: int) -> int:
-	return (data >> (index * 8)) & 0xFF
+static func get_temperature(data: int) -> int:
+	return data & 0xFFFF
 
-func set_byte(data: int, index: int, byte: int) -> int:
-	return (data & ~(0xFF << (index * 8))) | (byte << (index * 8));
+static func set_temperature(data: int, temperature: int) -> int:
+	return (data & 0xFFFF0000) | temperature
+
+static func convert_temperature(kelvin_temp: float) -> int:
+	return int(sqrt(kelvin_temp) * 65535.0/100.0)
+
+static func get_byte(data: int, index: int) -> int:
+	return (data >> (index << 3)) & 0xFF
+
+static func set_byte(data: int, index: int, byte: int) -> int:
+	return (data & ~(0xFF << (index << 3))) | (byte << (index << 3));

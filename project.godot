@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [debug]
 
+gdscript/warnings/static_called_on_instance=0
 gdscript/warnings/integer_division=0
 
 [display]

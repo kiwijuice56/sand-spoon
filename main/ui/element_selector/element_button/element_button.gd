@@ -10,7 +10,7 @@ func initialize(element: Element) -> void:
 	hover_style.bg_color = element.ui_color.lightened(0.25)
 	
 	var press_style: StyleBoxFlat = base_style.duplicate()
-	hover_style.bg_color = element.ui_color.darkened(0.25)
+	press_style.bg_color = element.ui_color.darkened(0.25)
 	
 	add_theme_stylebox_override("normal", base_style)
 	add_theme_stylebox_override("hover", hover_style)

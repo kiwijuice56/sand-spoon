@@ -13,7 +13,8 @@ class_name Simulation extends TextureRect
 ## Width/height of square chunks that separate the world.
 @export var chunk_size: int
 
-## All elements available to the simulation. Add your Element resources here.
+## All elements available to the simulation. Add your Element resources here. 
+## First slot MUST be the Empty element.
 @export var elements: Array[Element]
 
 # Maps Element unique_names to their int IDs.
@@ -43,6 +44,8 @@ var image: Image
 # World width and height in chunks.
 var simulation_size_chunk: Vector2i
 
+var idefault_temperature: int
+
 func _ready() -> void:
 	randomize()
 	assert(simulation_size.x % chunk_size == 0 and simulation_size.y % chunk_size == 0)
@@ -50,6 +53,8 @@ func _ready() -> void:
 	
 	for element in elements:
 		element.initialize()
+		if element is Empty:
+			idefault_temperature = element.iinitial_temperature
 	
 	name_id_map = {}
 	for i in range(len(elements)):
@@ -74,11 +79,11 @@ func _ready() -> void:
 	
 	chunk_temp = []
 	chunk_temp.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	chunk_temp.fill(11217)
+	chunk_temp.fill(idefault_temperature)
 	
 	chunk_temp_copy = []
 	chunk_temp_copy.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	chunk_temp_copy.fill(11217)
+	chunk_temp_copy.fill(idefault_temperature)
 	
 	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBAF)
 	
@@ -122,11 +127,11 @@ func _process(_delta: float) -> void:
 		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) >> 1
 	for row in range(simulation_size_chunk.y):
 		for col in range(simulation_size_chunk.x):
-			var avg_temp: int = _get_chunk_temp(row, col, 11217) 
-			avg_temp += _get_chunk_temp(row + 1, col, 11217) 
-			avg_temp += _get_chunk_temp(row - 1, col, 11217)
-			avg_temp += _get_chunk_temp(row, col + 1, 11217)
-			avg_temp += _get_chunk_temp(row, col - 1, 11217)
+			var avg_temp: int = _get_chunk_temp(row, col, idefault_temperature) 
+			avg_temp += _get_chunk_temp(row + 1, col, idefault_temperature) 
+			avg_temp += _get_chunk_temp(row - 1, col, idefault_temperature)
+			avg_temp += _get_chunk_temp(row, col + 1, idefault_temperature)
+			avg_temp += _get_chunk_temp(row, col - 1, idefault_temperature)
 			chunk_temp_copy[row * simulation_size_chunk.x + col] = (chunk_temp[row * simulation_size_chunk.x + col] + avg_temp / 5) >> 1
 	for i in range(len(chunk_temp)):
 		chunk_temp[i] = chunk_temp_copy[i]
