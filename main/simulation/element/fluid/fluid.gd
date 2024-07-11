@@ -51,8 +51,12 @@ func can_swap(sim: Simulation, row: int, col: int, _data: int) -> bool:
 	var element: Element = sim.get_element_resource(row, col)
 	if element is Empty:
 		return true
-	if element is Solid:
+	if element is Solid or element is Laser:
 		return false
-	if element is Fluid and element.density >= density:
-		return false
-	return false
+	if gravity_down:
+		if element is Fluid and element.density >= density:
+			return false
+	else:
+		if element is Fluid and element.density <= density:
+			return false
+	return true
