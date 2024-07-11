@@ -23,9 +23,9 @@ gdscript/warnings/integer_division=0
 [display]
 
 window/size/viewport_width=560
-window/size/viewport_height=403
+window/size/viewport_height=405
 window/size/window_width_override=560
-window/size/window_height_override=403
+window/size/window_height_override=405
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=0

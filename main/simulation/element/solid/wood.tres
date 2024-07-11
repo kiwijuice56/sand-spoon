@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Solid" load_steps=4 format=3 uid="uid://cdqauikpfjgj3"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/solid.gd" id="1_2xjh7"]
+
+[sub_resource type="Gradient" id="Gradient_uj4rn"]
+offsets = PackedFloat32Array(0, 0.7525)
+colors = PackedColorArray(0.36, 0.26328, 0.1728, 1, 0.62, 0.43028, 0.3038, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_l5dpd"]
+gradient = SubResource("Gradient_uj4rn")
+
+[resource]
+script = ExtResource("1_2xjh7")
+color_gradient = SubResource("GradientTexture1D_l5dpd")
+unique_name = "wood"
+ui_color = Color(0.39, 0.27534, 0.1989, 1)
+initial_temperature = 293.0
+conductivity = 0.05
+high_heat_point = 600.0
+high_heat_transformation = "fire"
+low_heat_point = -1.0
+low_heat_transformation = "empty"
+decay_proportion = 0.0
+decay_transformation = "empty"
+skip_proportion = 0.3

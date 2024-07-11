@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://0hq7inj0b37n"]
+[gd_scene load_steps=25 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="2_55j5a"]
@@ -16,6 +16,9 @@
 [ext_resource type="Resource" uid="uid://c7b8cfugwtddk" path="res://main/simulation/element/solid/glass.tres" id="12_21fqx"]
 [ext_resource type="Resource" uid="uid://bsleucppukqqv" path="res://main/simulation/element/solid/ice.tres" id="13_pqvew"]
 [ext_resource type="Resource" uid="uid://gj82jp5hguq" path="res://main/simulation/element/fluid/water_vapor.tres" id="14_vb41q"]
+[ext_resource type="Resource" uid="uid://bqaxylj8854bp" path="res://main/simulation/element/fluid/fire.tres" id="15_65xk6"]
+[ext_resource type="Resource" uid="uid://bgkbc65vhh6cn" path="res://main/simulation/element/fluid/smoke.tres" id="16_mq8vw"]
+[ext_resource type="Resource" uid="uid://cdqauikpfjgj3" path="res://main/simulation/element/solid/wood.tres" id="17_kc8vj"]
 
 [sub_resource type="Image" id="Image_6yi0h"]
 data = {
@@ -41,7 +44,7 @@ use_hdr = true
 [sub_resource type="Environment" id="Environment_f0vau"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 3.31
+glow_intensity = 1.8
 
 [node name="Main" type="Node"]
 
@@ -73,7 +76,7 @@ debug_heat_gradient = SubResource("GradientTexture1D_hwk0e")
 simulation_size = Vector2i(72, 64)
 simulation_scale = 6
 chunk_size = 8
-elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a"), ExtResource("5_4oxmv"), ExtResource("8_l1nvi"), ExtResource("9_bp35h"), ExtResource("10_7jxe6"), ExtResource("11_d45fd"), ExtResource("12_21fqx"), ExtResource("13_pqvew"), ExtResource("14_vb41q")])
+elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a"), ExtResource("5_4oxmv"), ExtResource("8_l1nvi"), ExtResource("9_bp35h"), ExtResource("10_7jxe6"), ExtResource("11_d45fd"), ExtResource("12_21fqx"), ExtResource("13_pqvew"), ExtResource("14_vb41q"), ExtResource("15_65xk6"), ExtResource("16_mq8vw"), ExtResource("17_kc8vj")])
 
 [node name="Painter" type="Node" parent="VBoxContainer/HBoxContainer/Simulation" node_paths=PackedStringArray("sim", "selector")]
 script = ExtResource("3_3diiu")
