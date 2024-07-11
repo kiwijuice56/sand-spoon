@@ -1,3 +1,4 @@
+@icon("res://main/icons/fluid_icon.svg")
 class_name Fluid extends Element
 
 ## Range of colors based on height.

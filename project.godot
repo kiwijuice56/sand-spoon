@@ -33,7 +33,9 @@ window/vsync/vsync_mode=0
 [file_customization]
 
 folder_colors={
-"res://main/simulation/element/": "orange"
+"res://main/simulation/element/": "gray",
+"res://main/simulation/element/fluid/": "blue",
+"res://main/simulation/element/solid/": "yellow"
 }
 
 [input]

@@ -1,11 +1,13 @@
+@icon("res://main/icons/element_icon.svg")
 class_name Element extends Resource
-# Data: assumes byte 0 for temperature.
+# Data: assumes byte 0 and 1 for temperature.
 
 @export_group("UI")
 ## Name used in UI and code.
 @export var unique_name: String
+@export var hidden: bool = false
 
-## Base color for UI components for this element
+## Base color for UI components for this element.
 @export var ui_color: Color
 
 @export_group("Heat")
@@ -21,6 +23,9 @@ class_name Element extends Resource
 ## No effect if set to -1.
 @export_range(-1, 10000, 0.1, "or_greater", "suffix:K") var low_heat_point: float = -1
 @export var low_heat_transformation: String = "empty"
+
+@export_group("Explosion")
+@export_range(0, 1) var explosion_resistance: float = 0.1
 
 @export_group("Decay")
 ## The probability that this element will decay into decay_transformation on any frame.

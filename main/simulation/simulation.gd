@@ -171,9 +171,12 @@ func _get_chunk_temp(row: int, col: int, default: int) -> int:
 func get_element_resource(row: int, col: int) -> Element:
 	return elements[_get_cell_id(row, col)]
 
-## Returns the element at row, col.
+## Returns the element name at row, col.
 func get_element(row: int, col: int) -> String:
 	return id_name_map[_get_cell_id(row, col)]
+
+func get_element_resource_from_name(element_name: String) -> Element:
+	return elements[name_id_map[element_name]]
 
 ## Returns the cell data at row, col.
 func get_data(row: int, col: int) -> int:
@@ -184,7 +187,10 @@ func get_chunk_temp(row: int, col: int) -> int:
 		row += 1
 	if in_bounds(row, col + 1) and Simulation.fast_randf() < 0.5:
 		col += 1
-		
+	if in_bounds(row - 2, col) and Simulation.fast_randf() < 0.5:
+		row -= 2
+	if in_bounds(row, col - 1) and Simulation.fast_randf() < 0.5:
+		col -= 2
 	return chunk_temp[row / chunk_size * simulation_size_chunk.x + col / chunk_size] 
 
 ## Updates the element at row, col.

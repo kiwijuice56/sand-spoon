@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Solid" load_steps=4 format=3 uid="uid://b8em3mxvlifq7"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/solid.gd" id="1_wxhgb"]
+
+[sub_resource type="Gradient" id="Gradient_u8fop"]
+colors = PackedColorArray(0.45098, 0, 0, 1, 1, 0.879, 0.67, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4442x"]
+gradient = SubResource("Gradient_u8fop")
+
+[resource]
+script = ExtResource("1_wxhgb")
+color_gradient = SubResource("GradientTexture1D_4442x")
+unique_name = "bomb"
+hidden = false
+ui_color = Color(0.729412, 0.447059, 0.341176, 1)
+initial_temperature = 293.0
+conductivity = 0.5
+high_heat_point = 350.0
+high_heat_transformation = "explosion"
+low_heat_point = -1.0
+low_heat_transformation = "empty"
+explosion_resistance = 0.5
+decay_proportion = 0.0
+decay_transformation = "empty"
+skip_proportion = 0.3

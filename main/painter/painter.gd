@@ -52,6 +52,13 @@ func paint_circle(center: Vector2i, radius: float, element_name: String) -> void
 	for row in range(-radius, radius + 1):
 		for col in range(-radius, radius + 1):
 			if row * row + col * col < radius * radius:
-				if not sim.in_bounds(row + center_row, col + center_col):
-					continue
-				sim.set_element(row + center_row, col + center_col, element_name)
+				paint_pixel(row + center_row, col + center_col, element_name)
+
+func paint_pixel(row: int, col: int, element_name: String) -> void:
+	if not sim.in_bounds(row, col):
+		return
+	var element_resource: Element = sim.get_element_resource_from_name(element_name)
+	var old_element_resource: Element = sim.get_element_resource(row, col)
+	if element_resource is Fluid and old_element_resource is Solid:
+		return
+	sim.set_element(row, col, element_name)

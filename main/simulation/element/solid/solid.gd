@@ -1,3 +1,4 @@
+@icon("res://main/icons/solid_icon.svg")
 class_name Solid extends Element
 # Data: assumes byte 2 for color index, assigned randomly
 

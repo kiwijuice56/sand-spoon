@@ -1,3 +1,4 @@
+@icon("res://main/icons/metal_icon.svg")
 class_name Metal extends Solid
 
 @export var heat_gradient: GradientTexture1D

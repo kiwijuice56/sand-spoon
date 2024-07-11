@@ -1,3 +1,4 @@
+@icon("res://main/icons/powder_icon.svg")
 class_name Powder extends Solid
 
 func process(sim: Simulation, row: int, col: int, data: int) -> bool:

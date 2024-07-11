@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_m73bc")
 unique_name = "empty"
+hidden = false
 ui_color = Color(0.106477, 0.125597, 0.2879, 1)
 initial_temperature = 293.0
 conductivity = 0.5
@@ -12,6 +13,7 @@ high_heat_point = -1.0
 high_heat_transformation = "empty"
 low_heat_point = -1.0
 low_heat_transformation = "empty"
+explosion_resistance = 0.0
 decay_proportion = 0.0
 decay_transformation = "empty"
 skip_proportion = 0.3

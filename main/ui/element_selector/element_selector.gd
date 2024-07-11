@@ -15,6 +15,8 @@ func update_element_buttons() -> void:
 	for child in %ElementButtonContainer.get_children():
 		child.queue_free()
 	for element in sim.elements:
+		if element.hidden:
+			continue
 		var new_button: ElementButton = element_button_scene.instantiate()
 		%ElementButtonContainer.add_child(new_button)
 		new_button.initialize(element)

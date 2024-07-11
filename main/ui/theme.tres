@@ -1,7 +1,8 @@
 [gd_resource type="Theme" load_steps=3 format=3 uid="uid://dwfevn8ahgyc0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pc21p"]
-bg_color = Color(0.152476, 0.152476, 0.152476, 1)
+bg_color = Color(0.374139, 0.374139, 0.374139, 1)
+expand_margin_left = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvvar"]
 bg_color = Color(0.219501, 0.219501, 0.219501, 1)

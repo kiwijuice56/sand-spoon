@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Explosion" load_steps=2 format=3 uid="uid://c3jubx3w7ogpw"]
+
+[ext_resource type="Script" path="res://main/simulation/element/explosion/explosion.gd" id="1_istnf"]
+
+[resource]
+script = ExtResource("1_istnf")
+unique_name = "explosion"
+hidden = true
+ui_color = Color(2, 2, 2, 1)
+initial_temperature = 3000.0
+conductivity = 0.5
+high_heat_point = -1.0
+high_heat_transformation = "empty"
+low_heat_point = -1.0
+low_heat_transformation = "empty"
+explosion_resistance = 0.1
+decay_proportion = 0.7
+decay_transformation = "fire"
+skip_proportion = 0.0
