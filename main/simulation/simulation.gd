@@ -46,6 +46,18 @@ var simulation_size_chunk: Vector2i
 
 var idefault_temperature: int
 
+# Threading variables
+var should_exit: bool = false
+
+var sem: Semaphore
+
+var mutex: Mutex
+
+var threads: Array[Thread]
+var thread_counter: int
+var thread_counter_done: int
+var global_row_offset: int
+
 func _ready() -> void:
 	randomize()
 	assert(simulation_size.x % chunk_size == 0 and simulation_size.y % chunk_size == 0)
@@ -90,12 +102,19 @@ func _ready() -> void:
 	for row in range(simulation_size.y):
 		for col in range(simulation_size.x):
 			set_element(row, col, "empty")
+	
+	sem = Semaphore.new()
+	for i in 8:
+		var thread: Thread = Thread.new()
+		threads.append(thread)
+		thread.start(thread_process)
+	mutex = Mutex.new()
 
 func _draw() -> void:
 	if not debug_draw:
 		return
-	for chunk_row in range(simulation_size_chunk.y):
-		for chunk_col in range(simulation_size_chunk.x):
+	for chunk_row in simulation_size_chunk.y:
+		for chunk_col in simulation_size_chunk.x:
 			if alive_count[chunk_row * simulation_size_chunk.x + chunk_col] == 0:
 				pass
 			var rect: Rect2 = Rect2(
@@ -103,41 +122,84 @@ func _draw() -> void:
 				chunk_row * chunk_size * simulation_scale, 
 				chunk_size * simulation_scale, 
 				chunk_size * simulation_scale)
-			draw_rect(rect, debug_heat_gradient.gradient.sample(chunk_temp[chunk_row * simulation_size_chunk.x + chunk_col] / 65535.0), false, 3)
+			draw_rect(rect, debug_heat_gradient.gradient.sample(chunk_temp[chunk_row * simulation_size_chunk.x + chunk_col] / 65535.0), false, 1)
 
 func _process(_delta: float) -> void:
-	for i in range(simulation_size_chunk.y - 1, -1, -1):
-		process_chunk_row(i)
+	global_row_offset = randi_range(-2, 2)
 	
-	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
+	thread_counter = 0
+	thread_counter_done = 0
+	for i in simulation_size_chunk.y / 2:
+		sem.post()
+	while thread_counter_done != simulation_size_chunk.y / 2:
+		pass
+	
+	thread_counter = 1
+	thread_counter_done = 0
+	for i in simulation_size_chunk.y / 2:
+		sem.post()
+	while thread_counter_done != simulation_size_chunk.y / 2:
+		pass
+	
+	for i in simulation_size_chunk.x * simulation_size_chunk.y:
 		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) >> 1
-	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
+	for i in simulation_size_chunk.x * simulation_size_chunk.y:
 		var row: int = i / simulation_size_chunk.x
 		var col: int = i % simulation_size_chunk.x
 		var avg_temp: int = _get_chunk_temp(row, col) + _get_chunk_temp(row + 1, col) + _get_chunk_temp(row - 1, col) + _get_chunk_temp(row, col + 1) + _get_chunk_temp(row, col - 1)
 		chunk_temp_copy[i] = (chunk_temp[i] + avg_temp / 5) >> 1
 	
-	for i in range(len(chunk_temp)):
+	for i in len(chunk_temp):
 		chunk_temp[i] = chunk_temp_copy[i]
 	draw_cells()
 	if debug_draw:
 		queue_redraw()
 
-func process_chunk_row(chunk_row: int) -> void:
-	for i in range(chunk_row * simulation_size_chunk.x, (chunk_row + 1) * simulation_size_chunk.x):
-		if alive_count[i] == 0:
-			chunk_temp_copy[i] = chunk_temp[i]
-			continue
-		var row_offset: int = i / simulation_size_chunk.x * chunk_size
-		var col_offset: int = i % simulation_size_chunk.x * chunk_size
-		var chunk_avg_temp: int = 0
-		for j in range(chunk_size * chunk_size - 1, -1, -1):
-			var row: int = j / chunk_size + row_offset
-			var col: int = j % chunk_size + col_offset
-			var data: int = get_data(row, col)
-			chunk_avg_temp += Element.get_temperature(data)
-			elements[cell_id[row * simulation_size.x + col]].process(self, row, col, data)
-		chunk_temp_copy[i] = chunk_avg_temp / (chunk_size * chunk_size)
+func thread_process() -> void:
+	while true:
+		sem.wait()
+		if should_exit: 
+			break
+		
+		var chunk_row: int
+		var extra_offset: int
+		mutex.lock()
+		extra_offset = global_row_offset
+		chunk_row = thread_counter
+		thread_counter += 2
+		mutex.unlock()
+		
+		for i in range(chunk_row * simulation_size_chunk.x, (chunk_row + 1) * simulation_size_chunk.x):
+			if alive_count[i] == 0:
+				chunk_temp_copy[i] = chunk_temp[i]
+				continue
+			var row_offset: int = i / simulation_size_chunk.x * chunk_size
+			var col_offset: int = i % simulation_size_chunk.x * chunk_size
+			var chunk_avg_temp: int = 0
+			var processed: int = 0
+			for j in range(chunk_size * chunk_size - 1, -1, -1):
+				var row: int = j / chunk_size + row_offset + extra_offset
+				if row < 0:
+					break
+				if row >= simulation_size.y:
+					continue
+				processed += 1
+				var col: int = j % chunk_size + col_offset
+				var data: int = get_data(row, col)
+				chunk_avg_temp += Element.get_temperature(data)
+				elements[cell_id[row * simulation_size.x + col]].process(self, row, col, data)
+			chunk_temp_copy[i] = chunk_avg_temp / processed
+		
+		mutex.lock()
+		thread_counter_done += 1
+		mutex.unlock()
+
+func _exit_tree():
+	should_exit = true
+	for i in simulation_size_chunk.y:
+		sem.post()
+	for thread in threads:
+		thread.wait_to_finish()
 
 func _update_rect() -> void:
 	custom_minimum_size = simulation_size * simulation_scale
@@ -178,7 +240,7 @@ func get_element_resource_from_name(element_name: String) -> Element:
 func get_touch_count(row: int, col: int, element_name: String) -> int:
 	var touches: int = 0
 	var target_id: int = name_id_map[element_name]
-	for i in range(0, 10):
+	for i in 10:
 		if i == 4: # Center
 			continue
 		var row_offset: int = i / 3 - 1
@@ -235,11 +297,11 @@ func swap(row_1: int, col_1: int, row_2: int, col_2: int) -> void:
 ## Updates modified chunks in the image and texture. 
 func draw_cells() -> void:
 	var updated: bool = false
-	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
+	for i in simulation_size_chunk.x * simulation_size_chunk.y:
 		if chunk_update[i] == 0:
 			continue
 		updated = true
-		for j in range(0, chunk_size * chunk_size):
+		for j in chunk_size * chunk_size:
 			var row: int = j / chunk_size + i / simulation_size_chunk.x * chunk_size
 			var col: int = j % chunk_size + i % simulation_size_chunk.x * chunk_size
 			image.set_pixel(col, row, elements[cell_id[row * simulation_size.x + col]].get_color(self, row, col, get_data(row, col)))
