@@ -77,6 +77,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 2
 texture = SubResource("ImageTexture_guoq1")
 script = ExtResource("1_7t74s")
+debug_draw = true
 debug_heat_gradient = SubResource("GradientTexture1D_hwk0e")
 simulation_size = Vector2i(72, 64)
 simulation_scale = 6

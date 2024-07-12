@@ -7,7 +7,7 @@ class_name Laser extends Element
 func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	if not super.process(sim, row, col, data):
 		return false
-	for i in range(reach):
+	for i in range(1, 1 + reach):
 		if not Explosion.grow(sim, row + i, col, unique_name):
 			break
 	return true

@@ -14,20 +14,21 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 		for i in range(0, 10):
 			if i == 4:
 				continue
-			var row_offset: int = i / 3 - 1
-			var col_offset: int = i % 3 - 1
-			if not sim.in_bounds(row + row_offset, col + col_offset):
+			var check_row: int = row + i / 3 - 1
+			var check_col: int = col + i % 3 - 1
+			if not sim.in_bounds(check_row, check_col):
 				kill(sim, row, col, data)
 				return false
-			if sim.get_element_resource(row + row_offset, col + col_offset) is Empty:
+			var element: Element = sim.get_element_resource(check_row, check_col)
+			if element is Empty:
 				continue
-			if sim.get_element_resource(row + row_offset, col + col_offset) == self and get_byte(sim.get_data(row + row_offset, col + col_offset), 2) == 0:
+			if element == self and get_byte(sim.get_data(check_row, check_col), 2) == 0:
 				continue
 			kill(sim, row, col, data)
 			return false
 		var rand_row: int = row + (1 if Simulation.fast_randf() < fall_proportion else -1)
 		var rand_col: int = col + randi_range(-1, 1)
-		if sim.in_bounds(rand_row, rand_col) and sim.get_touch_count(rand_row, rand_col, unique_name) <= 2 and sim.get_element_resource(rand_row, rand_col) is Empty:
+		if sim.in_bounds(rand_row, rand_col) and sim.get_element_resource(rand_row, rand_col) is Empty and sim.get_touch_count(rand_row, rand_col, unique_name) <= 2:
 			sim.set_element(rand_row, rand_col, unique_name)
 	else:
 		if sim.fast_randf() < unexcited_decay_proportion:

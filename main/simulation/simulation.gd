@@ -122,7 +122,6 @@ func _process(_delta: float) -> void:
 			element.process(self, row, col, data)
 		chunk_avg_temp /= chunk_size * chunk_size
 		chunk_temp_copy[i] = chunk_avg_temp
-	#print(chunk_temp)
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
 		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) >> 1
 	for row in range(simulation_size_chunk.y):
