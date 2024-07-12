@@ -178,6 +178,20 @@ func get_element(row: int, col: int) -> String:
 func get_element_resource_from_name(element_name: String) -> Element:
 	return elements[name_id_map[element_name]]
 
+func get_touch_count(row: int, col: int, element_name: String) -> int:
+	var touches: int = 0
+	var target_id: int = name_id_map[element_name]
+	for i in range(0, 10):
+		if i == 4: # Center
+			continue
+		var row_offset: int = i / 3 - 1
+		var col_offset: int = i % 3 - 1
+		if not in_bounds(row + row_offset, col + col_offset):
+			continue
+		if _get_cell_id(row + row_offset, col + col_offset) == target_id:
+			touches += 1
+	return touches
+
 ## Returns the cell data at row, col.
 func get_data(row: int, col: int) -> int:
 	return _get_cell_data(row, col)
