@@ -116,22 +116,18 @@ func _process(_delta: float) -> void:
 		for j in range(chunk_size * chunk_size - 1, -1, -1):
 			var row: int = j / chunk_size + row_offset
 			var col: int = j % chunk_size + col_offset
-			var element: Element = elements[cell_id[row * simulation_size.x + col]]
-			var data: int = _get_cell_data(row, col)
-			chunk_avg_temp += element.get_temperature(data)
-			element.process(self, row, col, data)
-		chunk_avg_temp /= chunk_size * chunk_size
-		chunk_temp_copy[i] = chunk_avg_temp
+			var data: int = get_data(row, col)
+			chunk_avg_temp += Element.get_temperature(data)
+			elements[cell_id[row * simulation_size.x + col]].process(self, row, col, data)
+		chunk_temp_copy[i] = chunk_avg_temp / (chunk_size * chunk_size)
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
 		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) >> 1
-	for row in range(simulation_size_chunk.y):
-		for col in range(simulation_size_chunk.x):
-			var avg_temp: int = _get_chunk_temp(row, col, idefault_temperature) 
-			avg_temp += _get_chunk_temp(row + 1, col, idefault_temperature) 
-			avg_temp += _get_chunk_temp(row - 1, col, idefault_temperature)
-			avg_temp += _get_chunk_temp(row, col + 1, idefault_temperature)
-			avg_temp += _get_chunk_temp(row, col - 1, idefault_temperature)
-			chunk_temp_copy[row * simulation_size_chunk.x + col] = (chunk_temp[row * simulation_size_chunk.x + col] + avg_temp / 5) >> 1
+	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
+		var row: int = i / simulation_size_chunk.x
+		var col: int = i % simulation_size_chunk.x
+		var avg_temp: int = _get_chunk_temp(row, col) + _get_chunk_temp(row + 1, col) + _get_chunk_temp(row - 1, col) + _get_chunk_temp(row, col + 1) + _get_chunk_temp(row, col - 1)
+		chunk_temp_copy[i] = (chunk_temp[i] + avg_temp / 5) >> 1
+	
 	for i in range(len(chunk_temp)):
 		chunk_temp[i] = chunk_temp_copy[i]
 	draw_cells()
@@ -153,15 +149,12 @@ func _set_cell_id(row: int, col: int, element_id: int) -> void:
 	elif old_id > 0 and element_id == 0:
 		alive_count[row / chunk_size * simulation_size_chunk.x + col / chunk_size] -= 1
 
-func _get_cell_data(row: int, col: int) -> int:
-	return cell_data[row * simulation_size.x + col]
-
 func _set_cell_data(row: int, col: int, data: int, update_color: bool = true) -> void:
 	cell_data[row * simulation_size.x + col] = data
 	if update_color:
 		chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
 
-func _get_chunk_temp(row: int, col: int, default: int) -> int:
+func _get_chunk_temp(row: int, col: int, default: int = idefault_temperature) -> int:
 	if row < 0 or col < 0 or row >= simulation_size_chunk.y or col >= simulation_size_chunk.x: 
 		return default
 	return chunk_temp[row * simulation_size_chunk.x + col]
@@ -193,17 +186,22 @@ func get_touch_count(row: int, col: int, element_name: String) -> int:
 
 ## Returns the cell data at row, col.
 func get_data(row: int, col: int) -> int:
-	return _get_cell_data(row, col)
+	return cell_data[row * simulation_size.x + col]
 
 func get_chunk_temp(row: int, col: int) -> int:
-	if in_bounds(row + 1, col) and Simulation.fast_randf() < 0.5:
+	var original_row: int = row
+	var original_col: int = col
+	if Simulation.fast_randf() < 0.5:
 		row += 1
-	if in_bounds(row, col + 1) and Simulation.fast_randf() < 0.5:
+	if Simulation.fast_randf() < 0.5:
 		col += 1
-	if in_bounds(row - 2, col) and Simulation.fast_randf() < 0.5:
+	if Simulation.fast_randf() < 0.5:
 		row -= 2
-	if in_bounds(row, col - 1) and Simulation.fast_randf() < 0.5:
+	if Simulation.fast_randf() < 0.5:
 		col -= 2
+	if not in_bounds(row, col):
+		row = original_row
+		col = original_col
 	return chunk_temp[row / chunk_size * simulation_size_chunk.x + col / chunk_size] 
 
 ## Updates the element at row, col.
@@ -223,23 +221,26 @@ func in_bounds(row: int, col: int) -> bool:
 ## Assumes both cells are in bounds.
 func swap(row_1: int, col_1: int, row_2: int, col_2: int) -> void:
 	var temp: int = _get_cell_id(row_1, col_1)
-	var temp_data: int = _get_cell_data(row_1, col_1)
+	var temp_data: int = get_data(row_1, col_1)
 	_set_cell_id(row_1, col_1, _get_cell_id(row_2, col_2))
-	_set_cell_data(row_1, col_1, _get_cell_data(row_2, col_2))
+	_set_cell_data(row_1, col_1, get_data(row_2, col_2))
 	_set_cell_id(row_2, col_2, temp)
 	_set_cell_data(row_2, col_2, temp_data)
 
 ## Updates modified chunks in the image and texture. 
 func draw_cells() -> void:
+	var updated: bool = false
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
 		if chunk_update[i] == 0:
 			continue
+		updated = true
 		for j in range(0, chunk_size * chunk_size):
 			var row: int = j / chunk_size + i / simulation_size_chunk.x * chunk_size
 			var col: int = j % chunk_size + i % simulation_size_chunk.x * chunk_size
-			image.set_pixel(col, row, elements[cell_id[row * simulation_size.x + col]].get_color(self, row, col, _get_cell_data(row, col)))
-	chunk_update.fill(0)
-	texture.set_image(image)
+			image.set_pixel(col, row, elements[cell_id[row * simulation_size.x + col]].get_color(self, row, col, get_data(row, col)))
+	if updated:
+		chunk_update.fill(0)
+		(texture as ImageTexture).set_image(image)
 
 ## A faster implementation of randf(), not yet implemented.
 static func fast_randf() -> float:
