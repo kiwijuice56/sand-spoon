@@ -106,20 +106,9 @@ func _draw() -> void:
 			draw_rect(rect, debug_heat_gradient.gradient.sample(chunk_temp[chunk_row * simulation_size_chunk.x + chunk_col] / 65535.0), false, 3)
 
 func _process(_delta: float) -> void:
-	for i in range(simulation_size_chunk.x * simulation_size_chunk.y - 1, -1, -1):
-		if alive_count[i] == 0:
-			chunk_temp_copy[i] = chunk_temp[i]
-			continue
-		var row_offset: int = i / simulation_size_chunk.x * chunk_size
-		var col_offset: int = i % simulation_size_chunk.x * chunk_size
-		var chunk_avg_temp: int = 0
-		for j in range(chunk_size * chunk_size - 1, -1, -1):
-			var row: int = j / chunk_size + row_offset
-			var col: int = j % chunk_size + col_offset
-			var data: int = get_data(row, col)
-			chunk_avg_temp += Element.get_temperature(data)
-			elements[cell_id[row * simulation_size.x + col]].process(self, row, col, data)
-		chunk_temp_copy[i] = chunk_avg_temp / (chunk_size * chunk_size)
+	for i in range(simulation_size_chunk.y - 1, -1, -1):
+		process_chunk_row(i)
+	
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
 		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) >> 1
 	for i in range(simulation_size_chunk.x * simulation_size_chunk.y):
@@ -133,6 +122,22 @@ func _process(_delta: float) -> void:
 	draw_cells()
 	if debug_draw:
 		queue_redraw()
+
+func process_chunk_row(chunk_row: int) -> void:
+	for i in range(chunk_row * simulation_size_chunk.x, (chunk_row + 1) * simulation_size_chunk.x):
+		if alive_count[i] == 0:
+			chunk_temp_copy[i] = chunk_temp[i]
+			continue
+		var row_offset: int = i / simulation_size_chunk.x * chunk_size
+		var col_offset: int = i % simulation_size_chunk.x * chunk_size
+		var chunk_avg_temp: int = 0
+		for j in range(chunk_size * chunk_size - 1, -1, -1):
+			var row: int = j / chunk_size + row_offset
+			var col: int = j % chunk_size + col_offset
+			var data: int = get_data(row, col)
+			chunk_avg_temp += Element.get_temperature(data)
+			elements[cell_id[row * simulation_size.x + col]].process(self, row, col, data)
+		chunk_temp_copy[i] = chunk_avg_temp / (chunk_size * chunk_size)
 
 func _update_rect() -> void:
 	custom_minimum_size = simulation_size * simulation_scale
