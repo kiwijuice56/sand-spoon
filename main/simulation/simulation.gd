@@ -88,7 +88,7 @@ func _ready() -> void:
 	
 	chunk_update.fill(1)
 	
-	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBAF)
+	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBF)
 	
 	for row in range(simulation_size.y):
 		for col in range(simulation_size.x):
