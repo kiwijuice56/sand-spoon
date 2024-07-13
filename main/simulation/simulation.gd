@@ -134,7 +134,7 @@ func _draw() -> void:
 func _process(_delta: float) -> void:
 	should_awake_chunk.fill(0)
 	
-	global_row_offset = randi_range(-2, 2)
+	global_row_offset = randi_range(-5, 5)
 	
 	thread_counter = 0
 	thread_counter_done = 0
@@ -182,30 +182,27 @@ func thread_process() -> void:
 		mutex.unlock()
 		
 		for i in range(chunk_row * simulation_size_chunk.x, (chunk_row + 1) * simulation_size_chunk.x):
-			if alive_count[i] == 0 or (awake_chunk[i] == 0 and Simulation.fast_randf() < 0.65):
-				chunk_temp_copy[i] = chunk_temp[i]
+			chunk_temp_copy[i] = chunk_temp[i]
+			if alive_count[i] == 0 or (awake_chunk[i] == 0 and Simulation.fast_randf() < 0.75):
 				continue
-			var row_offset: int = i / simulation_size_chunk.x * chunk_size
+			var row_offset: int = i / simulation_size_chunk.x * chunk_size + extra_offset
 			var col_offset: int = i % simulation_size_chunk.x * chunk_size
 			var chunk_avg_temp: int = 0
 			var processed: int = 0
-			var change_dir: bool = Simulation.fast_randf() < 0.5
-			for j in range(chunk_size * chunk_size - 1, -1, -1):
-				var row: int = j / chunk_size + row_offset + extra_offset
+			var index_queue: Array[int] = _get_chunk_order()
+			for j in index_queue:
+				var row: int = j / chunk_size + row_offset 
 				if row < 0:
 					break
 				if row >= simulation_size.y:
 					continue
 				processed += 1
-				var col: int 
-				if change_dir:
-					col = (chunk_size - 1 - j % chunk_size) + col_offset
-				else:
-					col = j % chunk_size + col_offset
+				var col: int = j % chunk_size + col_offset
 				var data: int = get_data(row, col)
 				chunk_avg_temp += Element.get_temperature(data)
 				elements[cell_id[row * simulation_size.x + col]].process(self, row, col, data)
-			chunk_temp_copy[i] = chunk_avg_temp / processed
+			if processed > 0:
+				chunk_temp_copy[i] = chunk_avg_temp / processed
 		
 		mutex.lock()
 		thread_counter_done += 1
@@ -217,6 +214,13 @@ func _exit_tree():
 		sem.post()
 	for thread in threads:
 		thread.wait_to_finish()
+
+func _get_chunk_order() -> Array[int]:
+	var order: Array[int] = []
+	for i in chunk_size * chunk_size:
+		order.append(i)
+	order.shuffle()
+	return order
 
 func _update_rect() -> void:
 	custom_minimum_size = simulation_size * simulation_scale

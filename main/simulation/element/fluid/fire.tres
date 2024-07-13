@@ -13,6 +13,7 @@ use_hdr = true
 [resource]
 script = ExtResource("1_h5mnf")
 color_gradient = SubResource("GradientTexture1D_x1jki")
+move_vertical_proportion = 0.5
 viscosity = 0.5
 density = 0.3
 gravity_down = false
@@ -28,4 +29,3 @@ low_heat_transformation = "smoke"
 explosion_resistance = 0.1
 decay_proportion = 0.06
 decay_transformation = "smoke"
-skip_proportion = 0.4

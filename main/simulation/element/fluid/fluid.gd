@@ -6,7 +6,6 @@ class_name Fluid extends Element
 
 @export_group("Fluid dynamics")
 
-@export var move_vertical_proportion: float = 0.9
 ## Thickness of the liquid.
 @export_range(0, 1) var viscosity: float
 ## Denser fluids can sink through less dense fluids.
@@ -25,7 +24,7 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	if not super.process(sim, row, col, data):
 		return false
 	
-	if Simulation.fast_randf() < move_vertical_proportion and can_swap(sim, row + gravity_dir, col, data):
+	if can_swap(sim, row + gravity_dir, col, data):
 		sim.swap(row, col, row + gravity_dir, col)
 		return true
 	

@@ -78,8 +78,8 @@ size_flags_vertical = 2
 texture = SubResource("ImageTexture_guoq1")
 script = ExtResource("1_7t74s")
 debug_heat_gradient = SubResource("GradientTexture1D_hwk0e")
-simulation_size = Vector2i(72, 72)
-simulation_scale = 5
+simulation_size = Vector2i(96, 84)
+simulation_scale = 4
 chunk_size = 6
 elements = Array[ExtResource("2_55j5a")]([ExtResource("4_oq8j5"), ExtResource("5_57l7a"), ExtResource("9_bp35h"), ExtResource("5_4oxmv"), ExtResource("8_l1nvi"), ExtResource("10_7jxe6"), ExtResource("12_21fqx"), ExtResource("17_kc8vj"), ExtResource("15_65xk6"), ExtResource("18_56lxe"), ExtResource("11_d45fd"), ExtResource("13_pqvew"), ExtResource("14_vb41q"), ExtResource("16_mq8vw"), ExtResource("19_ef3v6"), ExtResource("20_sgjin"), ExtResource("21_l6itd"), ExtResource("22_navib")])
 
