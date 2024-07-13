@@ -120,7 +120,9 @@ func _draw() -> void:
 ## Advances the simulation.
 func _process(_delta: float) -> void:
 	should_awake_chunk.fill(0)
-	global_row_offset =  randi_range(-1, 1)
+	global_row_offset += 1
+	if global_row_offset > 1:
+		global_row_offset = -1
 	
 	# Simulate the entire grid by giving threads a row of chunks to process.
 	# Alternate between odd/even rows in order to prevent access errors.
@@ -185,7 +187,7 @@ func _thread_process() -> void:
 		
 		for i in range(chunk_row * simulation_size_chunk.x, (chunk_row + 1) * simulation_size_chunk.x):
 			chunk_temp_copy[i] = chunk_temp[i]
-			if alive_count[i] == 0 or (awake_chunk[i] == 0 and fast_randf() > random_awaken_chance):
+			if alive_count[i] == 0 or awake_chunk[i] == 0 and fast_randf() > random_awaken_chance:
 				continue
 			var row_offset: int = i / simulation_size_chunk.x * chunk_size + extra_offset
 			var col_offset: int = i % simulation_size_chunk.x * chunk_size
@@ -194,15 +196,13 @@ func _thread_process() -> void:
 			particle_order.shuffle()
 			for j in particle_order:
 				var row: int = j / chunk_size + row_offset 
-				if row < 0:
+				if row < 0 or row >= simulation_size.y :
 					continue
-				if row >= simulation_size.y:
-					continue
-				processed += 1
 				var col: int = j % chunk_size + col_offset
 				var data: int = get_data(row, col)
 				chunk_avg_temp += Element.get_temperature(data)
 				elements[cell_id[row * simulation_size.x + col]].process(self, row, col, data)
+				processed += 1
 			if processed > 0:
 				chunk_temp_copy[i] = chunk_avg_temp / processed
 		
