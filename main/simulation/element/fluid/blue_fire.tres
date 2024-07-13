@@ -28,4 +28,3 @@ low_heat_transformation = "smoke"
 explosion_resistance = 0.1
 decay_proportion = 0.06
 decay_transformation = "smoke"
-skip_proportion = 0.4

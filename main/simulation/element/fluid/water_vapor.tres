@@ -26,4 +26,3 @@ low_heat_transformation = "water"
 explosion_resistance = 0.1
 decay_proportion = 0.01
 decay_transformation = "empty"
-skip_proportion = 0.5

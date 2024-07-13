@@ -22,10 +22,8 @@ gdscript/warnings/integer_division=0
 
 [display]
 
-window/size/viewport_width=560
-window/size/viewport_height=405
-window/size/window_width_override=560
-window/size/window_height_override=405
+window/size/viewport_width=516
+window/size/viewport_height=360
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=0
@@ -38,7 +36,8 @@ folder_colors={
 "res://main/simulation/element/fluid/": "blue",
 "res://main/simulation/element/laser/": "purple",
 "res://main/simulation/element/lightning/": "red",
-"res://main/simulation/element/solid/": "yellow"
+"res://main/simulation/element/solid/": "yellow",
+"res://main/simulation/element/solid/bacteria/": "green"
 }
 
 [input]

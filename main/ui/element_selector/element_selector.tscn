@@ -4,23 +4,23 @@
 [ext_resource type="PackedScene" uid="uid://dunjk1ufcu5am" path="res://main/ui/element_selector/element_button/element_button.tscn" id="2_72xpa"]
 
 [node name="ElementSelector" type="ScrollContainer"]
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -8.0
-grow_horizontal = 0
+grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 script = ExtResource("1_kpay8")
 element_button_scene = ExtResource("2_72xpa")
 
-[node name="ElementButtonContainer" type="VBoxContainer" parent="."]
+[node name="ElementButtonContainer" type="GridContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 0
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
 
 [node name="ElementButton" parent="ElementButtonContainer" instance=ExtResource("2_72xpa")]
 layout_mode = 2

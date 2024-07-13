@@ -31,7 +31,6 @@ var chunk_temp_copy: PackedInt32Array # Stores intermediate chunk temperature ca
 
 var image: Image # Output image of the simulation.
 
-
 var simulation_size_chunk: Vector2i # World width and height in chunks.
 
 var idefault_temperature: int # Default temperature of the air (defined by Empty).
@@ -44,6 +43,7 @@ var threads: Array[Thread]
 var thread_counter: int
 var thread_counter_done: int
 var global_row_offset: int 
+var frame_count: int = 0
 
 func _ready() -> void:
 	randomize()
@@ -120,7 +120,7 @@ func _draw() -> void:
 ## Advances the simulation.
 func _process(_delta: float) -> void:
 	should_awake_chunk.fill(0)
-	global_row_offset = randi_range(-chunk_size / 2, chunk_size / 2)
+	global_row_offset =  randi_range(-1, 1)
 	
 	# Simulate the entire grid by giving threads a row of chunks to process.
 	# Alternate between odd/even rows in order to prevent access errors.
@@ -155,6 +155,8 @@ func _process(_delta: float) -> void:
 	draw_cells()
 	if debug_draw:
 		queue_redraw()
+	
+	frame_count += 1
 
 func _exit_tree():
 	should_exit = true
@@ -183,7 +185,7 @@ func _thread_process() -> void:
 		
 		for i in range(chunk_row * simulation_size_chunk.x, (chunk_row + 1) * simulation_size_chunk.x):
 			chunk_temp_copy[i] = chunk_temp[i]
-			if alive_count[i] == 0 or (awake_chunk[i] == 0 and Simulation.fast_randf() < random_awaken_chance):
+			if alive_count[i] == 0 or (awake_chunk[i] == 0 and fast_randf() > random_awaken_chance):
 				continue
 			var row_offset: int = i / simulation_size_chunk.x * chunk_size + extra_offset
 			var col_offset: int = i % simulation_size_chunk.x * chunk_size
@@ -193,7 +195,7 @@ func _thread_process() -> void:
 			for j in particle_order:
 				var row: int = j / chunk_size + row_offset 
 				if row < 0:
-					break
+					continue
 				if row >= simulation_size.y:
 					continue
 				processed += 1
@@ -218,16 +220,16 @@ func _set_cell_id(row: int, col: int, element_id: int) -> void:
 	_waken_chunk(row, col)
 	var old_id: int = cell_id[row * simulation_size.x + col]
 	cell_id[row * simulation_size.x + col] = element_id
-	chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
+	chunk_update[_get_chunk_index(row, col)] = 1
 	if old_id == 0 and element_id > 0:
-		alive_count[row / chunk_size * simulation_size_chunk.x + col / chunk_size] += 1
+		alive_count[_get_chunk_index(row, col)] += 1
 	elif old_id > 0 and element_id == 0:
-		alive_count[row / chunk_size * simulation_size_chunk.x + col / chunk_size] -= 1
+		alive_count[_get_chunk_index(row, col)] -= 1
 
 func _set_cell_data(row: int, col: int, data: int, update_color: bool = true) -> void:
 	cell_data[row * simulation_size.x + col] = data
 	if update_color:
-		chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
+		chunk_update[_get_chunk_index(row, col)] = 1
 
 func _get_chunk_temp(row: int, col: int, default: int = idefault_temperature) -> int:
 	if row < 0 or col < 0 or row >= simulation_size_chunk.y or col >= simulation_size_chunk.x: 
@@ -239,16 +241,25 @@ func _get_chunk_index(row: int, col: int) -> int:
 
 func _waken_chunk(row: int, col: int) -> void:
 	should_awake_chunk[_get_chunk_index(row, col)] = 1
-	var chunk_row: int = row / chunk_size
+	var chunk_row: int = row % chunk_size
 	var chunk_col: int = col % chunk_size
+	
 	if row > 0 and chunk_row == 0:
-		awake_chunk[_get_chunk_index(row - 1, col)] = 1
+		should_awake_chunk[_get_chunk_index(row - 1, col)] = 1
 	if row < simulation_size.y - 1 and chunk_row == chunk_size - 1:
-		awake_chunk[_get_chunk_index(row + 1, col)] = 1
+		should_awake_chunk[_get_chunk_index(row + 1, col)] = 1
 	if col > 0 and chunk_col == 0:
-		awake_chunk[_get_chunk_index(row, col - 1)] = 1
+		should_awake_chunk[_get_chunk_index(row, col - 1)] = 1
 	if col < simulation_size.x - 1 and chunk_col == chunk_size - 1:
-		awake_chunk[_get_chunk_index(row, col + 1)] = 1
+		should_awake_chunk[_get_chunk_index(row, col + 1)] = 1
+	#if row >= chunk_size:
+		#should_awake_chunk[_get_chunk_index(row - chunk_size, col)] = 1
+	#if row < simulation_size.y - chunk_size:
+		#should_awake_chunk[_get_chunk_index(row + chunk_size, col)] = 1
+	#if col >= chunk_size:
+		#should_awake_chunk[_get_chunk_index(row, col - chunk_size)] = 1
+	#if col < simulation_size.x - chunk_size:
+		#should_awake_chunk[_get_chunk_index(row, col + chunk_size)] = 1
 
 ## Returns the Element resource at row, col.
 func get_element_resource(row: int, col: int) -> Element:
@@ -294,6 +305,10 @@ func get_chunk_temp(row: int, col: int) -> int:
 		row = original_row
 		col = original_col
 	return chunk_temp[row / chunk_size * simulation_size_chunk.x + col / chunk_size] 
+
+func paint_element(row: int, col: int, element_name: String) -> void:
+	set_element(row, col, element_name)
+	awake_chunk[_get_chunk_index(row, col)] = 1
 
 ## Updates the element at row, col.
 func set_element(row: int, col: int, element_name: String) -> void:

@@ -1,9 +1,12 @@
+@icon("res://main/icons/lightning_icon.svg")
 class_name Lightning extends Element
 # Data: assumes byte 2 for excitation state.
 
 @export var excited_color: Color
 @export var unexcited_color: Color
+
 @export_range(0, 1) var fall_proportion: float = 0.9
+
 @export var unexcited_decay_proportion: float = 0.5
 @export var unexcited_decay_element: String
 

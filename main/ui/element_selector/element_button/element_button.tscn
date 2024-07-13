@@ -9,11 +9,12 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5ys0"]
 
 [node name="ElementButton" type="Button"]
-custom_minimum_size = Vector2(128, 0)
+custom_minimum_size = Vector2(128, 31)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 31.0
+offset_bottom = 23.0
 grow_horizontal = 2
+size_flags_horizontal = 3
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
