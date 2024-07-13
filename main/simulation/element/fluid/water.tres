@@ -11,6 +11,7 @@ gradient = SubResource("Gradient_sydsh")
 [resource]
 script = ExtResource("1_fd75b")
 color_gradient = SubResource("GradientTexture1D_3kkdy")
+move_vertical_proportion = 0.7
 viscosity = 0.8
 density = 1000.0
 gravity_down = true
@@ -26,4 +27,3 @@ low_heat_transformation = "ice"
 explosion_resistance = 0.5
 decay_proportion = 0.0
 decay_transformation = "empty"
-skip_proportion = 0.4

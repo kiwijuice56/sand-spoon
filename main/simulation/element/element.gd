@@ -32,11 +32,6 @@ class_name Element extends Resource
 @export_range(0, 1) var decay_proportion: float = 0.0
 @export var decay_transformation: String = "empty"
 
-@export_group("Performance")
-## The proportion of process frames are skipped. Set to a value higher than 0
-## to hide chunk seams and create more organic movement.
-@export_range(0, 1) var skip_proportion: float = 0.3
-
 var ihigh_heat_point: int 
 var ilow_heat_point: int 
 var iinitial_temperature: int 
@@ -55,8 +50,6 @@ func initialize() -> void:
 	iinitial_temperature = convert_temperature(initial_temperature)
 
 func process(sim: Simulation, row: int, col: int, data: int) -> bool:
-	if Simulation.fast_randf() < skip_proportion:
-		return false
 	if Simulation.fast_randf() < decay_proportion:
 		sim.set_element(row, col, decay_transformation)
 		return false

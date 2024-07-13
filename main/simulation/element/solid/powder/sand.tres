@@ -11,6 +11,7 @@ gradient = SubResource("Gradient_gvs12")
 
 [resource]
 script = ExtResource("1_uukw6")
+move_down_proportion = 0.6
 color_gradient = SubResource("GradientTexture1D_k6c5h")
 unique_name = "sand"
 hidden = false
@@ -24,4 +25,3 @@ low_heat_transformation = "empty"
 explosion_resistance = 0.8
 decay_proportion = 0.0
 decay_transformation = "empty"
-skip_proportion = 0.4

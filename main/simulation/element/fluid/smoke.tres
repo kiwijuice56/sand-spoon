@@ -12,6 +12,7 @@ use_hdr = true
 [resource]
 script = ExtResource("1_nrcfx")
 color_gradient = SubResource("GradientTexture1D_ek3mb")
+move_vertical_proportion = 0.9
 viscosity = 0.6
 density = 0.01
 gravity_down = false
@@ -25,6 +26,5 @@ high_heat_transformation = "empty"
 low_heat_point = -1.0
 low_heat_transformation = "empty"
 explosion_resistance = 0.0
-decay_proportion = 0.1
+decay_proportion = 0.04
 decay_transformation = "empty"
-skip_proportion = 0.5
