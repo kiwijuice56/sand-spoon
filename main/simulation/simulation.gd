@@ -1,108 +1,92 @@
 class_name Simulation extends TextureRect
 
-## Draw chunk borders and other debug details.
-@export var debug_draw: bool
-@export var debug_heat_gradient: GradientTexture1D
-
-## World width and height.
-@export var simulation_size: Vector2i
-
-## Canvas scaling factor.
-@export var simulation_scale: int
-
-## Width/height of square chunks that separate the world.
-@export var chunk_size: int
+@export var simulation_size: Vector2i ## World width and height.
+@export var simulation_scale: int ## Canvas scaling factor.
 
 ## All elements available to the simulation. Add your Element resources here. 
 ## First slot MUST be the Empty element.
 @export var elements: Array[Element]
 
-# Maps Element unique_names to their int IDs.
-static var name_id_map: Dictionary
+@export_group("Advanced")
+@export var chunk_size: int ## Width/height of square chunks that separate the world.
+@export var random_awaken_chance: float = 0.68 ## The chance that sleeping chunks will re-awaken for a frame.
 
-# Maps int IDs to Element unique_names.
-static var id_name_map: PackedStringArray
+@export_group("Debug")
+@export var debug_draw: bool ## Draw chunk borders and temperature.
+@export var debug_heat_gradient: GradientTexture1D
 
-# Stores the ID of each cell of the simulation as a flat array.
-var cell_id: PackedByteArray
+static var name_id_map: Dictionary # Maps Element unique_names to their int IDs.
+static var id_name_map: PackedStringArray # Maps int IDs to Element unique_names.
 
-# Stores the data of each cell of the simulation as a flat array.
-var cell_data: PackedInt32Array
+var cell_id: PackedByteArray # Stores the ID of each cell of the simulation as a flat array.
+var cell_data: PackedInt32Array # Stores the data of each cell of the simulation as a flat array.
 
-# Stores the amount of alive cells within each chunk as a flat array.
-var alive_count: PackedByteArray
+var alive_count: PackedByteArray # Stores the amount of non-empty particles within each chunk as a flat array.
+var awake_chunk: PackedByteArray # Stores whether each chunk awake alive (containing moving/changing particles) as a flat array of as true/false.
+var should_awake_chunk: PackedByteArray # Stores whether each chunk should be awake on the next frame as a flat array of true/false.
+var chunk_update: PackedByteArray # Stores whether each chunk has had any visual updates within this frame as a flat array of true/false.
 
-var awake_chunk: PackedByteArray
-var should_awake_chunk: PackedByteArray
+var chunk_temp: PackedInt32Array # Stores the temperature of the chunk.
+var chunk_temp_copy: PackedInt32Array # Stores intermediate chunk temperature calculations.
 
-# Stores 1 if a chunk was updated between draw calls, otherwise 0.
-var chunk_update: PackedByteArray
+var image: Image # Output image of the simulation.
 
-var chunk_temp: PackedInt32Array
-var chunk_temp_copy: PackedInt32Array
 
-# Output image of the simulation.
-var image: Image
+var simulation_size_chunk: Vector2i # World width and height in chunks.
 
-# World width and height in chunks.
-var simulation_size_chunk: Vector2i
+var idefault_temperature: int # Default temperature of the air (defined by Empty).
 
-var idefault_temperature: int
-
-# Threading variables
+# Multitthreading state variables
 var should_exit: bool = false
 var sem: Semaphore
 var mutex: Mutex
 var threads: Array[Thread]
 var thread_counter: int
 var thread_counter_done: int
-var global_row_offset: int
-
+var global_row_offset: int 
 
 func _ready() -> void:
 	randomize()
 	assert(simulation_size.x % chunk_size == 0 and simulation_size.y % chunk_size == 0)
 	_update_rect()
 	
+	# Set default temperature to the temperature of Empty.
 	for element in elements:
 		element.initialize()
 		if element is Empty:
 			idefault_temperature = element.iinitial_temperature
 	
+	# Initialize name/element mapping.
 	name_id_map = {}
 	for i in range(len(elements)):
 		name_id_map[elements[i].unique_name] = i
 		id_name_map.append(elements[i].unique_name)
 	
 	cell_id = []
+	cell_data = []
+	alive_count = []
+	awake_chunk = []
+	should_awake_chunk = []
+	chunk_update = []
+	chunk_temp = []
+	chunk_temp_copy = []
 	cell_id.resize(simulation_size.x * simulation_size.y)
 	
-	cell_data = []
-	cell_data.resize(simulation_size.x * simulation_size.y)
 	
+	cell_data.resize(simulation_size.x * simulation_size.y)
 	simulation_size_chunk.x = ceil(simulation_size.x / float(chunk_size))
 	simulation_size_chunk.y = ceil(simulation_size.y / float(chunk_size))
-	
-	alive_count = []
 	alive_count.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	
-	awake_chunk = []
 	awake_chunk.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	
-	should_awake_chunk = []
 	should_awake_chunk.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	
-	chunk_update = []
 	chunk_update.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	chunk_update.fill(1)
 	
-	chunk_temp = []
 	chunk_temp.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	chunk_temp.fill(idefault_temperature)
-	
-	chunk_temp_copy = []
 	chunk_temp_copy.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	chunk_temp_copy.fill(idefault_temperature)
+	
+	chunk_update.fill(1)
 	
 	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBAF)
 	
@@ -110,13 +94,15 @@ func _ready() -> void:
 		for col in range(simulation_size.x):
 			set_element(row, col, "empty")
 	
+	# Start threads.
 	sem = Semaphore.new()
 	mutex = Mutex.new()
 	for _i in OS.get_processor_count():
 		var thread: Thread = Thread.new()
 		threads.append(thread)
-		thread.start(thread_process)
+		thread.start(_thread_process)
 
+## Debug drawing method.
 func _draw() -> void:
 	if not debug_draw:
 		return
@@ -131,19 +117,21 @@ func _draw() -> void:
 				chunk_size * simulation_scale)
 			draw_rect(rect, debug_heat_gradient.gradient.sample(chunk_temp[chunk_row * simulation_size_chunk.x + chunk_col] / 65535.0), false, 1)
 
+## Advances the simulation.
 func _process(_delta: float) -> void:
 	should_awake_chunk.fill(0)
+	global_row_offset = randi_range(-chunk_size / 2, chunk_size / 2)
 	
-	global_row_offset = randi_range(-5, 5)
-	
-	thread_counter = 0
+	# Simulate the entire grid by giving threads a row of chunks to process.
+	# Alternate between odd/even rows in order to prevent access errors.
+	thread_counter = 0 # Odd
 	thread_counter_done = 0
 	for i in simulation_size_chunk.y / 2:
 		sem.post()
 	while thread_counter_done != simulation_size_chunk.y / 2:
 		pass
 	
-	thread_counter = 1
+	thread_counter = 1 # Even
 	thread_counter_done = 0
 	for i in simulation_size_chunk.y / 2:
 		sem.post()
@@ -153,6 +141,7 @@ func _process(_delta: float) -> void:
 	for i in len(awake_chunk):
 		awake_chunk[i] = should_awake_chunk[i]
 	
+	# Temperature diffusion.
 	for i in simulation_size_chunk.x * simulation_size_chunk.y:
 		chunk_temp[i] = (chunk_temp[i] + chunk_temp_copy[i]) >> 1
 	for i in simulation_size_chunk.x * simulation_size_chunk.y:
@@ -160,14 +149,21 @@ func _process(_delta: float) -> void:
 		var col: int = i % simulation_size_chunk.x
 		var avg_temp: int = _get_chunk_temp(row, col) + _get_chunk_temp(row + 1, col) + _get_chunk_temp(row - 1, col) + _get_chunk_temp(row, col + 1) + _get_chunk_temp(row, col - 1)
 		chunk_temp_copy[i] = (chunk_temp[i] + avg_temp / 5) >> 1
-	
 	for i in len(chunk_temp):
 		chunk_temp[i] = chunk_temp_copy[i]
+	
 	draw_cells()
 	if debug_draw:
 		queue_redraw()
 
-func thread_process() -> void:
+func _exit_tree():
+	should_exit = true
+	for i in simulation_size_chunk.y:
+		sem.post()
+	for thread in threads:
+		thread.wait_to_finish()
+
+func _thread_process() -> void:
 	while true:
 		sem.wait()
 		if should_exit: 
@@ -176,21 +172,25 @@ func thread_process() -> void:
 		var chunk_row: int
 		var extra_offset: int
 		mutex.lock()
-		extra_offset = global_row_offset
+		extra_offset = global_row_offset # Store an extra row offset to reduce chunk seams.
 		chunk_row = thread_counter
 		thread_counter += 2
 		mutex.unlock()
 		
+		var particle_order: Array[int] = []
+		for i in chunk_size * chunk_size:
+			particle_order.append(i)
+		
 		for i in range(chunk_row * simulation_size_chunk.x, (chunk_row + 1) * simulation_size_chunk.x):
 			chunk_temp_copy[i] = chunk_temp[i]
-			if alive_count[i] == 0 or (awake_chunk[i] == 0 and Simulation.fast_randf() < 0.75):
+			if alive_count[i] == 0 or (awake_chunk[i] == 0 and Simulation.fast_randf() < random_awaken_chance):
 				continue
 			var row_offset: int = i / simulation_size_chunk.x * chunk_size + extra_offset
 			var col_offset: int = i % simulation_size_chunk.x * chunk_size
 			var chunk_avg_temp: int = 0
 			var processed: int = 0
-			var index_queue: Array[int] = _get_chunk_order()
-			for j in index_queue:
+			particle_order.shuffle()
+			for j in particle_order:
 				var row: int = j / chunk_size + row_offset 
 				if row < 0:
 					break
@@ -207,20 +207,6 @@ func thread_process() -> void:
 		mutex.lock()
 		thread_counter_done += 1
 		mutex.unlock()
-
-func _exit_tree():
-	should_exit = true
-	for i in simulation_size_chunk.y:
-		sem.post()
-	for thread in threads:
-		thread.wait_to_finish()
-
-func _get_chunk_order() -> Array[int]:
-	var order: Array[int] = []
-	for i in chunk_size * chunk_size:
-		order.append(i)
-	order.shuffle()
-	return order
 
 func _update_rect() -> void:
 	custom_minimum_size = simulation_size * simulation_scale
@@ -239,7 +225,6 @@ func _set_cell_id(row: int, col: int, element_id: int) -> void:
 		alive_count[row / chunk_size * simulation_size_chunk.x + col / chunk_size] -= 1
 
 func _set_cell_data(row: int, col: int, data: int, update_color: bool = true) -> void:
-	# _waken_chunk(row, col)
 	cell_data[row * simulation_size.x + col] = data
 	if update_color:
 		chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
@@ -273,6 +258,10 @@ func get_element_resource(row: int, col: int) -> Element:
 func get_element(row: int, col: int) -> String:
 	return id_name_map[_get_cell_id(row, col)]
 
+## Returns the cell data at row, col.
+func get_data(row: int, col: int) -> int:
+	return cell_data[row * simulation_size.x + col]
+
 func get_element_resource_from_name(element_name: String) -> Element:
 	return elements[name_id_map[element_name]]
 
@@ -289,10 +278,6 @@ func get_touch_count(row: int, col: int, element_name: String) -> int:
 		if _get_cell_id(row + row_offset, col + col_offset) == target_id:
 			touches += 1
 	return touches
-
-## Returns the cell data at row, col.
-func get_data(row: int, col: int) -> int:
-	return cell_data[row * simulation_size.x + col]
 
 func get_chunk_temp(row: int, col: int) -> int:
 	var original_row: int = row
