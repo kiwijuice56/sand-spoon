@@ -13,13 +13,15 @@ var tap_start: Vector2i
 
 func _ready() -> void:
 	selector.element_selected.connect(_on_element_selected)
+	await get_tree().get_root().ready
 
 func _on_element_selected(element: Element) -> void:
 	current_element = element.unique_name
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("tap"):
-		var mouse_position: Vector2i = get_viewport().get_mouse_position() / sim.simulation_scale
+		var mouse_position: Vector2i = get_viewport().get_mouse_position() - sim.global_position
+		mouse_position /= sim.simulation_scale
 		if not is_tapping:
 			tap_start = mouse_position
 			is_tapping = true
@@ -28,15 +30,9 @@ func _process(_delta: float) -> void:
 		tap_start = mouse_position
 	if Input.is_action_just_released("tap"):
 		is_tapping = false
-	if Input.is_key_pressed(KEY_0):
-		current_element = "empty"
-	if Input.is_key_pressed(KEY_1):
-		current_element = "sand"
-	if Input.is_key_pressed(KEY_2):
-		current_element = "water"
 
 func paint_line(start: Vector2i, end: Vector2i, line_width: int, element_name: String) -> void:
-	if start.distance_to(end) > line_width:
+	if start.distance_to(end) > line_width * line_step:
 		var point: Vector2 = start
 		var move_dir: Vector2 = Vector2(end - start).normalized()
 		var step: float = line_width * line_step
@@ -46,8 +42,8 @@ func paint_line(start: Vector2i, end: Vector2i, line_width: int, element_name: S
 	paint_circle(end, line_width, element_name)
 
 func paint_circle(center: Vector2i, radius: float, element_name: String) -> void:
-	var center_row: int = center.y - int(sim.global_position.y) / sim.simulation_scale
-	var center_col: int = center.x - int(sim.global_position.x) / sim.simulation_scale
+	var center_row: int = center.y 
+	var center_col: int = center.x 
 	if not sim.in_bounds(center_row, center_col):
 		return
 	for row in range(-radius, radius + 1):

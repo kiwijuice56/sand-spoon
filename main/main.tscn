@@ -91,8 +91,7 @@ debug_heat_gradient = SubResource("GradientTexture1D_hwk0e")
 script = ExtResource("3_3diiu")
 sim = NodePath("..")
 selector = NodePath("../../ElementSelector")
-brush_radius = 10
-line_step = 0.25
+brush_radius = 5
 powder_skip_proportion = 0.9
 
 [node name="FPSLabel" parent="VBoxContainer" instance=ExtResource("3_54ca0")]

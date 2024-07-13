@@ -252,14 +252,6 @@ func _waken_chunk(row: int, col: int) -> void:
 		should_awake_chunk[_get_chunk_index(row, col - 1)] = 1
 	if col < simulation_size.x - 1 and chunk_col == chunk_size - 1:
 		should_awake_chunk[_get_chunk_index(row, col + 1)] = 1
-	#if row >= chunk_size:
-		#should_awake_chunk[_get_chunk_index(row - chunk_size, col)] = 1
-	#if row < simulation_size.y - chunk_size:
-		#should_awake_chunk[_get_chunk_index(row + chunk_size, col)] = 1
-	#if col >= chunk_size:
-		#should_awake_chunk[_get_chunk_index(row, col - chunk_size)] = 1
-	#if col < simulation_size.x - chunk_size:
-		#should_awake_chunk[_get_chunk_index(row, col + chunk_size)] = 1
 
 ## Returns the Element resource at row, col.
 func get_element_resource(row: int, col: int) -> Element:
@@ -316,8 +308,9 @@ func set_element(row: int, col: int, element_name: String) -> void:
 	_set_cell_data(row, col, elements[_get_cell_id(row, col)].get_default_data(self, row, col))
 
 ## Updates the cell data at row, col.
-func set_data(row: int, col: int, data: int, update_color: bool = true) -> void:
-	_set_cell_data(row, col, data, update_color)
+## As an optimization, updating data does not automatically queue the chunk for visual updates.
+func set_data(row: int, col: int, data: int, update_visual: bool = false) -> void:
+	_set_cell_data(row, col, data, update_visual)
 
 ## Returns whether the location row, col is in bounds.
 func in_bounds(row: int, col: int) -> bool:

@@ -3,7 +3,6 @@ class_name Bacteria extends Solid
 # Data: assumes byte 2 for touch count
 
 @export_range(0, 1) var growth_rate: float = 0.1
-@export var surround_color_gradient: GradientTexture1D
 @export_range(0, 1) var surround_tolerance: float
 @export_range(0, 1) var loneliness_tolerance: float
 @export var home_material: String
@@ -37,7 +36,7 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	return true
 
 func get_color(_sim: Simulation, _row: int, _col: int, data: int) -> Color:
-	return surround_color_gradient.gradient.sample(get_byte(data, 2) / 8.0)
+	return color_gradient.gradient.sample(get_byte(data, 2) / 8.0)
 
 func grow(sim: Simulation, row: int, col: int) -> void:
 	if not sim.in_bounds(row, col):

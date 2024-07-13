@@ -17,5 +17,5 @@ high_heat_transformation = "empty"
 low_heat_point = -1.0
 low_heat_transformation = "empty"
 explosion_resistance = 1.0
-decay_proportion = 0.4
+decay_proportion = 0.3
 decay_transformation = "smoke"
