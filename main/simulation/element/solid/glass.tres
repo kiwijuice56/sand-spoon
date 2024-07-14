@@ -23,3 +23,4 @@ low_heat_transformation = "empty"
 explosion_resistance = 0.01
 decay_proportion = 0.0
 decay_transformation = "empty"
+reactivity = 0.0

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_4j56q")
 laser_color = Color(2.5, 1, 2.5, 1)
-reach = 2
+reach = 0.25
 ireach = 1
 unique_name = "laser"
 hidden = false
@@ -19,3 +19,5 @@ low_heat_transformation = "empty"
 explosion_resistance = 1.0
 decay_proportion = 0.3
 decay_transformation = "smoke"
+reactivity = 0.0
+reaction_count = 0

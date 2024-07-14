@@ -1,3 +1,4 @@
+@tool
 @icon("res://main/icons/bacteria_icon.svg")
 class_name Bacteria extends Solid
 # Data: assumes byte 2 for touch count

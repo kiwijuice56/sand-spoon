@@ -1,3 +1,4 @@
+@tool
 @icon("res://main/icons/element_icon.svg")
 class_name Element extends Resource
 # Data: assumes byte 0 and 1 for temperature.
@@ -36,12 +37,76 @@ class_name Element extends Resource
 @export_range(0, 1) var decay_proportion: float = 0.0
 @export var decay_transformation: String = "empty"
 
+@export_group("Transformation")
+## The proportion of frames that this particle checks its surroundings to undergo reactions.
+## For performance reasons, values < 0.05 are recommended.
+@export_range(0, 1) var reactivity: float = 0.0
+var reactants: Array[String] = []
+var products: Array[String] = []
+
 var ihigh_heat_point: int 
 var ilow_heat_point: int 
 var iinitial_temperature: int 
 
 # Set by inheriting classes if they change color with temperature, such as metals.
 var color_is_temperature_dependent: bool = false
+
+# https://www.reddit.com/r/godot/comments/11cpc9z/property_array_in_gdscript/
+func _get_property_list() -> Array[Dictionary]:
+	var properties: Array[Dictionary] = []
+
+	properties.append({
+		"name": "reaction_count",
+		"type": TYPE_INT,
+		"usage": PROPERTY_USAGE_ARRAY | PROPERTY_USAGE_DEFAULT,
+		"class_name": "Reactions,reaction_",
+		"hint": PROPERTY_HINT_NONE
+	})
+	
+	for i in reactants.size():
+		properties.append({
+			"name": "reaction_%d/reactant" % i,
+			"type": TYPE_STRING
+		})
+		properties.append({
+			"name": "reaction_%d/product" % i,
+			"type": TYPE_STRING
+		})
+	
+	return properties
+
+# https://www.reddit.com/r/godot/comments/11cpc9z/property_array_in_gdscript/
+func _get(property: Variant) -> Variant:
+	if property == "reaction_count":
+		return reactants.size()
+	if property.begins_with("reaction_"):
+		var parts: PackedStringArray = property.trim_prefix("reaction_").split("/")
+		var i: int = parts[0].to_int()
+		if parts[1] == "reactant":
+			return reactants[i]
+		else:
+			return products[i]
+	return null
+
+# https://www.reddit.com/r/godot/comments/11cpc9z/property_array_in_gdscript/
+func _set(property: StringName, value: Variant) -> bool:
+	if property == "reaction_count":
+		reactants.resize(value)
+		products.resize(value)
+		for i in reactants.size():
+			if not products[i] is String:
+				products[i] = ""
+			if not products[i] is String:
+				reactants[i] = ""
+		notify_property_list_changed()
+	elif property.begins_with("reaction_"):
+		var parts: PackedStringArray = property.trim_prefix("reaction_").split("/")
+		var i: int = parts[0].to_int()
+		if parts[1] == "reactant":
+			reactants[i] = value
+		else:
+			products[i] = value
+	return true
 
 ## Called once per element while the simulation is initialized. Must be called
 ## to properly set up class attributes.
@@ -61,6 +126,11 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	if Simulation.fast_randf() < decay_proportion:
 		sim.set_element(row, col, decay_transformation)
 		return false
+	if len(reactants) > 0 and Simulation.fast_randf() < reactivity:
+		for i in len(reactants):
+			if sim.is_touching(row, col, reactants[i]):
+				sim.set_element(row, col, products[i])
+				return false
 	if Simulation.fast_randf() < conductivity:
 		var new_temp: int = (get_temperature(data) + sim.get_chunk_temp(row, col)) >> 1
 		if new_temp > ihigh_heat_point:

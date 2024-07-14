@@ -1,3 +1,4 @@
+@tool
 @icon("res://main/icons/metal_icon.svg")
 class_name Metal extends Solid
 

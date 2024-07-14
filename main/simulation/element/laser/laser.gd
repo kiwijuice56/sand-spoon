@@ -1,3 +1,4 @@
+@tool
 @icon("res://main/icons/laser_icon.svg")
 class_name Laser extends Element
 

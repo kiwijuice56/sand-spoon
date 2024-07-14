@@ -17,3 +17,5 @@ low_heat_transformation = "empty"
 explosion_resistance = 0.1
 decay_proportion = 0.7
 decay_transformation = "fire"
+reactivity = 0.0
+reaction_count = 0

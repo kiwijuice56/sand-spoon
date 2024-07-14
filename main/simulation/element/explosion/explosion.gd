@@ -1,3 +1,4 @@
+@tool
 @icon("res://main/icons/explosion_icon.svg")
 class_name Explosion extends Element
 

@@ -296,6 +296,21 @@ func get_touch_count(row: int, col: int, element_name: String) -> int:
 			touches += 1
 	return touches
 
+## Returns the true of the cell at row, col is touching a particle of type
+## element_name. Tests all 8 directions.
+func is_touching(row: int, col: int, element_name: String) -> bool:
+	var target_id: int = name_id_map[element_name]
+	for i in 10:
+		if i == 4: # Center
+			continue
+		var row_offset: int = i / 3 - 1
+		var col_offset: int = i % 3 - 1
+		if not in_bounds(row + row_offset, col + col_offset):
+			continue
+		if _get_cell_id(row + row_offset, col + col_offset) == target_id:
+			return true
+	return false
+
 ## Returns the temperature (in an internal format) of the chunk that contains
 ## the particle at row, col. In order to reduce chunk seams, the temperature adjacent
 ## of chunks may be returned instead. 

@@ -1,3 +1,4 @@
+@tool
 @icon("res://main/icons/powder_icon.svg")
 class_name Powder extends Solid
 

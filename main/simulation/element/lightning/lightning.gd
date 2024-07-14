@@ -1,3 +1,4 @@
+@tool
 @icon("res://main/icons/lightning_icon.svg")
 class_name Lightning extends Element
 # Data: assumes byte 2 for excitation state.

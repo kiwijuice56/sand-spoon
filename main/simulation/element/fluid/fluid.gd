@@ -1,3 +1,4 @@
+@tool
 @icon("res://main/icons/fluid_icon.svg")
 class_name Fluid extends Element
 
