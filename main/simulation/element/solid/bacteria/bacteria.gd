@@ -37,7 +37,7 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	return true
 
 func get_color(_sim: Simulation, _row: int, _col: int, data: int) -> Color:
-	return color_gradient.gradient.sample(get_byte(data, 2) / 8.0)
+	return pixel_color.gradient.sample(get_byte(data, 2) / 8.0)
 
 func grow(sim: Simulation, row: int, col: int) -> void:
 	if not sim.in_bounds(row, col):

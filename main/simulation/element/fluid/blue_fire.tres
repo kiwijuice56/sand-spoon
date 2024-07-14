@@ -12,13 +12,13 @@ use_hdr = true
 
 [resource]
 script = ExtResource("1_s58vm")
-color_gradient = SubResource("GradientTexture1D_4abpj")
 viscosity = 0.5
 density = 0.3
 gravity_down = false
 unique_name = "blue fire"
 hidden = false
 ui_color = Color(0.317647, 0.729412, 0.854902, 1)
+pixel_color = SubResource("GradientTexture1D_4abpj")
 initial_temperature = 4500.0
 conductivity = 0.01
 high_heat_point = -1.0

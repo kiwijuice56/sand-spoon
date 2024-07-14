@@ -3,11 +3,8 @@
 class_name Lightning extends Element
 # Data: assumes byte 2 for excitation state.
 
-@export var excited_color: Color
-@export var unexcited_color: Color
-
+@export_group("Electricity dynamics")
 @export_range(0, 1) var fall_proportion: float = 0.9
-
 @export var unexcited_decay_proportion: float = 0.5
 @export var unexcited_decay_element: String
 
@@ -47,7 +44,7 @@ func kill(sim: Simulation, row: int, col: int, data: int) -> void:
 	sim.set_data(row, col, set_byte(data, 2, 1), true)
 
 func get_color(_sim: Simulation, _row: int, _col: int, data: int) -> Color:
-	return excited_color if get_byte(data, 2) == 0 else unexcited_color
+	return pixel_color.gradient.sample(1 - get_byte(data, 2))
 
 func get_default_data(sim: Simulation, row: int, col: int) -> int:
 	var data: int = super.get_default_data(sim, row, col)

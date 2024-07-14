@@ -18,6 +18,7 @@ gravity_down = false
 unique_name = "smoke"
 hidden = true
 ui_color = Color(0.211765, 0.156863, 0.156863, 1)
+pixel_color = SubResource("GradientTexture1D_ek3mb")
 initial_temperature = 293.0
 conductivity = 0.01
 high_heat_point = -1.0

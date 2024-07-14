@@ -1,15 +1,22 @@
-[gd_resource type="Resource" script_class="Laser" load_steps=2 format=3 uid="uid://bqgjw8wry45l0"]
+[gd_resource type="Resource" script_class="Laser" load_steps=4 format=3 uid="uid://bqgjw8wry45l0"]
 
 [ext_resource type="Script" path="res://main/simulation/element/laser/laser.gd" id="1_4j56q"]
 
+[sub_resource type="Gradient" id="Gradient_s2w3n"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(2.5, 0.7, 2.5, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vlc4b"]
+gradient = SubResource("Gradient_s2w3n")
+use_hdr = true
+
 [resource]
 script = ExtResource("1_4j56q")
-laser_color = Color(2.5, 1, 2.5, 1)
-reach = 0.25
-ireach = 1
+reach = 0.5
 unique_name = "laser"
 hidden = false
 ui_color = Color(0.95, 0.323, 0.68875, 1)
+pixel_color = SubResource("GradientTexture1D_vlc4b")
 initial_temperature = 6000.0
 conductivity = 0.0
 high_heat_point = -1.0
@@ -17,7 +24,7 @@ high_heat_transformation = "empty"
 low_heat_point = -1.0
 low_heat_transformation = "empty"
 explosion_resistance = 1.0
-decay_proportion = 0.3
+decay_proportion = 0.35
 decay_transformation = "smoke"
 reactivity = 0.0
 reaction_count = 0

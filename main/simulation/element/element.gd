@@ -10,6 +10,9 @@ class_name Element extends Resource
 @export var hidden: bool = false
 ## Base color for UI components involving this element, such as buttons.
 @export var ui_color: Color
+## Range of colors a pixel of this element can take on. The actual color depends on how
+## this element's implementation of get_color samples this gradient.
+@export var pixel_color: GradientTexture1D
 
 @export_group("Heat")
 @export_range(0, 10000, 0.1, "suffix:K") var initial_temperature: float = 293
@@ -99,6 +102,7 @@ func _set(property: StringName, value: Variant) -> bool:
 			if not products[i] is String:
 				reactants[i] = ""
 		notify_property_list_changed()
+		return true
 	elif property.begins_with("reaction_"):
 		var parts: PackedStringArray = property.trim_prefix("reaction_").split("/")
 		var i: int = parts[0].to_int()
@@ -106,7 +110,8 @@ func _set(property: StringName, value: Variant) -> bool:
 			reactants[i] = value
 		else:
 			products[i] = value
-	return true
+		return true
+	return false
 
 ## Called once per element while the simulation is initialized. Must be called
 ## to properly set up class attributes.
@@ -144,7 +149,7 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 
 ## Returns the color of the particle of this element type at row, col.
 func get_color(_sim: Simulation, _row: int, _col: int, _data: int) -> Color:
-	return ui_color
+	return pixel_color.gradient.sample(0)
 
 ## Return the default data integer when a new particle of this element type is created.
 func get_default_data(_sim: Simulation, _row: int, _col: int) -> int:
@@ -153,6 +158,10 @@ func get_default_data(_sim: Simulation, _row: int, _col: int) -> int:
 ## Called by the randomizer. Returns a duplicate of this element with randomized attributes.
 func create_random() -> Element:
 	var copy: Element = self.duplicate()
+	var copy_reaction_count: int = randi_range(0, 2)
+	copy.set("reaction_count", copy_reaction_count)
+	#for i in copy_reaction_count:
+	#	copy.set("reactant_" )
 	return copy
 
 static func get_temperature(data: int) -> int:

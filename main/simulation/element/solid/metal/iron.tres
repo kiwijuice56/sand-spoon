@@ -16,6 +16,7 @@ color_gradient = SubResource("GradientTexture1D_53825")
 unique_name = "iron"
 hidden = false
 ui_color = Color(0.58, 0.48053, 0.4582, 1)
+pixel_color = SubResource("GradientTexture1D_53825")
 initial_temperature = 293.0
 conductivity = 0.3
 high_heat_point = 1800.0

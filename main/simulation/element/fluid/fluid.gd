@@ -2,9 +2,6 @@
 @icon("res://main/icons/fluid_icon.svg")
 class_name Fluid extends Element
 
-## Range of colors based on height.
-@export var color_gradient: GradientTexture1D
-
 @export_group("Fluid dynamics")
 
 ## Thickness of the liquid.
@@ -45,7 +42,7 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	return true
 
 func get_color(sim: Simulation, row: int, _col: int, _data: int) -> Color:
-	return color_gradient.gradient.sample(1.0 - float(row) / sim.simulation_size.y)
+	return pixel_color.gradient.sample(1.0 - float(row) / sim.simulation_size.y)
 
 func can_swap(sim: Simulation, row: int, col: int, _data: int) -> bool:
 	if not sim.in_bounds(row, col):

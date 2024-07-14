@@ -14,6 +14,7 @@ color_gradient = SubResource("GradientTexture1D_4442x")
 unique_name = "bomb"
 hidden = false
 ui_color = Color(0.73, 0.2482, 0.33653, 1)
+pixel_color = SubResource("GradientTexture1D_4442x")
 initial_temperature = 293.0
 conductivity = 0.5
 high_heat_point = 500.0

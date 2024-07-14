@@ -1,12 +1,20 @@
-[gd_resource type="Resource" script_class="Empty" load_steps=2 format=3 uid="uid://bv0qbdwy81m1a"]
+[gd_resource type="Resource" script_class="Empty" load_steps=4 format=3 uid="uid://bv0qbdwy81m1a"]
 
 [ext_resource type="Script" path="res://main/simulation/element/empty/empty.gd" id="1_m73bc"]
+
+[sub_resource type="Gradient" id="Gradient_kjrii"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.105882, 0.12549, 0.286275, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_721sb"]
+gradient = SubResource("Gradient_kjrii")
 
 [resource]
 script = ExtResource("1_m73bc")
 unique_name = "empty"
 hidden = false
 ui_color = Color(0.106477, 0.125597, 0.2879, 1)
+pixel_color = SubResource("GradientTexture1D_721sb")
 initial_temperature = 293.0
 conductivity = 0.5
 high_heat_point = -1.0
@@ -17,8 +25,4 @@ explosion_resistance = 0.0
 decay_proportion = 0.0
 decay_transformation = "empty"
 reactivity = 0.0
-reaction_count = 2
-reaction_0/reactant = ""
-reaction_0/product = ""
-reaction_1/reactant = ""
-reaction_1/product = ""
+reaction_count = 0

@@ -21,8 +21,6 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 	paint_image(image)
 
 func create_elements(template_element: Element) -> void:
-	# Other elements types not yet supported
-	assert(template_element is Fluid or template_element is Solid)
 	palette.append(background_color)
 	for i in len(palette):
 		var color: Color = palette[i]
@@ -30,8 +28,8 @@ func create_elements(template_element: Element) -> void:
 		var new_gradient: Gradient = Gradient.new()
 		new_gradient.set_color(0, color.darkened(random_variation))
 		new_gradient.set_color(1, color.lightened(random_variation))
-		new_element.color_gradient = GradientTexture1D.new()
-		new_element.color_gradient.gradient = new_gradient
+		new_element.pixel_color = GradientTexture1D.new()
+		new_element.pixel_color.gradient = new_gradient
 		new_element.unique_name = "_internal_palette_" + str(i)
 		
 		sim.add_element(new_element)

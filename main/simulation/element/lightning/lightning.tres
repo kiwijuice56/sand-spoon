@@ -1,17 +1,24 @@
-[gd_resource type="Resource" script_class="Lightning" load_steps=2 format=3 uid="uid://bp4x60s3nqgcq"]
+[gd_resource type="Resource" script_class="Lightning" load_steps=4 format=3 uid="uid://bp4x60s3nqgcq"]
 
 [ext_resource type="Script" path="res://main/simulation/element/lightning/lightning.gd" id="1_k3qkw"]
 
+[sub_resource type="Gradient" id="Gradient_uylah"]
+offsets = PackedFloat32Array(0, 0.996169)
+colors = PackedColorArray(1.2, 1.2, 0.5, 1, 2, 2, 2, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ss1au"]
+gradient = SubResource("Gradient_uylah")
+use_hdr = true
+
 [resource]
 script = ExtResource("1_k3qkw")
-excited_color = Color(2, 2, 2, 1)
-unexcited_color = Color(1.2, 1.2, 0.5, 1)
 fall_proportion = 0.9
 unexcited_decay_proportion = 0.25
 unexcited_decay_element = "fire"
 unique_name = "lightning"
 hidden = false
 ui_color = Color(0.688053, 0.76, 0.2204, 1)
+pixel_color = SubResource("GradientTexture1D_ss1au")
 initial_temperature = 9000.0
 conductivity = 0.0
 high_heat_point = -1.0

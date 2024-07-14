@@ -252,7 +252,7 @@ func _waken_chunk(row: int, col: int) -> void:
 
 ## Adds a new element to the simulation. Only set default_element to true
 ## if this element is already in this simulation's elements array.
-func add_element(element: Resource, default_element: bool = false) -> void:
+func add_element(element: Element, default_element: bool = false) -> void:
 	element.initialize()
 	
 	# Initialize name/element mapping.
@@ -262,6 +262,9 @@ func add_element(element: Resource, default_element: bool = false) -> void:
 	
 	if not default_element:
 		elements.append(element)
+
+func get_all_elements() -> Array[Element]:
+	return elements
 
 ## Returns the Element resource at row, col.
 func get_element_resource(row: int, col: int) -> Element:

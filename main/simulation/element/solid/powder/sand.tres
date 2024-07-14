@@ -15,6 +15,7 @@ color_gradient = SubResource("GradientTexture1D_k6c5h")
 unique_name = "sand"
 hidden = false
 ui_color = Color(1, 0.654667, 0.26, 1)
+pixel_color = SubResource("GradientTexture1D_k6c5h")
 initial_temperature = 293.0
 conductivity = 0.2
 high_heat_point = 1000.0
