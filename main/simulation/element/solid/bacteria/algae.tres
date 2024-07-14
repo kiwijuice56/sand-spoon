@@ -12,14 +12,13 @@ gradient = SubResource("Gradient_jq85j")
 [resource]
 script = ExtResource("1_mo5jl")
 growth_rate = 0.02
-surround_color_gradient = SubResource("GradientTexture1D_aw1te")
 surround_tolerance = 0.7
 loneliness_tolerance = 0.3
 home_material = "water"
 color_gradient = SubResource("GradientTexture1D_aw1te")
 unique_name = "algae"
 hidden = false
-ui_color = Color(0.299998, 0.50149, 0.324924, 1)
+ui_color = Color(0.358053, 0.58, 0.2552, 1)
 initial_temperature = 293.0
 conductivity = 0.5
 high_heat_point = 350.0

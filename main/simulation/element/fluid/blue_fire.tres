@@ -4,7 +4,7 @@
 
 [sub_resource type="Gradient" id="Gradient_v6lfo"]
 offsets = PackedFloat32Array(0, 0.995)
-colors = PackedColorArray(0.49, 0.72, 2, 1, 1, 1.2, 2.5, 1)
+colors = PackedColorArray(0.49, 0.72, 2.2, 1, 1, 1.2, 2.8, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_4abpj"]
 gradient = SubResource("Gradient_v6lfo")
@@ -18,8 +18,8 @@ density = 0.3
 gravity_down = false
 unique_name = "blue fire"
 hidden = false
-ui_color = Color(0.316274, 0.587529, 0.856595, 1)
-initial_temperature = 3500.0
+ui_color = Color(0.317647, 0.729412, 0.854902, 1)
+initial_temperature = 4500.0
 conductivity = 0.01
 high_heat_point = -1.0
 high_heat_transformation = "empty"

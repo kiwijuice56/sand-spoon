@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://main/simulation/element/solid/solid.gd" id="1_wxhgb"]
 
 [sub_resource type="Gradient" id="Gradient_u8fop"]
-colors = PackedColorArray(0.45098, 0, 0, 1, 1, 0.879, 0.67, 1)
+colors = PackedColorArray(0.45, 0, 0.345, 1, 1, 0.879, 0.67, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_4442x"]
 gradient = SubResource("Gradient_u8fop")
@@ -13,7 +13,7 @@ script = ExtResource("1_wxhgb")
 color_gradient = SubResource("GradientTexture1D_4442x")
 unique_name = "bomb"
 hidden = false
-ui_color = Color(0.729412, 0.447059, 0.341176, 1)
+ui_color = Color(0.73, 0.2482, 0.33653, 1)
 initial_temperature = 293.0
 conductivity = 0.5
 high_heat_point = 500.0

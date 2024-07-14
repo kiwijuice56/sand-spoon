@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://main/simulation/element/solid/metal/metal.gd" id="1_xt6mq"]
 
 [sub_resource type="Gradient" id="Gradient_qosj6"]
-colors = PackedColorArray(0.33, 0.2805, 0.2475, 1, 0.56, 0.48272, 0.4312, 1)
+colors = PackedColorArray(0.33, 0.2805, 0.2475, 1, 0.56, 0.5432, 0.532, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_53825"]
 gradient = SubResource("Gradient_qosj6")
@@ -15,7 +15,7 @@ heat_gradient = ExtResource("1_k1nxe")
 color_gradient = SubResource("GradientTexture1D_53825")
 unique_name = "iron"
 hidden = false
-ui_color = Color(0.56, 0.418227, 0.3864, 1)
+ui_color = Color(0.58, 0.48053, 0.4582, 1)
 initial_temperature = 293.0
 conductivity = 0.3
 high_heat_point = 1800.0

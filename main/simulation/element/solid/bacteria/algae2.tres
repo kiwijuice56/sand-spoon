@@ -12,7 +12,6 @@ gradient = SubResource("Gradient_jq85j")
 [resource]
 script = ExtResource("1_uag6e")
 growth_rate = 0.02
-surround_color_gradient = SubResource("GradientTexture1D_aw1te")
 surround_tolerance = 1.0
 loneliness_tolerance = 0.6
 home_material = "water"

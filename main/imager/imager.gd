@@ -4,6 +4,7 @@ class_name Imager extends Node
 @export var paint_element: Element
 @export var palette: Array[Color]
 @export var background_color: Color
+@export var random_variation: float = 0.2
 
 var palette_map: Dictionary
 var color_cache: Dictionary
@@ -27,8 +28,8 @@ func create_elements(template_element: Element) -> void:
 		var color: Color = palette[i]
 		var new_element: Element = template_element.duplicate()
 		var new_gradient: Gradient = Gradient.new()
-		new_gradient.set_color(0, color.darkened(0.1))
-		new_gradient.set_color(1, color.lightened(0.1))
+		new_gradient.set_color(0, color.darkened(random_variation))
+		new_gradient.set_color(1, color.lightened(random_variation))
 		new_element.color_gradient = GradientTexture1D.new()
 		new_element.color_gradient.gradient = new_gradient
 		new_element.unique_name = "_internal_palette_" + str(i)
