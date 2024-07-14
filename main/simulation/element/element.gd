@@ -3,41 +3,48 @@ class_name Element extends Resource
 # Data: assumes byte 0 and 1 for temperature.
 
 @export_group("Appearance")
-## Name used in UI and code.
+## Name used in the UI and by other element scripts.
 @export var unique_name: String
+## If true, this element will not appear in the UI.
 @export var hidden: bool = false
-
-## Base color for UI components for this element.
+## Base color for UI components involving this element, such as buttons.
 @export var ui_color: Color
 
 @export_group("Heat")
-@export_range(0, 10000, 0.1, "or_greater", "suffix:K") var initial_temperature: float = 293
+@export_range(0, 10000, 0.1, "suffix:K") var initial_temperature: float = 293
+## The proportion of frames that this particle updates its temperature.
+## More conductive elements will react faster to local changes in temperature.
 @export_range(0, 1) var conductivity: float = 0.5
 @export_subgroup("High")
 ## The temperature at which this element will transform into high_heat_transformation. 
 ## No effect if set to -1.
-@export_range(-1, 10000, 0.1, "or_greater", "suffix:K") var high_heat_point: float = -1
+@export_range(-1, 10000, 0.1, "suffix:K") var high_heat_point: float = -1
 @export var high_heat_transformation: String = "empty"
 @export_subgroup("Low")
 ## The temperature at which this element will transform into low_heat_transformation. 
 ## No effect if set to -1.
-@export_range(-1, 10000, 0.1, "or_greater", "suffix:K") var low_heat_point: float = -1
+@export_range(-1, 10000, 0.1, "suffix:K") var low_heat_point: float = -1
 @export var low_heat_transformation: String = "empty"
 
 @export_group("Explosion")
+## The resistance this element has to destruction when interacted with by elements such as lasers
+## and bombs.
 @export_range(0, 1) var explosion_resistance: float = 0.1
 
 @export_group("Decay")
-## The probability that this element will decay into decay_transformation on any frame.
+## The probability that this element will decay into decay_transformation when processed.
 @export_range(0, 1) var decay_proportion: float = 0.0
 @export var decay_transformation: String = "empty"
 
 var ihigh_heat_point: int 
 var ilow_heat_point: int 
 var iinitial_temperature: int 
+
+# Set by inheriting classes if they change color with temperature, such as metals.
 var color_is_temperature_dependent: bool = false
 
-## Called once per element while the simulation is initialized.
+## Called once per element while the simulation is initialized. Must be called
+## to properly set up class attributes.
 func initialize() -> void:
 	if high_heat_point <= 0:
 		ihigh_heat_point = 65535
@@ -49,6 +56,7 @@ func initialize() -> void:
 		ilow_heat_point = convert_temperature(low_heat_point)
 	iinitial_temperature = convert_temperature(initial_temperature)
 
+## Called by the simulation when it encounters this element at row, col.
 func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	if Simulation.fast_randf() < decay_proportion:
 		sim.set_element(row, col, decay_transformation)
@@ -64,12 +72,15 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 		sim.set_data(row, col, set_temperature(data, new_temp), color_is_temperature_dependent)
 	return true
 
+## Returns the color of the particle of this element type at row, col.
 func get_color(_sim: Simulation, _row: int, _col: int, _data: int) -> Color:
 	return ui_color
 
+## Return the default data integer when a new particle of this element type is created.
 func get_default_data(_sim: Simulation, _row: int, _col: int) -> int:
 	return iinitial_temperature
 
+## Called by the randomizer. Returns a duplicate of this element with randomized attributes.
 func create_random() -> Element:
 	var copy: Element = self.duplicate()
 	return copy
@@ -80,6 +91,7 @@ static func get_temperature(data: int) -> int:
 static func set_temperature(data: int, temperature: int) -> int:
 	return (data & 0xFFFF0000) | temperature
 
+# Converts kelvin temperature (as a flaot) into an internal format (as a 16-bit int). 
 static func convert_temperature(kelvin_temp: float) -> int:
 	return int(sqrt(kelvin_temp) * 65535.0/100.0)
 

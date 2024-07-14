@@ -217,16 +217,16 @@ func _set_cell_id(row: int, col: int, element_id: int) -> void:
 	_waken_chunk(row, col)
 	var old_id: int = cell_id[row * simulation_size.x + col]
 	cell_id[row * simulation_size.x + col] = element_id
-	chunk_update[_get_chunk_index(row, col)] = 1
+	chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
 	if old_id == 0 and element_id > 0:
-		alive_count[_get_chunk_index(row, col)] += 1
+		alive_count[row / chunk_size * simulation_size_chunk.x + col / chunk_size] += 1
 	elif old_id > 0 and element_id == 0:
-		alive_count[_get_chunk_index(row, col)] -= 1
+		alive_count[row / chunk_size * simulation_size_chunk.x + col / chunk_size] -= 1
 
 func _set_cell_data(row: int, col: int, data: int, update_color: bool = true) -> void:
 	cell_data[row * simulation_size.x + col] = data
 	if update_color:
-		chunk_update[_get_chunk_index(row, col)] = 1
+		chunk_update[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
 
 func _get_chunk_temp(row: int, col: int, default: int = idefault_temperature) -> int:
 	if row < 0 or col < 0 or row >= simulation_size_chunk.y or col >= simulation_size_chunk.x: 
@@ -237,19 +237,21 @@ func _get_chunk_index(row: int, col: int) -> int:
 	return row / chunk_size * simulation_size_chunk.x + col / chunk_size
 
 func _waken_chunk(row: int, col: int) -> void:
-	should_awake_chunk[_get_chunk_index(row, col)] = 1
+	should_awake_chunk[row / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
 	var chunk_row: int = row % chunk_size
 	var chunk_col: int = col % chunk_size
 	
 	if row > 0 and chunk_row == 0:
-		should_awake_chunk[_get_chunk_index(row - 1, col)] = 1
+		should_awake_chunk[(row - 1) / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
 	if row < simulation_size.y - 1 and chunk_row == chunk_size - 1:
-		should_awake_chunk[_get_chunk_index(row + 1, col)] = 1
+		should_awake_chunk[(row + 1) / chunk_size * simulation_size_chunk.x + col / chunk_size] = 1
 	if col > 0 and chunk_col == 0:
-		should_awake_chunk[_get_chunk_index(row, col - 1)] = 1
+		should_awake_chunk[row / chunk_size * simulation_size_chunk.x + (col - 1) / chunk_size] = 1
 	if col < simulation_size.x - 1 and chunk_col == chunk_size - 1:
-		should_awake_chunk[_get_chunk_index(row, col + 1)] = 1
+		should_awake_chunk[row / chunk_size * simulation_size_chunk.x + (col + 1) / chunk_size] = 1
 
+## Adds a new element to the simulation. Only set default_element to true
+## if this element is already in this simulation's elements array.
 func add_element(element: Resource, default_element: bool = false) -> void:
 	element.initialize()
 	
@@ -265,17 +267,21 @@ func add_element(element: Resource, default_element: bool = false) -> void:
 func get_element_resource(row: int, col: int) -> Element:
 	return elements[_get_cell_id(row, col)]
 
-## Returns the element name at row, col.
+## Returns the element's unique_name at row, col.
 func get_element(row: int, col: int) -> String:
 	return id_name_map[_get_cell_id(row, col)]
 
-## Returns the cell data at row, col.
+## Returns the particle's data at row, col.
 func get_data(row: int, col: int) -> int:
 	return cell_data[row * simulation_size.x + col]
 
+## Returns the Element resource whose unique_name is equal to element_name.
 func get_element_resource_from_name(element_name: String) -> Element:
 	return elements[name_id_map[element_name]]
 
+## Returns the amount of particles touching the cell at row, col that
+## match element_name. Tests all 8 directions and thus can return
+## an integer from [0, 8].
 func get_touch_count(row: int, col: int, element_name: String) -> int:
 	var touches: int = 0
 	var target_id: int = name_id_map[element_name]
@@ -290,6 +296,9 @@ func get_touch_count(row: int, col: int, element_name: String) -> int:
 			touches += 1
 	return touches
 
+## Returns the temperature (in an internal format) of the chunk that contains
+## the particle at row, col. In order to reduce chunk seams, the temperature adjacent
+## of chunks may be returned instead. 
 func get_chunk_temp(row: int, col: int) -> int:
 	var original_row: int = row
 	var original_col: int = col
@@ -306,6 +315,10 @@ func get_chunk_temp(row: int, col: int) -> int:
 		col = original_col
 	return chunk_temp[row / chunk_size * simulation_size_chunk.x + col / chunk_size] 
 
+## Updates the element at row, col. In contrast to set_element, this function
+## forcefully updates chunk awakeness state, which prevents painted cells
+## from being accidentally skipped in processing if paint_element
+## is called in the middle of a frame. 
 func paint_element(row: int, col: int, element_name: String) -> void:
 	set_element(row, col, element_name)
 	awake_chunk[_get_chunk_index(row, col)] = 1

@@ -6,16 +6,8 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 		return false
 	if sim.in_bounds(row + 1, col) and not sim.get_element_resource(row + 1, col) is Solid:
 		sim.swap(row, col, row + 1, col)
-		return true
-	var right: bool = sim.in_bounds(row + 1, col + 1) and not sim.get_element_resource(row + 1, col + 1) is Solid
-	var left: bool = sim.in_bounds(row + 1, col - 1) and not sim.get_element_resource(row + 1, col - 1) is Solid
-	if left and right:
-		if Simulation.fast_randf() < 0.5:
-			left = false
-		else:
-			right = false
-	if left:
+	elif sim.in_bounds(row + 1, col - 1) and not sim.get_element_resource(row + 1, col - 1) is Solid:
 		sim.swap(row, col, row + 1, col - 1)
-	elif right:
+	elif sim.in_bounds(row + 1, col + 1) and not sim.get_element_resource(row + 1, col + 1) is Solid:
 		sim.swap(row, col, row + 1, col + 1)
 	return true
