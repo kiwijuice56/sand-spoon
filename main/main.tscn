@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://0hq7inj0b37n"]
+[gd_scene load_steps=35 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="2_55j5a"]
@@ -27,6 +27,8 @@
 [ext_resource type="Resource" uid="uid://bk7enrwwen0cy" path="res://main/simulation/element/solid/bacteria/algae.tres" id="23_0odrx"]
 [ext_resource type="Resource" uid="uid://bucpwy7x6f4yo" path="res://main/simulation/element/solid/bacteria/algae2.tres" id="24_amm3t"]
 [ext_resource type="Resource" uid="uid://dh1yfga204xo6" path="res://main/simulation/element/solid/bacteria/algae3.tres" id="25_k7cdb"]
+[ext_resource type="Script" path="res://main/imager/imager.gd" id="27_l1ofn"]
+[ext_resource type="Resource" uid="uid://dq14b6yrg8on4" path="res://main/simulation/element/solid/powder/paint_sand.tres" id="28_xgmfg"]
 
 [sub_resource type="Image" id="Image_8txf5"]
 data = {
@@ -93,6 +95,12 @@ sim = NodePath("..")
 selector = NodePath("../../ElementSelector")
 brush_radius = 5
 powder_skip_proportion = 0.9
+
+[node name="Imager" type="Node" parent="VBoxContainer/HBoxContainer/Simulation" node_paths=PackedStringArray("sim")]
+script = ExtResource("27_l1ofn")
+sim = NodePath("..")
+paint_element = ExtResource("28_xgmfg")
+palette = Array[Color]([Color(0.054902, 0.388235, 0.294118, 1), Color(0.141176, 0.596078, 0.235294, 1), Color(0.466667, 0.682353, 0.164706, 1), Color(0.631373, 0.858824, 0.372549, 1), Color(0.929412, 0.972549, 0.941176, 1), Color(0.960784, 0.972549, 0.678431, 1), Color(1, 0.894118, 0.486275, 1), Color(0.886275, 0.65098, 0.368627, 1), Color(0.780392, 0.501961, 0.262745, 1), Color(0.713726, 0.364706, 0.141176, 1), Color(0.611765, 0.121569, 0.0431373, 1), Color(0.266667, 0.0627451, 0.247059, 1), Color(0.435294, 0.12549, 0.494118, 1), Color(0.541176, 0.372549, 0.784314, 1), Color(0.603922, 0.65098, 1, 1), Color(0.780392, 0.980392, 1, 1), Color(0.576471, 0.929412, 0.964706, 1), Color(0.411765, 0.74902, 0.847059, 1), Color(0.156863, 0.498039, 0.615686, 1), Color(0.101961, 0.298039, 0.411765, 1), Color(0.00392157, 0.168627, 0.203922, 1), Color(0.776471, 0.847059, 0.839216, 1), Color(0.0807833, 0.0807833, 0.0807833, 1), Color(0.171637, 0.171637, 0.171637, 1), Color(0.341589, 0.34492, 0.34492, 1), Color(0.858831, 0.860894, 0.860893, 1), Color(0.38, 0.187847, 0.0988, 1), Color(0.53, 0.350242, 0.2385, 1), Color(0.66, 0.53856, 0.3564, 1)])
 
 [node name="FPSLabel" parent="VBoxContainer" instance=ExtResource("3_54ca0")]
 layout_mode = 2

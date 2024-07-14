@@ -2,7 +2,7 @@
 class_name Element extends Resource
 # Data: assumes byte 0 and 1 for temperature.
 
-@export_group("UI")
+@export_group("Appearance")
 ## Name used in UI and code.
 @export var unique_name: String
 @export var hidden: bool = false
@@ -69,6 +69,10 @@ func get_color(_sim: Simulation, _row: int, _col: int, _data: int) -> Color:
 
 func get_default_data(_sim: Simulation, _row: int, _col: int) -> int:
 	return iinitial_temperature
+
+func create_random() -> Element:
+	var copy: Element = self.duplicate()
+	return copy
 
 static func get_temperature(data: int) -> int:
 	return data & 0xFFFF

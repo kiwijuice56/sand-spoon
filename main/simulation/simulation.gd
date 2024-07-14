@@ -50,17 +50,14 @@ func _ready() -> void:
 	assert(simulation_size.x % chunk_size == 0 and simulation_size.y % chunk_size == 0)
 	_update_rect()
 	
-	# Set default temperature to the temperature of Empty.
-	for element in elements:
-		element.initialize()
-		if element is Empty:
-			idefault_temperature = element.iinitial_temperature
-	
-	# Initialize name/element mapping.
+	id_name_map = []
 	name_id_map = {}
-	for i in range(len(elements)):
-		name_id_map[elements[i].unique_name] = i
-		id_name_map.append(elements[i].unique_name)
+	
+	for element in elements:
+		add_element(element, true)
+	
+	# Set default temperature to the temperature of Empty.
+	idefault_temperature = elements[0].iinitial_temperature
 	
 	cell_id = []
 	cell_data = []
@@ -252,6 +249,17 @@ func _waken_chunk(row: int, col: int) -> void:
 		should_awake_chunk[_get_chunk_index(row, col - 1)] = 1
 	if col < simulation_size.x - 1 and chunk_col == chunk_size - 1:
 		should_awake_chunk[_get_chunk_index(row, col + 1)] = 1
+
+func add_element(element: Resource, default_element: bool = false) -> void:
+	element.initialize()
+	
+	# Initialize name/element mapping.
+	for i in range(len(elements)):
+		name_id_map[elements[i].unique_name] = i
+		id_name_map.append(elements[i].unique_name)
+	
+	if not default_element:
+		elements.append(element)
 
 ## Returns the Element resource at row, col.
 func get_element_resource(row: int, col: int) -> Element:
