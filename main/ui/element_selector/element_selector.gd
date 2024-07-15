@@ -7,6 +7,11 @@ signal element_selected(element: Element)
 
 func _ready() -> void:
 	update_element_buttons()
+	sim.element_added.connect(_on_element_added)
+
+func _on_element_added(update_ui: bool) -> void:
+	if update_ui:
+		update_element_buttons()
 
 func _on_element_selected(element: Element) -> void:
 	element_selected.emit(element)

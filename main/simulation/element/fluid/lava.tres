@@ -12,7 +12,6 @@ use_hdr = true
 
 [resource]
 script = ExtResource("1_n3dfq")
-color_gradient = SubResource("GradientTexture1D_06wvk")
 viscosity = 1.0
 density = 3100.0
 gravity_down = true

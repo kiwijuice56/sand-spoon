@@ -10,7 +10,6 @@ gradient = SubResource("Gradient_0l8vj")
 
 [resource]
 script = ExtResource("1_2qh2h")
-color_gradient = SubResource("GradientTexture1D_jkw6h")
 viscosity = 0.8
 density = 0.59
 gravity_down = false

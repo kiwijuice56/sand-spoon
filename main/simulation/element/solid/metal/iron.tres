@@ -12,7 +12,6 @@ gradient = SubResource("Gradient_qosj6")
 [resource]
 script = ExtResource("1_xt6mq")
 heat_gradient = ExtResource("1_k1nxe")
-color_gradient = SubResource("GradientTexture1D_53825")
 unique_name = "iron"
 hidden = false
 ui_color = Color(0.58, 0.48053, 0.4582, 1)

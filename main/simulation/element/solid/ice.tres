@@ -10,7 +10,6 @@ gradient = SubResource("Gradient_5bmt2")
 
 [resource]
 script = ExtResource("1_34fcx")
-color_gradient = SubResource("GradientTexture1D_3md6k")
 unique_name = "ice"
 hidden = false
 ui_color = Color(0.3619, 0.77, 0.749595, 1)

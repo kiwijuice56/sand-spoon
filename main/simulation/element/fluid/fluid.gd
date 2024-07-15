@@ -5,9 +5,9 @@ class_name Fluid extends Element
 @export_group("Fluid dynamics")
 
 ## Thickness of the liquid.
-@export_range(0, 1) var viscosity: float
+@export_range(0, 1) var viscosity: float = 0.5
 ## Denser fluids can sink through less dense fluids.
-@export_range(0, 4000, 0.01, "or_greater", "suffix:kg/m^3") var density: float 
+@export_range(0, 4000, 0.01, "or_greater", "suffix:kg/m^3") var density: float = 1000.0
 @export var gravity_down: bool = true
 
 var dispersion: int

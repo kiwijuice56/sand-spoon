@@ -15,7 +15,6 @@ growth_rate = 0.02
 surround_tolerance = 0.7
 loneliness_tolerance = 0.3
 home_material = "water"
-color_gradient = SubResource("GradientTexture1D_aw1te")
 unique_name = "algae"
 hidden = false
 ui_color = Color(0.358053, 0.58, 0.2552, 1)

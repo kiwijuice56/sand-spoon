@@ -10,7 +10,6 @@ gradient = SubResource("Gradient_ombda")
 
 [resource]
 script = ExtResource("1_oo7gl")
-color_gradient = SubResource("GradientTexture1D_p7pwv")
 viscosity = 0.6
 density = 750.0
 gravity_down = true

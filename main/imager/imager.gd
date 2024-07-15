@@ -31,6 +31,7 @@ func create_elements(template_element: Element) -> void:
 		new_element.pixel_color = GradientTexture1D.new()
 		new_element.pixel_color.gradient = new_gradient
 		new_element.unique_name = "_internal_palette_" + str(i)
+		new_element.hidden = true
 		
 		sim.add_element(new_element)
 		

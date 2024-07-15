@@ -2,7 +2,7 @@
 @icon("res://main/icons/metal_icon.svg")
 class_name Metal extends Solid
 
-@export var heat_gradient: GradientTexture1D
+@export var heat_gradient: GradientTexture1D = preload("res://main/simulation/element/default_temperature_color_gradient.tres")
 
 func initialize() -> void:
 	super.initialize()

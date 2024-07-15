@@ -10,7 +10,6 @@ gradient = SubResource("Gradient_snu3c")
 
 [resource]
 script = ExtResource("1_4f7rg")
-color_gradient = SubResource("GradientTexture1D_qb12j")
 unique_name = "glass"
 hidden = false
 ui_color = Color(0.4554, 0.64308, 0.69, 1)

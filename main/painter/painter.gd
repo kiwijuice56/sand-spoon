@@ -6,6 +6,7 @@ class_name Painter extends Node
 @export var brush_radius: int
 @export var line_step: float = 0.5
 @export var powder_skip_proportion: float = 0.25
+@export var critter_skip_proportion: float = 0.25
 
 var current_element: String = "sand"
 var is_tapping: bool = false
@@ -59,5 +60,7 @@ func paint_pixel(row: int, col: int, element_name: String) -> void:
 	if element_resource is Fluid and old_element_resource is Solid:
 		return
 	if element_resource is Powder and Simulation.fast_randf() < powder_skip_proportion:
+		return
+	if element_resource is Critter and Simulation.fast_randf() < critter_skip_proportion:
 		return
 	sim.paint_element(row, col, element_name)

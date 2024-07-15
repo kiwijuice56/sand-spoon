@@ -10,7 +10,6 @@ gradient = SubResource("Gradient_u8fop")
 
 [resource]
 script = ExtResource("1_wxhgb")
-color_gradient = SubResource("GradientTexture1D_4442x")
 unique_name = "bomb"
 hidden = false
 ui_color = Color(0.73, 0.2482, 0.33653, 1)

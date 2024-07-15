@@ -3,9 +3,9 @@
 class_name Bacteria extends Solid
 # Data: assumes byte 2 for touch count
 
-@export_range(0, 1) var growth_rate: float = 0.1
-@export_range(0, 1) var surround_tolerance: float
-@export_range(0, 1) var loneliness_tolerance: float
+@export_range(0, 1) var growth_rate: float = 0.02
+@export_range(0, 1) var surround_tolerance: float = 0.8
+@export_range(0, 1) var loneliness_tolerance: float = 0.3
 @export var home_material: String
 
 var surround_min: int

@@ -3,7 +3,7 @@
 class_name Laser extends Element
 
 @export_group("Beam dynamics")
-@export_range(0, 1, 0.25) var reach: float = 0.25
+@export_range(0, 1, 0.25) var reach: float = 0.5
 
 var ireach: int = 1
 

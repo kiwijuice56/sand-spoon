@@ -1,4 +1,30 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dwfevn8ahgyc0"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dwfevn8ahgyc0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0i68"]
+bg_color = Color(0.65287, 0.652861, 0.652863, 0.177)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rglrg"]
+bg_color = Color(0.988, 0.988, 0.988, 0.177)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g33ju"]
+content_margin_left = 4.0
+bg_color = Color(1, 1, 1, 0.0666667)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b6bwa"]
+content_margin_left = 4.0
+bg_color = Color(0, 0, 0, 0.599)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tcnif"]
+bg_color = Color(0, 0, 0, 0.659)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pc21p"]
 bg_color = Color(0.374139, 0.374139, 0.374139, 1)
@@ -9,5 +35,17 @@ bg_color = Color(0.219501, 0.219501, 0.219501, 1)
 expand_margin_left = 8.0
 
 [resource]
+default_font_size = 12
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/styles/disabled = SubResource("StyleBoxFlat_k0i68")
+Button/styles/focus = SubResource("StyleBoxFlat_rglrg")
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/colors/font_placeholder_color = Color(0.875, 0.875, 0.875, 0.374)
+LineEdit/styles/focus = SubResource("StyleBoxFlat_g33ju")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_b6bwa")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_tcnif")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_pc21p")
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_rvvar")

@@ -45,6 +45,8 @@ var thread_counter_done: int
 var global_row_offset: int 
 var frame_count: int = 0
 
+signal element_added(update_ui: bool)
+
 func _ready() -> void:
 	randomize()
 	assert(simulation_size.x % chunk_size == 0 and simulation_size.y % chunk_size == 0)
@@ -252,16 +254,20 @@ func _waken_chunk(row: int, col: int) -> void:
 
 ## Adds a new element to the simulation. Only set default_element to true
 ## if this element is already in this simulation's elements array.
-func add_element(element: Element, default_element: bool = false) -> void:
+func add_element(element: Element, default_element: bool = false, update_ui: bool = false) -> void:
 	element.initialize()
+	
+	if not default_element:
+		elements.append(element)
+	
+	id_name_map.resize(len(elements))
 	
 	# Initialize name/element mapping.
 	for i in range(len(elements)):
 		name_id_map[elements[i].unique_name] = i
-		id_name_map.append(elements[i].unique_name)
+		id_name_map[i] = elements[i].unique_name
 	
-	if not default_element:
-		elements.append(element)
+	element_added.emit(update_ui)
 
 func get_all_elements() -> Array[Element]:
 	return elements

@@ -5,7 +5,7 @@ class_name Lightning extends Element
 
 @export_group("Electricity dynamics")
 @export_range(0, 1) var fall_proportion: float = 0.9
-@export var unexcited_decay_proportion: float = 0.5
+@export var unexcited_decay_proportion: float = 0.3
 @export var unexcited_decay_element: String
 
 func process(sim: Simulation, row: int, col: int, data: int) -> bool:

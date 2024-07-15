@@ -14,4 +14,5 @@ func initialize(element: Element) -> void:
 	
 	add_theme_stylebox_override("normal", base_style)
 	add_theme_stylebox_override("hover", hover_style)
+	# add_theme_stylebox_override("focus", focus_style)
 	add_theme_stylebox_override("pressed", press_style)
