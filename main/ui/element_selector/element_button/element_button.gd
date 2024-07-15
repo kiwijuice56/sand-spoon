@@ -14,5 +14,10 @@ func initialize(element: Element) -> void:
 	
 	add_theme_stylebox_override("normal", base_style)
 	add_theme_stylebox_override("hover", hover_style)
-	# add_theme_stylebox_override("focus", focus_style)
 	add_theme_stylebox_override("pressed", press_style)
+	
+	if element.ui_color.get_luminance() > 0.75:
+		add_theme_color_override("font_color", "#000000")
+		add_theme_color_override("font_hover_color", "#000000")
+		add_theme_color_override("font_pressed_color", "#000000")
+		add_theme_color_override("font_focus_color", "#000000")

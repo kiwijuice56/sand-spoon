@@ -75,6 +75,8 @@ func prompt(element_name: String) -> void:
 			element.home_material = "empty"
 		"laser":
 			element = Laser.new()
+			element.decay_proportion = randf_range(0.1, 0.5)
+			element.decay_transformation = "empty"
 		"electricity":
 			element = Lightning.new()
 		"explosive":
@@ -86,8 +88,15 @@ func prompt(element_name: String) -> void:
 	
 	element.pixel_color = GradientTexture1D.new()
 	element.pixel_color.gradient = Gradient.new()
-	element.pixel_color.gradient.set_color(0, properties["color_0"])
-	element.pixel_color.gradient.set_color(1, properties["color_1"])
+	
+	# Add HDR glow to hot elements
+	if properties["temperature"] > 1000:
+		element.pixel_color.use_hdr = true
+		element.pixel_color.gradient.set_color(0, Color(properties["color_0"]) * 2)
+		element.pixel_color.gradient.set_color(0, Color(properties["color_1"]) * 2)
+	else:
+		element.pixel_color.gradient.set_color(0, properties["color_0"])
+		element.pixel_color.gradient.set_color(1, properties["color_1"])
 	
 	element.initial_temperature = properties["temperature"]
 	
