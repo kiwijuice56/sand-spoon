@@ -44,9 +44,20 @@ func _on_request_completed(result: int, _response_code: int, _headers: PackedStr
 func prompt(element_name: String) -> void:
 	status_label.show_text("STATUS: querying server, please wait...", StatusLabel.TextType.WORKING)
 	
-	var prompt_name: String = element_name.replace(" ", "_")
+	if element_name in sim.name_id_map:
+		status_label.show_text("ERROR: element name already exists.", StatusLabel.TextType.ERROR)
+		_enable_button()
+		return
+	
+	var prompt_name: String = ""
+	for c in element_name:
+		if c.to_lower() in "abcdefghijklmnopqrstuvwxyz0123456789":
+			prompt_name += c
+		if c == " ":
+			prompt_name += "_"
+	
 	if len(prompt_name) == 0:
-		status_label.show_text("ERROR: enter an element name first.", StatusLabel.TextType.ERROR)
+		status_label.show_text("ERROR: enter a valid element name.", StatusLabel.TextType.ERROR)
 		_enable_button()
 		return
 	
@@ -114,7 +125,7 @@ func prompt(element_name: String) -> void:
 	element.initial_temperature = properties["temperature"]
 	
 	sim.add_element(element, false, true)
-	ResourceSaver.save(element, "user://" + element.unique_name + ".tres")
+	ResourceSaver.save(element, "user://" + str(randi() % 999999) + prompt_name + ".tres")
 	element_created.emit()
 	
 	status_label.show_text("SUCCESS: element created!", StatusLabel.TextType.SUCCESS)
