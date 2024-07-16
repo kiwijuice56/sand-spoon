@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=3 uid="uid://ct1s2oe5oasf6"]
+
+[ext_resource type="Shader" path="res://main/ui/rainbow_button/rainbow_button.gdshader" id="1_hnj4d"]
+[ext_resource type="Script" path="res://main/ui/rainbow_button/rainbow_button.gd" id="2_p0vtk"]
+[ext_resource type="AudioStream" uid="uid://c1kkxflugdjit" path="res://main/ui/element_selector/element_button/element_button_click.wav" id="3_75vdf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7xgss"]
+shader = ExtResource("1_hnj4d")
+shader_parameter/hover = null
+shader_parameter/pressed = null
+shader_parameter/speed = 0.1
+shader_parameter/saturation = 0.6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0vn1g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ydse"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jfhyw"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_bwbfv"]
+random_pitch = 1.2
+random_volume_offset_db = 1.0
+streams_count = 1
+stream_0/stream = ExtResource("3_75vdf")
+
+[node name="RainbowButton" type="Button"]
+material = SubResource("ShaderMaterial_7xgss")
+custom_minimum_size = Vector2(128, 31)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/hover = SubResource("StyleBoxFlat_0vn1g")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_2ydse")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jfhyw")
+disabled = true
+text = "working..."
+script = ExtResource("2_p0vtk")
+
+[node name="ClickPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_bwbfv")
+volume_db = -12.0
+pitch_scale = 1.25

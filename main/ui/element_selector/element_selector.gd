@@ -21,9 +21,9 @@ func _on_elements_updated() -> void:
 	update_element_buttons()
 
 func _on_element_selected(button: ElementButton, element: Element) -> void:
-	button.select()
 	if is_instance_valid(selected_button):
 		selected_button.deselect()
+	button.select()
 	selected_button = button
 	element_selected.emit(element)
 

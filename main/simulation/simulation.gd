@@ -150,7 +150,10 @@ func _process(_delta: float) -> void:
 		pass
 	
 	for i in len(awake_chunk):
-		awake_chunk[i] = should_awake_chunk[i]
+		if should_awake_chunk[i]:
+			awake_chunk[i] = 3
+		else:
+			awake_chunk[i] = max(0, awake_chunk[i] - 1)
 	
 	# Temperature diffusion.
 	for i in simulation_size_chunk.x * simulation_size_chunk.y:

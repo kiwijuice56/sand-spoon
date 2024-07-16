@@ -14,7 +14,7 @@ config/name="chaos-sands"
 run/main_scene="res://main/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 run/max_fps=60
-config/icon="res://icon.svg"
+config/icon="res://main/icons/element_icon.svg"
 
 [debug]
 

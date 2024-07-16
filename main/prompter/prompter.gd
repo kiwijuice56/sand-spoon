@@ -4,8 +4,10 @@ class_name Prompter extends HTTPRequest
 @export var start_button: Button
 @export var element_name_edit: LineEdit
 @export var status_label: StatusLabel
+@export var sound_transition_time: float = 0.3
 
 var custom_elements: Array[Element]
+var sound_tween: Tween
 
 signal element_created
 signal properties_received(properties: Dictionary)
@@ -20,10 +22,21 @@ func _on_button_pressed() -> void:
 	prompt(element_name_edit.text)
 
 func _disable_button() -> void:
+	if is_instance_valid(sound_tween):
+		sound_tween.stop()
+	sound_tween = get_tree().create_tween()
+	sound_tween.tween_property(%ThinkingPlayer, "volume_db", -8, sound_transition_time)
+	
+	
 	start_button.disabled = true
 	start_button.text = "working..."
 
 func _enable_button() -> void:
+	if is_instance_valid(sound_tween):
+		sound_tween.stop()
+	sound_tween = get_tree().create_tween()
+	sound_tween.tween_property(%ThinkingPlayer, "volume_db", -64, sound_transition_time)
+	
 	start_button.disabled = false
 	start_button.text = "imagine"
 

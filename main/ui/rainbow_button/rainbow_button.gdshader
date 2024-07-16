@@ -18,5 +18,3 @@ void fragment() {
 		COLOR.rgb = hsv2rgb(vec3(UV.x + UV.y / 8.0 + TIME * speed, saturation, pressed ? 0.4 : (hover ? 1.0 : 0.75)));
 	}
 }
-
-

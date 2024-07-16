@@ -4,6 +4,10 @@ var assigned_element: Element
 
 func _ready() -> void:
 	material = material.duplicate()
+	button_down.connect(_on_pressed)
+
+func _on_pressed() -> void:
+	%ClickPlayer.play()
 
 func initialize(element: Element) -> void:
 	assigned_element = element
