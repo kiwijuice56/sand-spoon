@@ -3,6 +3,7 @@ class_name ElementSelector extends ScrollContainer
 signal element_selected(element: Element)
 
 @export var sim: Simulation
+@export var prompter: Prompter
 @export var element_button_scene: PackedScene
 @export var scroll_duration: float = 0.4
 
@@ -10,12 +11,14 @@ var selected_button: ElementButton
 
 func _ready() -> void:
 	update_element_buttons()
-	sim.element_added.connect(_on_element_added)
+	sim.elements_updated.connect(_on_elements_updated)
+	prompter.element_created.connect(_on_element_created)
 
-func _on_element_added(update_ui: bool) -> void:
-	if update_ui:
-		update_element_buttons()
-		scroll_to_bottom()
+func _on_element_created() -> void:
+	scroll_to_bottom()
+
+func _on_elements_updated() -> void:
+	update_element_buttons()
 
 func _on_element_selected(button: ElementButton, element: Element) -> void:
 	button.select()

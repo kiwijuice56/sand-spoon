@@ -110,12 +110,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 8
 text = "elements"
 
-[node name="ElementSelector" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer" node_paths=PackedStringArray("sim") instance=ExtResource("8_vvhhn")]
+[node name="ElementSelector" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer" node_paths=PackedStringArray("sim", "prompter") instance=ExtResource("8_vvhhn")]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 scroll_vertical_custom_step = 1.0
 sim = NodePath("../../../Simulation")
+prompter = NodePath("../../../Simulation/Prompter")
 
 [node name="TitleLabel2" type="Label" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer"]
 layout_mode = 2

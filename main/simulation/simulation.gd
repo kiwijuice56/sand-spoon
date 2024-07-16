@@ -18,7 +18,7 @@ class_name Simulation extends TextureRect
 static var name_id_map: Dictionary # Maps Element unique_names to their int IDs.
 static var id_name_map: PackedStringArray # Maps int IDs to Element unique_names.
 
-var cell_id: PackedByteArray # Stores the ID of each cell of the simulation as a flat array.
+var cell_id: PackedInt32Array # Stores the ID of each cell of the simulation as a flat array.
 var cell_data: PackedInt32Array # Stores the data of each cell of the simulation as a flat array.
 
 var alive_count: PackedByteArray # Stores the amount of non-empty particles within each chunk as a flat array.
@@ -45,7 +45,7 @@ var thread_counter_done: int
 var global_row_offset: int 
 var frame_count: int = 0
 
-signal element_added(update_ui: bool)
+signal elements_updated()
 
 func _ready() -> void:
 	randomize()
@@ -55,8 +55,18 @@ func _ready() -> void:
 	id_name_map = []
 	name_id_map = {}
 	
+	# Load custom elements
+	var dir: DirAccess = DirAccess.open("user://")
+	for file in dir.get_files():
+		if not file.ends_with(".tres"):
+			continue
+		add_element(ResourceLoader.load("user://" + file), false, false)
+	
+	# Initialize all elements
 	for element in elements:
-		add_element(element, true)
+		add_element(element, true, false)
+	
+	elements_updated.emit()
 	
 	# Set default temperature to the temperature of Empty.
 	idefault_temperature = elements[0].iinitial_temperature
@@ -267,7 +277,8 @@ func add_element(element: Element, default_element: bool = false, update_ui: boo
 		name_id_map[elements[i].unique_name] = i
 		id_name_map[i] = elements[i].unique_name
 	
-	element_added.emit(update_ui)
+	if update_ui:
+		elements_updated.emit()
 
 func get_all_elements() -> Array[Element]:
 	return elements

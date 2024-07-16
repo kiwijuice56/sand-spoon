@@ -5,6 +5,9 @@ class_name Prompter extends HTTPRequest
 @export var element_name_edit: LineEdit
 @export var status_label: StatusLabel
 
+var custom_elements: Array[Element]
+
+signal element_created
 signal properties_received(properties: Dictionary)
 
 func _ready() -> void:
@@ -108,10 +111,12 @@ func prompt(element_name: String) -> void:
 		element.pixel_color.gradient.set_color(0, properties["color_0"])
 		element.pixel_color.gradient.set_color(1, properties["color_1"])
 	
-	status_label.show_text("SUCCESS: element created!", StatusLabel.TextType.SUCCESS)
-	
 	element.initial_temperature = properties["temperature"]
 	
 	sim.add_element(element, false, true)
+	ResourceSaver.save(element, "user://" + element.unique_name + ".tres")
+	element_created.emit()
+	
+	status_label.show_text("SUCCESS: element created!", StatusLabel.TextType.SUCCESS)
 	
 	_enable_button()
