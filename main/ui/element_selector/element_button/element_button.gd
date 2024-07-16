@@ -1,6 +1,12 @@
 class_name ElementButton extends Button
 
+var assigned_element: Element
+
+func _ready() -> void:
+	material = material.duplicate()
+
 func initialize(element: Element) -> void:
+	assigned_element = element
 	text = element.unique_name
 	
 	var base_style: StyleBoxFlat = get_theme_stylebox("normal").duplicate()
@@ -21,3 +27,9 @@ func initialize(element: Element) -> void:
 		add_theme_color_override("font_hover_color", "#000000")
 		add_theme_color_override("font_pressed_color", "#000000")
 		add_theme_color_override("font_focus_color", "#000000")
+
+func select() -> void:
+	material.set_shader_parameter("visibility", 1.0)
+
+func deselect() -> void:
+	material.set_shader_parameter("visibility", 0.0)

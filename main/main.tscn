@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://0hq7inj0b37n"]
+[gd_scene load_steps=42 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="2_55j5a"]
@@ -29,6 +29,7 @@
 [ext_resource type="Resource" uid="uid://bk7enrwwen0cy" path="res://main/simulation/element/solid/bacteria/algae.tres" id="23_0odrx"]
 [ext_resource type="Script" path="res://main/imager/imager.gd" id="27_l1ofn"]
 [ext_resource type="Environment" uid="uid://dx14vl0rn5k64" path="res://main/environment.tres" id="28_ww05e"]
+[ext_resource type="PackedScene" uid="uid://cp30cn4frs8rg" path="res://main/ui/status_label/status_label.tscn" id="29_wwmlj"]
 [ext_resource type="Script" path="res://main/prompter/prompter.gd" id="30_4mnu1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e50hh"]
@@ -36,7 +37,7 @@ content_margin_left = 6.0
 content_margin_top = 6.0
 content_margin_right = 6.0
 content_margin_bottom = 6.0
-bg_color = Color(0.145098, 0.152941, 0.211765, 1)
+bg_color = Color(0.1701, 0.174755, 0.21, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7xgss"]
 shader = ExtResource("3_qsejh")
@@ -72,6 +73,11 @@ metadata/_snap_count = 16
 gradient = SubResource("Gradient_0xjmq")
 use_hdr = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mroyd"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+bg_color = Color(0.235294, 0.243137, 0.290196, 1)
+
 [node name="Main" type="Node"]
 
 [node name="MainContainer" type="VBoxContainer" parent="."]
@@ -80,6 +86,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_dej03")
 theme_override_constants/separation = 0
 
 [node name="ScreenContainer" type="HBoxContainer" parent="MainContainer"]
@@ -106,6 +113,8 @@ text = "elements"
 [node name="ElementSelector" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer" node_paths=PackedStringArray("sim") instance=ExtResource("8_vvhhn")]
 layout_mode = 2
 size_flags_vertical = 3
+follow_focus = true
+scroll_vertical_custom_step = 1.0
 sim = NodePath("../../../Simulation")
 
 [node name="TitleLabel2" type="Label" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer"]
@@ -166,19 +175,27 @@ sim = NodePath("..")
 paint_element = ExtResource("5_57l7a")
 palette = Array[Color]([Color(0.054902, 0.388235, 0.294118, 1), Color(0.141176, 0.596078, 0.235294, 1), Color(0.466667, 0.682353, 0.164706, 1), Color(0.631373, 0.858824, 0.372549, 1), Color(0.929412, 0.972549, 0.941176, 1), Color(0.960784, 0.972549, 0.678431, 1), Color(1, 0.894118, 0.486275, 1), Color(0.886275, 0.65098, 0.368627, 1), Color(0.780392, 0.501961, 0.262745, 1), Color(0.713726, 0.364706, 0.141176, 1), Color(0.611765, 0.121569, 0.0431373, 1), Color(0.266667, 0.0627451, 0.247059, 1), Color(0.435294, 0.12549, 0.494118, 1), Color(0.541176, 0.372549, 0.784314, 1), Color(0.603922, 0.65098, 1, 1), Color(0.780392, 0.980392, 1, 1), Color(0.576471, 0.929412, 0.964706, 1), Color(0.411765, 0.74902, 0.847059, 1), Color(0.156863, 0.498039, 0.615686, 1), Color(0.101961, 0.298039, 0.411765, 1), Color(0.00392157, 0.168627, 0.203922, 1), Color(0.697, 0.85, 0.83215, 1), Color(0.08, 0.064, 0.064, 1), Color(0.17, 0.17, 0.1547, 1), Color(0.3264, 0.34, 0.34, 1), Color(0.858831, 0.860894, 0.860893, 1), Color(0.37, 0.113405, 0.0999, 1), Color(0.38, 0.187847, 0.0988, 1), Color(0.53, 0.350242, 0.2385, 1), Color(0.66, 0.53856, 0.3564, 1), Color(0.132, 0.2552, 0.66, 1), Color(0.0324, 0.0577799, 0.54, 1)])
 
-[node name="Prompter" type="HTTPRequest" parent="MainContainer/ScreenContainer/Simulation" node_paths=PackedStringArray("sim", "start_button", "element_name_edit")]
+[node name="Prompter" type="HTTPRequest" parent="MainContainer/ScreenContainer/Simulation" node_paths=PackedStringArray("sim", "start_button", "element_name_edit", "status_label")]
 script = ExtResource("30_4mnu1")
 sim = NodePath("..")
 start_button = NodePath("../../SidebarContainer/VBoxContainer/VBoxContainer/ImagineButton")
 element_name_edit = NodePath("../../SidebarContainer/VBoxContainer/VBoxContainer/ElementPromptName")
+status_label = NodePath("../../../BottomContainer/StatusLabel")
 
-[node name="BottomContainer" type="HBoxContainer" parent="MainContainer"]
-visible = false
+[node name="BottomContainer" type="PanelContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(0, 19)
 layout_mode = 2
+size_flags_vertical = 10
+theme_override_styles/panel = SubResource("StyleBoxFlat_mroyd")
+
+[node name="StatusLabel" parent="MainContainer/BottomContainer" instance=ExtResource("29_wwmlj")]
+layout_mode = 2
+text = "ERROR:"
 
 [node name="FPSLabel" parent="MainContainer/BottomContainer" instance=ExtResource("3_54ca0")]
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 10
+text = "fps: 00"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("28_ww05e")

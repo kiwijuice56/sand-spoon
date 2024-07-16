@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp30cn4frs8rg"]
+
+[ext_resource type="Script" path="res://main/ui/status_label/status_label.gd" id="1_oi0ks"]
+
+[node name="StatusLabel" type="Label"]
+text = "error:"
+script = ExtResource("1_oi0ks")
+error_color = Color(0.84, 0.38136, 0.3108, 1)
+success_color = Color(0.5112, 0.71, 0.497, 1)
+working_color = Color(0.544974, 0.544974, 0.544974, 1)
+
+[node name="DecayTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 6.0
+one_shot = true

@@ -1,4 +1,6 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dwfevn8ahgyc0"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dwfevn8ahgyc0"]
+
+[ext_resource type="FontFile" uid="uid://bhirfgei15h1f" path="res://main/ui/poppins.ttf" id="1_kqn1d"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0i68"]
 bg_color = Color(0.65287, 0.652861, 0.652863, 0.177)
@@ -27,14 +29,18 @@ corner_radius_bottom_left = 4
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pc21p"]
-bg_color = Color(0.374139, 0.374139, 0.374139, 1)
+bg_color = Color(0.3132, 0.32022, 0.36, 1)
 expand_margin_left = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvvar"]
-bg_color = Color(0.219501, 0.219501, 0.219501, 1)
+bg_color = Color(0.121569, 0.129412, 0.160784, 1)
 expand_margin_left = 8.0
 
+[sub_resource type="FontVariation" id="FontVariation_poi3s"]
+base_font = ExtResource("1_kqn1d")
+
 [resource]
+default_font = SubResource("FontVariation_poi3s")
 default_font_size = 12
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_focus_color = Color(1, 1, 1, 1)

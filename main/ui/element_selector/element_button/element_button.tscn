@@ -1,6 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dunjk1ufcu5am"]
+[gd_scene load_steps=7 format=3 uid="uid://dunjk1ufcu5am"]
 
+[ext_resource type="Shader" path="res://main/ui/element_selector/element_button/selected_element_button.gdshader" id="1_cuapn"]
 [ext_resource type="Script" path="res://main/ui/element_selector/element_button/element_button.gd" id="1_hqlin"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_osktd"]
+shader = ExtResource("1_cuapn")
+shader_parameter/visibility = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdljj"]
 
@@ -9,6 +14,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5ys0"]
 
 [node name="ElementButton" type="Button"]
+material = SubResource("ShaderMaterial_osktd")
 custom_minimum_size = Vector2(128, 31)
 anchors_preset = 10
 anchor_right = 1.0

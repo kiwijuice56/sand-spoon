@@ -3,6 +3,7 @@ class_name Prompter extends HTTPRequest
 @export var sim: Simulation
 @export var start_button: Button
 @export var element_name_edit: LineEdit
+@export var status_label: StatusLabel
 
 signal properties_received(properties: Dictionary)
 
@@ -38,15 +39,24 @@ func _on_request_completed(result: int, _response_code: int, _headers: PackedStr
 	properties_received.emit(json as Dictionary)
 
 func prompt(element_name: String) -> void:
+	status_label.show_text("STATUS: querying server, please wait...", StatusLabel.TextType.WORKING)
+	
 	var prompt_name: String = element_name.replace(" ", "_")
 	if len(prompt_name) == 0:
+		status_label.show_text("ERROR: enter an element name first.", StatusLabel.TextType.ERROR)
 		_enable_button()
 		return
 	
 	request("https://122412240.xyz/?element_name=" + prompt_name)
-	var properties: Dictionary = await properties_received
+	var properties = await properties_received
 	
-	if not properties or "warning" in properties:
+	if not properties:
+		status_label.show_text("ERROR: connection failed. may be rate limited, please try again later.", StatusLabel.TextType.ERROR)
+		_enable_button()
+		return
+	
+	if "warning" in properties:
+		status_label.show_text("ERROR: query breaks content policy. be nice!", StatusLabel.TextType.ERROR)
 		_enable_button()
 		return
 	
@@ -97,6 +107,8 @@ func prompt(element_name: String) -> void:
 	else:
 		element.pixel_color.gradient.set_color(0, properties["color_0"])
 		element.pixel_color.gradient.set_color(1, properties["color_1"])
+	
+	status_label.show_text("SUCCESS: element created!", StatusLabel.TextType.SUCCESS)
 	
 	element.initial_temperature = properties["temperature"]
 	
