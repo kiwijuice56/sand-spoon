@@ -22,7 +22,7 @@ var cell_id: PackedInt32Array # Stores the ID of each cell of the simulation as 
 var cell_data: PackedInt32Array # Stores the data of each cell of the simulation as a flat array.
 
 var alive_count: PackedByteArray # Stores the amount of non-empty particles within each chunk as a flat array.
-var awake_chunk: PackedByteArray # Stores whether each chunk awake alive (containing moving/changing particles) as a flat array of as true/false.
+var awake_chunk: PackedByteArray # Stores whether each chunk awake alive (containing moving/changing particles) as a flat array of integers from 0-2
 var should_awake_chunk: PackedByteArray # Stores whether each chunk should be awake on the next frame as a flat array of true/false.
 var chunk_update: PackedByteArray # Stores whether each chunk has had any visual updates within this frame as a flat array of true/false.
 
@@ -55,48 +55,38 @@ func _ready() -> void:
 	id_name_map = []
 	name_id_map = {}
 	
-	# Load custom elements
+	# Initialize all default elements.
+	for element in elements:
+		add_element(element, true, false)
+	
+	# Initialize custom elements.
 	var dir: DirAccess = DirAccess.open("user://")
 	for file in dir.get_files():
 		if not file.ends_with(".tres"):
 			continue
 		add_element(ResourceLoader.load("user://" + file), false, false)
 	
-	# Initialize all elements
-	for element in elements:
-		add_element(element, true, false)
-	
 	elements_updated.emit()
 	
 	# Set default temperature to the temperature of Empty.
 	idefault_temperature = elements[0].iinitial_temperature
 	
-	cell_id = []
-	cell_data = []
-	alive_count = []
-	awake_chunk = []
-	should_awake_chunk = []
-	chunk_update = []
-	chunk_temp = []
-	chunk_temp_copy = []
 	cell_id.resize(simulation_size.x * simulation_size.y)
-	
-	
 	cell_data.resize(simulation_size.x * simulation_size.y)
 	simulation_size_chunk.x = ceil(simulation_size.x / float(chunk_size))
 	simulation_size_chunk.y = ceil(simulation_size.y / float(chunk_size))
 	alive_count.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	awake_chunk.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	should_awake_chunk.resize(simulation_size_chunk.x * simulation_size_chunk.y)
-	chunk_update.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	
+	chunk_update.resize(simulation_size_chunk.x * simulation_size_chunk.y)
+	chunk_update.fill(1)
 	chunk_temp.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	chunk_temp.fill(idefault_temperature)
 	chunk_temp_copy.resize(simulation_size_chunk.x * simulation_size_chunk.y)
 	chunk_temp_copy.fill(idefault_temperature)
 	
-	chunk_update.fill(1)
-	
+	# RGBF supports HDR but not alpha.
 	image = Image.create_empty(simulation_size.x, simulation_size.y, false, Image.FORMAT_RGBF)
 	
 	for row in range(simulation_size.y):
@@ -135,23 +125,27 @@ func _process(_delta: float) -> void:
 	
 	# Simulate the entire grid by giving threads a row of chunks to process.
 	# Alternate between odd/even rows in order to prevent access errors.
-	thread_counter = 0 # Odd
+	thread_counter = 0 # Even
 	thread_counter_done = 0
 	for i in simulation_size_chunk.y / 2:
 		sem.post()
 	while thread_counter_done != simulation_size_chunk.y / 2:
 		pass
 	
-	thread_counter = 1 # Even
+	thread_counter = 1 # Odd
 	thread_counter_done = 0
 	for i in simulation_size_chunk.y / 2:
 		sem.post()
 	while thread_counter_done != simulation_size_chunk.y / 2:
 		pass
 	
+	# Rather than set awake chunks to true/false, we assign them a number
+	# from 0-2. This means that chunks will not sleep until they have been
+	# processed an extra 2 frames, which reduces lingering particles
+	# that were accidentally skipped over in a frame.
 	for i in len(awake_chunk):
 		if should_awake_chunk[i]:
-			awake_chunk[i] = 3
+			awake_chunk[i] = 2
 		else:
 			awake_chunk[i] = max(0, awake_chunk[i] - 1)
 	

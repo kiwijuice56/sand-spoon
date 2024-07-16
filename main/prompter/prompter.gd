@@ -40,13 +40,9 @@ func _enable_button() -> void:
 	start_button.disabled = false
 	start_button.text = "imagine"
 
-func _on_request_completed(result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	if not result == RESULT_SUCCESS:
-		properties_received.emit(null)
-		return
-	
+func _on_request_completed(_result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	var json: Variant = JSON.parse_string(body.get_string_from_utf8())
-	print(json)
+	print("result of query: ", json)
 	
 	if not json:
 		properties_received.emit(null)
@@ -62,6 +58,7 @@ func prompt(element_name: String) -> void:
 		_enable_button()
 		return
 	
+	# Clean prompt name
 	var prompt_name: String = ""
 	for c in element_name:
 		if c.to_lower() in "abcdefghijklmnopqrstuvwxyz0123456789":
@@ -74,16 +71,18 @@ func prompt(element_name: String) -> void:
 		_enable_button()
 		return
 	
-	request("https://122412240.xyz/?element_name=" + prompt_name)
-	var properties = await properties_received
-	
-	if not properties:
-		status_label.show_text("ERROR: connection failed. may be rate limited, please try again later.", StatusLabel.TextType.ERROR)
-		_enable_button()
-		return
+	var properties
+	while true:
+		request("https://122412240.xyz/?element_name=" + prompt_name)
+		properties = await properties_received
+		if not properties:
+			# Wait some time before retrying; most errors are caused by the request limit.
+			await get_tree().create_timer(2.5).timeout
+		else:
+			break
 	
 	if "warning" in properties:
-		status_label.show_text("ERROR: query breaks content policy. be nice!", StatusLabel.TextType.ERROR)
+		status_label.show_text("ERROR: query breaks content policy.", StatusLabel.TextType.ERROR)
 		_enable_button()
 		return
 	
