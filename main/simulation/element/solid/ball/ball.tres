@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Ball" load_steps=4 format=3 uid="uid://he4hwreifm3q"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/ball/ball.gd" id="1_onpjh"]
+
+[sub_resource type="Gradient" id="Gradient_xmymk"]
+offsets = PackedFloat32Array(0, 0.232143, 0.467262, 0.732143, 1)
+colors = PackedColorArray(1, 0.35, 0.35, 1, 1, 0.7705, 0.49, 1, 0.53, 1, 0.624, 1, 0.57, 0.742, 1, 1, 1, 0.58, 0.979, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rgh1a"]
+gradient = SubResource("Gradient_xmymk")
+
+[resource]
+script = ExtResource("1_onpjh")
+unique_name = "stupid ball"
+hidden = false
+ui_color = Color(0.649431, 0.482745, 0.924514, 1)
+pixel_color = SubResource("GradientTexture1D_rgh1a")
+initial_temperature = 293.0
+conductivity = 0.5
+high_heat_point = -1.0
+high_heat_transformation = "empty"
+low_heat_point = -1.0
+low_heat_transformation = "empty"
+explosion_resistance = 0.1
+decay_proportion = 0.01
+decay_transformation = "empty"
+reactivity = 0.0
+reaction_count = 0

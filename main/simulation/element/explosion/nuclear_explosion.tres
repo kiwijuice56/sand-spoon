@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Explosion" load_steps=4 format=3 uid="uid://bl6iyw1434bqd"]
+
+[ext_resource type="Script" path="res://main/simulation/element/explosion/explosion.gd" id="1_61r56"]
+
+[sub_resource type="Gradient" id="Gradient_hqd6m"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1.2, 1.8, 1.2, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_c6a7y"]
+gradient = SubResource("Gradient_hqd6m")
+use_hdr = true
+
+[resource]
+script = ExtResource("1_61r56")
+unique_name = "nuclear explosion"
+hidden = true
+ui_color = Color(0.64384, 0.409639, 0.319612, 1)
+pixel_color = SubResource("GradientTexture1D_c6a7y")
+initial_temperature = 9500.0
+conductivity = 0.0
+high_heat_point = -1.0
+high_heat_transformation = "empty"
+low_heat_point = -1.0
+low_heat_transformation = "empty"
+explosion_resistance = 0.1
+decay_proportion = 0.66
+decay_transformation = "blue fire"
+reactivity = 0.0
+reaction_count = 0

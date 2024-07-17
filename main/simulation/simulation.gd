@@ -19,7 +19,7 @@ static var name_id_map: Dictionary # Maps Element unique_names to their int IDs.
 static var id_name_map: PackedStringArray # Maps int IDs to Element unique_names.
 
 var cell_id: PackedInt32Array # Stores the ID of each cell of the simulation as a flat array.
-var cell_data: PackedInt32Array # Stores the data of each cell of the simulation as a flat array.
+var cell_data: PackedInt64Array # Stores the data of each cell of the simulation as a flat array.
 
 var alive_count: PackedByteArray # Stores the amount of non-empty particles within each chunk as a flat array.
 var awake_chunk: PackedByteArray # Stores whether each chunk awake alive (containing moving/changing particles) as a flat array of integers from 0-2
