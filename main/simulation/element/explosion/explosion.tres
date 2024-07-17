@@ -12,9 +12,11 @@ use_hdr = true
 
 [resource]
 script = ExtResource("1_istnf")
+spark_element = "spark"
+spark_proportion = 0.5
 unique_name = "explosion"
 hidden = true
-ui_color = Color(0.64384, 0.409639, 0.319612, 1)
+ui_color = Color(0, 0, 0, 1)
 pixel_color = SubResource("GradientTexture1D_vvuek")
 initial_temperature = 5000.0
 conductivity = 0.0

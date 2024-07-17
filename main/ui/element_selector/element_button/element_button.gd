@@ -1,6 +1,6 @@
 class_name ElementButton extends Button
 
-var assigned_element: Element
+@export var assigned_element: Element
 
 func _ready() -> void:
 	material = material.duplicate()

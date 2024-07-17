@@ -12,7 +12,7 @@ gradient = SubResource("Gradient_kjrii")
 [resource]
 script = ExtResource("1_m73bc")
 unique_name = "empty"
-hidden = false
+hidden = true
 ui_color = Color(0.121569, 0.129412, 0.160784, 1)
 pixel_color = SubResource("GradientTexture1D_721sb")
 initial_temperature = 293.0

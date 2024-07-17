@@ -4,6 +4,7 @@ signal element_selected(element: Element)
 
 @export var sim: Simulation
 @export var prompter: Prompter
+@export var eraser_button: ElementButton
 @export var element_button_scene: PackedScene
 @export var scroll_duration: float = 0.4
 
@@ -13,6 +14,10 @@ func _ready() -> void:
 	update_element_buttons()
 	sim.elements_updated.connect(_on_elements_updated)
 	prompter.element_created.connect(_on_element_created)
+	
+	eraser_button.pressed.connect(_on_element_selected.bind(eraser_button, eraser_button.assigned_element))
+	eraser_button.initialize(eraser_button.assigned_element)
+	eraser_button.text = "eraser"
 
 func _on_element_created() -> void:
 	scroll_to_bottom()

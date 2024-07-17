@@ -6,7 +6,7 @@ Each type of particle is represented by a Godot `Resource` that
 extends from `Element` (or various subclasses with built-in functionality, such as `Fluid` or `Powder`).
 However, in the simulation itself, particles are represented with only two numbers:
 - `id` a 32 bit integer representing this particle's element.
-- `data` a 32 bit integer for extra state information. First 16 bits are reserved for storing temperature.
+- `data` a 64 bit integer for extra state information. First 16 bits are reserved for storing temperature.
 
 The simulation assigns a unique `id` to each of the `Element` resource when the game starts.
 As the simulation iterates though each cell, it will find the `Element` resource corresponding

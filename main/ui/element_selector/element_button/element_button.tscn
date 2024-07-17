@@ -22,7 +22,7 @@ stream_0/stream = ExtResource("3_0i3dj")
 
 [node name="ElementButton" type="Button"]
 material = SubResource("ShaderMaterial_osktd")
-custom_minimum_size = Vector2(128, 31)
+custom_minimum_size = Vector2(128, 27)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 23.0
