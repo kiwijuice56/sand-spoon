@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://dwfevn8ahgyc0"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://dwfevn8ahgyc0"]
 
 [ext_resource type="FontFile" uid="uid://bhirfgei15h1f" path="res://main/ui/poppins.ttf" id="1_kqn1d"]
 
@@ -8,6 +8,18 @@ anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rglrg"]
 bg_color = Color(0.988, 0.988, 0.988, 0.177)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o3ruv"]
+bg_color = Color(0.341176, 0.34902, 0.372549, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4co5a"]
+bg_color = Color(0.121569, 0.129412, 0.160784, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qwwy6"]
+bg_color = Color(0.0901961, 0.0980392, 0.121569, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g33ju"]
@@ -48,6 +60,9 @@ Button/colors/font_hover_color = Color(1, 1, 1, 1)
 Button/colors/font_pressed_color = Color(1, 1, 1, 1)
 Button/styles/disabled = SubResource("StyleBoxFlat_k0i68")
 Button/styles/focus = SubResource("StyleBoxFlat_rglrg")
+Button/styles/hover = SubResource("StyleBoxFlat_o3ruv")
+Button/styles/normal = SubResource("StyleBoxFlat_4co5a")
+Button/styles/pressed = SubResource("StyleBoxFlat_qwwy6")
 LineEdit/colors/font_color = Color(1, 1, 1, 1)
 LineEdit/colors/font_placeholder_color = Color(0.875, 0.875, 0.875, 0.374)
 LineEdit/styles/focus = SubResource("StyleBoxFlat_g33ju")

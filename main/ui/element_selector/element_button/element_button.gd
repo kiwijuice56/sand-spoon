@@ -31,6 +31,9 @@ func initialize(element: Element) -> void:
 		add_theme_color_override("font_hover_color", "#000000")
 		add_theme_color_override("font_pressed_color", "#000000")
 		add_theme_color_override("font_focus_color", "#000000")
+	if element.unique_name == "empty":
+		print(press_style.bg_color)
+		print(hover_style.bg_color)
 
 func select() -> void:
 	material.set_shader_parameter("visibility", 1.0)

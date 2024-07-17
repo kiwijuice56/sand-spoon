@@ -2,6 +2,7 @@ class_name Painter extends Node
 
 @export var sim: Simulation
 @export var selector: ElementSelector
+@export var brush_size_selector: BrushSizeSelector
 
 @export var brush_radius: int
 @export var line_step: float = 0.5
@@ -14,7 +15,11 @@ var tap_start: Vector2i
 
 func _ready() -> void:
 	selector.element_selected.connect(_on_element_selected)
+	brush_size_selector.size_selected.connect(_on_size_selected)
 	await get_tree().get_root().ready
+
+func _on_size_selected(size: int) -> void:
+	brush_radius = size
 
 func _on_element_selected(element: Element) -> void:
 	current_element = element.unique_name
