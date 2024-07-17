@@ -12,6 +12,8 @@ var selected_button: ElementButton
 
 func _ready() -> void:
 	update_element_buttons()
+	%ElementButtonContainer.get_child(0).pressed.emit()
+	
 	sim.elements_updated.connect(_on_elements_updated)
 	prompter.element_created.connect(_on_element_created)
 	

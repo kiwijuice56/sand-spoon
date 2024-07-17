@@ -23,3 +23,4 @@ func initialize_buttons() -> void:
 		add_child(new_button)
 		new_button.initialize(brush_size)
 		new_button.pressed.connect(_on_size_selected.bind(new_button, brush_size))
+	get_child(1).pressed.emit()

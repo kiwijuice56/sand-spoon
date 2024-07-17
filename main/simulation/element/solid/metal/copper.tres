@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="Metal" load_steps=5 format=3 uid="uid://bgcj45ib08uex"]
+
+[ext_resource type="Texture2D" uid="uid://r4fwhna0jpy2" path="res://main/simulation/element/default_temperature_color_gradient.tres" id="1_sp0ok"]
+[ext_resource type="Script" path="res://main/simulation/element/solid/metal/metal.gd" id="2_8hr1m"]
+
+[sub_resource type="Gradient" id="Gradient_xfc2o"]
+offsets = PackedFloat32Array(0, 0.897727, 1)
+colors = PackedColorArray(0.53, 0.33708, 0.2544, 1, 0.83, 0.60922, 0.3569, 1, 0.332562, 0.601909, 0.582933, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tu24i"]
+gradient = SubResource("Gradient_xfc2o")
+
+[resource]
+script = ExtResource("2_8hr1m")
+heat_gradient = ExtResource("1_sp0ok")
+unique_name = "copper"
+hidden = false
+ui_color = Color(0.737136, 0.403958, 0.248965, 1)
+pixel_color = SubResource("GradientTexture1D_tu24i")
+initial_temperature = 293.0
+conductivity = 1.0
+high_heat_point = 1800.0
+high_heat_transformation = "lava"
+low_heat_point = -1.0
+low_heat_transformation = "empty"
+explosion_resistance = 0.7
+decay_proportion = 0.0
+decay_transformation = "empty"
+reactivity = 0.0
+reaction_count = 0

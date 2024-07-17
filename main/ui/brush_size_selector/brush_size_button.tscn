@@ -23,3 +23,4 @@ script = ExtResource("2_g6sss")
 [node name="ClickPlayer" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
 stream = SubResource("AudioStreamRandomizer_jepwl")
+volume_db = -12.0
