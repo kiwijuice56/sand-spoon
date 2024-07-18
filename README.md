@@ -1,5 +1,5 @@
-# chaos-sands
-A modular falling sand simulation created in Godot.
+# sand-spoon
+A modular and infinite falling sand game created in Godot.
 
 ## Elements
 Each type of particle is represented by a Godot `Resource` that
