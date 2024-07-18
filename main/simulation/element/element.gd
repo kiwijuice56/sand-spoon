@@ -13,6 +13,8 @@ class_name Element extends Resource
 ## Range of colors a pixel of this element can take on. The actual color depends on how
 ## this element's implementation of get_color samples this gradient.
 @export var pixel_color: GradientTexture1D
+## Whether this element is AI generated.
+@export var generated: bool = false
 
 @export_group("Heat")
 @export_range(0, 10000, 0.1, "suffix:K") var initial_temperature: float = 293
@@ -51,7 +53,7 @@ var ihigh_heat_point: int
 var ilow_heat_point: int 
 var iinitial_temperature: int 
 
-var generated: bool = false
+
 
 # Set by inheriting classes if they change color with temperature, such as metals.
 var color_is_temperature_dependent: bool = false
