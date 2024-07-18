@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="Bacteria" load_steps=4 format=3 uid="uid://bky610mrfva83"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/bacteria/bacteria.gd" id="1_uvmlg"]
+
+[sub_resource type="Gradient" id="Gradient_q48ci"]
+offsets = PackedFloat32Array(0.26, 1)
+colors = PackedColorArray(0.15878, 0.0748, 0.34, 1, 0.93, 0.557845, 0.4743, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0abik"]
+gradient = SubResource("Gradient_q48ci")
+
+[resource]
+script = ExtResource("1_uvmlg")
+growth_rate = 0.015
+surround_tolerance = 0.9
+loneliness_tolerance = 0.4
+home_material = "empty"
+unique_name = "mold"
+hidden = false
+ui_color = Color(0.773865, 0.376563, 0.308474, 1)
+pixel_color = SubResource("GradientTexture1D_0abik")
+initial_temperature = 293.0
+conductivity = 0.5
+high_heat_point = 350.0
+high_heat_transformation = "smoke"
+low_heat_point = 250.0
+low_heat_transformation = "empty"
+explosion_resistance = 0.0
+decay_proportion = 0.001
+decay_transformation = "empty"
+reactivity = 0.0
+reaction_count = 0

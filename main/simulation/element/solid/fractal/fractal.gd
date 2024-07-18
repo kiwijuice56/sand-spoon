@@ -16,6 +16,7 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 	var angle: float = 2 * PI * get_byte(data, 3) / 255.0
 	var random_flip: float = -1 if Simulation.fast_randf() < 0.5 else 1
 	
+	# This code is really messy...
 	if Simulation.fast_randf() < split_proportion:
 		for new_angle in [branch_angle / 2, -branch_angle / 2]:
 			new_angle = new_angle * random_flip + angle
@@ -55,8 +56,11 @@ func process(sim: Simulation, row: int, col: int, data: int) -> bool:
 		sim.set_data(row, col, set_byte(data, 6, 0))
 	return true
 
-func get_color(sim: Simulation, _row: int, _col: int, data: int) -> Color:
-	return pixel_color.gradient.sample(get_byte(data, 3) / 255.0)
+func get_color(_sim: Simulation, _row: int, _col: int, data: int) -> Color:
+	var base_color: Color =  pixel_color.gradient.sample(get_byte(data, 3) / 255.0)
+	if get_byte(data, 6) == 1:
+		base_color *= 2
+	return base_color
 
 func get_default_data(sim: Simulation, row: int, col: int) -> int:
 	var data: int = super.get_default_data(sim, row, col)

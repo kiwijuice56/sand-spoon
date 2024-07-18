@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Powder" load_steps=4 format=3 uid="uid://bqjv7fd2pmpmc"]
+
+[ext_resource type="Script" path="res://main/simulation/element/solid/powder/powder.gd" id="1_b6x78"]
+
+[sub_resource type="Gradient" id="Gradient_p2u3a"]
+offsets = PackedFloat32Array(0.00809717, 0.92328, 1)
+colors = PackedColorArray(0.54, 0.2754, 0.162, 1, 0.59, 0.426373, 0.2832, 1, 0.55, 0.520392, 0.4565, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_s1c8t"]
+gradient = SubResource("Gradient_p2u3a")
+
+[resource]
+script = ExtResource("1_b6x78")
+unique_name = "soil"
+hidden = true
+ui_color = Color(0, 0, 0, 1)
+pixel_color = SubResource("GradientTexture1D_s1c8t")
+initial_temperature = 293.0
+conductivity = 0.2
+high_heat_point = -1.0
+high_heat_transformation = "empty"
+low_heat_point = -1.0
+low_heat_transformation = "empty"
+explosion_resistance = 0.8
+decay_proportion = 0.0
+decay_transformation = "empty"
+reactivity = 0.0
+reaction_count = 0

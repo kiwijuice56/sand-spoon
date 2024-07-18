@@ -114,6 +114,7 @@ func imagine_element(element_name: String, properties) -> Element:
 			element.high_heat_point = min(10000, 2.5 * properties["temperature"])
 	
 	element.unique_name = element_name
+	element.generated = true
 	
 	element.ui_color = properties["color_0"]
 	

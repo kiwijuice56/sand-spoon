@@ -11,7 +11,7 @@ gradient = SubResource("Gradient_xmymk")
 
 [resource]
 script = ExtResource("1_onpjh")
-speed = null
+speed = 2
 unique_name = "bouncy ball"
 hidden = false
 ui_color = Color(0.649431, 0.482745, 0.924514, 1)

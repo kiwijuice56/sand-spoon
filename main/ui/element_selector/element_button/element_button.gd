@@ -12,6 +12,8 @@ func _on_pressed() -> void:
 func initialize(element: Element) -> void:
 	assigned_element = element
 	text = element.unique_name
+	if element.generated:
+		text += " *"
 	
 	var base_style: StyleBoxFlat = get_theme_stylebox("normal").duplicate()
 	base_style.bg_color = element.ui_color

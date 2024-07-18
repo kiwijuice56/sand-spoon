@@ -11,7 +11,7 @@ gradient = SubResource("Gradient_jq85j")
 
 [resource]
 script = ExtResource("1_mo5jl")
-growth_rate = 0.02
+growth_rate = 0.015
 surround_tolerance = 0.7
 loneliness_tolerance = 0.3
 home_material = "water"
@@ -27,6 +27,6 @@ low_heat_point = 250.0
 low_heat_transformation = "empty"
 explosion_resistance = 0.0
 decay_proportion = 0.001
-decay_transformation = "empty"
+decay_transformation = "water"
 reactivity = 0.0
 reaction_count = 0

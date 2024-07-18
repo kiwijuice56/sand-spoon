@@ -51,6 +51,8 @@ var ihigh_heat_point: int
 var ilow_heat_point: int 
 var iinitial_temperature: int 
 
+var generated: bool = false
+
 # Set by inheriting classes if they change color with temperature, such as metals.
 var color_is_temperature_dependent: bool = false
 
