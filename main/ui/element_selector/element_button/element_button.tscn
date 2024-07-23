@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dunjk1ufcu5am"]
+[gd_scene load_steps=8 format=3 uid="uid://dunjk1ufcu5am"]
 
 [ext_resource type="Shader" path="res://main/ui/element_selector/element_button/selected_element_button.gdshader" id="1_cuapn"]
 [ext_resource type="Script" path="res://main/ui/element_selector/element_button/element_button.gd" id="1_hqlin"]
-[ext_resource type="AudioStream" uid="uid://c1kkxflugdjit" path="res://main/ui/element_selector/element_button/element_button_click.wav" id="3_0i3dj"]
+[ext_resource type="AudioStream" uid="uid://53pxkeaosj7i" path="res://main/ui/click_sound.tres" id="3_wbl30"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osktd"]
 shader = ExtResource("1_cuapn")
@@ -13,12 +13,6 @@ shader_parameter/visibility = 0.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_68s1g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5ys0"]
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_c3deq"]
-random_pitch = 1.2
-random_volume_offset_db = 1.0
-streams_count = 1
-stream_0/stream = ExtResource("3_0i3dj")
 
 [node name="ElementButton" type="Button"]
 material = SubResource("ShaderMaterial_osktd")
@@ -40,6 +34,6 @@ script = ExtResource("1_hqlin")
 
 [node name="ClickPlayer" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
-stream = SubResource("AudioStreamRandomizer_c3deq")
+stream = ExtResource("3_wbl30")
 volume_db = -12.0
 pitch_scale = 1.25

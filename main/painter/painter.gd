@@ -3,6 +3,7 @@ class_name Painter extends Node
 @export var sim: Simulation
 @export var selector: ElementSelector
 @export var brush_size_selector: BrushSizeSelector
+@export var clear_button: ClearButton
 
 @export var brush_radius: int
 @export var line_step: float = 0.5
@@ -16,6 +17,7 @@ var tap_start: Vector2i
 func _ready() -> void:
 	selector.element_selected.connect(_on_element_selected)
 	brush_size_selector.size_selected.connect(_on_size_selected)
+	clear_button.pressed.connect(_on_clear_pressed)
 	await get_tree().get_root().ready
 
 func _on_size_selected(size: int) -> void:
@@ -23,6 +25,11 @@ func _on_size_selected(size: int) -> void:
 
 func _on_element_selected(element: Element) -> void:
 	current_element = element.unique_name
+
+func _on_clear_pressed() -> void:
+	for row in sim.simulation_size.y:
+		for col in sim.simulation_size.x:
+			paint_pixel(row, col, "empty")
 
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("tap"):

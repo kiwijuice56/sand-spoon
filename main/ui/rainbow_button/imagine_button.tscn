@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://ct1s2oe5oasf6"]
+[gd_scene load_steps=8 format=3 uid="uid://ct1s2oe5oasf6"]
 
 [ext_resource type="Shader" path="res://main/ui/rainbow_button/rainbow_button.gdshader" id="1_hnj4d"]
 [ext_resource type="Script" path="res://main/ui/rainbow_button/rainbow_button.gd" id="2_p0vtk"]
-[ext_resource type="AudioStream" uid="uid://c1kkxflugdjit" path="res://main/ui/element_selector/element_button/element_button_click.wav" id="3_75vdf"]
+[ext_resource type="AudioStream" uid="uid://53pxkeaosj7i" path="res://main/ui/click_sound.tres" id="3_00gm6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7xgss"]
 shader = ExtResource("1_hnj4d")
@@ -16,12 +16,6 @@ shader_parameter/saturation = 0.6
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ydse"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jfhyw"]
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_bwbfv"]
-random_pitch = 1.2
-random_volume_offset_db = 1.0
-streams_count = 1
-stream_0/stream = ExtResource("3_75vdf")
 
 [node name="RainbowButton" type="Button"]
 material = SubResource("ShaderMaterial_7xgss")
@@ -39,6 +33,6 @@ script = ExtResource("2_p0vtk")
 
 [node name="ClickPlayer" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
-stream = SubResource("AudioStreamRandomizer_bwbfv")
+stream = ExtResource("3_00gm6")
 volume_db = -12.0
 pitch_scale = 1.25

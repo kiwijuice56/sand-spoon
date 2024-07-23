@@ -1,19 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://djwfdmokkyr3v"]
+[gd_scene load_steps=5 format=3 uid="uid://djwfdmokkyr3v"]
 
 [ext_resource type="Shader" path="res://main/ui/brush_size_selector/circle_button.gdshader" id="1_yh8my"]
 [ext_resource type="Script" path="res://main/ui/brush_size_selector/brush_size_button.gd" id="2_g6sss"]
-[ext_resource type="AudioStream" uid="uid://c1kkxflugdjit" path="res://main/ui/element_selector/element_button/element_button_click.wav" id="3_wv4na"]
+[ext_resource type="AudioStream" uid="uid://53pxkeaosj7i" path="res://main/ui/click_sound.tres" id="3_2erxe"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cpe5k"]
 shader = ExtResource("1_yh8my")
 shader_parameter/radius = 0.25
 shader_parameter/visibility = 0.0
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jepwl"]
-random_pitch = 1.2
-random_volume_offset_db = 1.0
-streams_count = 1
-stream_0/stream = ExtResource("3_wv4na")
 
 [node name="BrushSizeButton" type="Button"]
 material = SubResource("ShaderMaterial_cpe5k")
@@ -22,5 +16,5 @@ script = ExtResource("2_g6sss")
 
 [node name="ClickPlayer" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
-stream = SubResource("AudioStreamRandomizer_jepwl")
+stream = ExtResource("3_2erxe")
 volume_db = -12.0

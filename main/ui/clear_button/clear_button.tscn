@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw6kjctg4syfk"]
+
+[ext_resource type="Script" path="res://main/ui/clear_button/clear_button.gd" id="1_y200j"]
+[ext_resource type="AudioStream" uid="uid://53pxkeaosj7i" path="res://main/ui/click_sound.tres" id="2_oiswp"]
+
+[node name="ClearButton" type="Button"]
+custom_minimum_size = Vector2(0, 27)
+text = "clear screen"
+script = ExtResource("1_y200j")
+
+[node name="ClickPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_oiswp")
+volume_db = -12.0
+pitch_scale = 1.25

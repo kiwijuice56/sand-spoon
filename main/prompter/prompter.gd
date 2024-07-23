@@ -128,9 +128,10 @@ func realize_element(element_name: String, properties, hidden: bool = false) -> 
 		element.high_heat_transformation = properties["heat_transformation"]
 		element.high_heat_point = min(10000, 2.5 * properties["temperature"])
 	
-	if "cold_transformation" in properties:
+	# "none" seems to be a pretty common and buggy response
+	if "cold_transformation" in properties and not properties["cold_transformation"] == "none":
 		element.low_heat_transformation = properties["cold_transformation"]
-		element.low_heat_point = min(10000, 0.65 * properties["temperature"])
+		element.low_heat_point = min(10000, 0.35 * properties["temperature"])
 	
 	element.pixel_color = GradientTexture1D.new()
 	element.pixel_color.gradient = Gradient.new()
@@ -138,8 +139,8 @@ func realize_element(element_name: String, properties, hidden: bool = false) -> 
 	# Add HDR glow to hot elements
 	if properties["temperature"] > 1000:
 		element.pixel_color.use_hdr = true
-		element.pixel_color.gradient.set_color(0, Color(0.25, 0.25, 0.25) + Color(properties["color_0"]) * 2.5)
-		element.pixel_color.gradient.set_color(0, Color(0.25, 0.25, 0.25) + Color(properties["color_1"]) * 2.5)
+		element.pixel_color.gradient.set_color(0, Color(1.0, 1.0, 1.0) + Color(properties["color_0"]))
+		element.pixel_color.gradient.set_color(0, Color(1.0, 1.0, 1.0) + Color(properties["color_1"]))
 	else:
 		element.pixel_color.gradient.set_color(0, properties["color_0"])
 		element.pixel_color.gradient.set_color(1, properties["color_1"])
@@ -159,7 +160,7 @@ func realize_element(element_name: String, properties, hidden: bool = false) -> 
 
 func create_element_from_text(element_name: String, directly_prompted: bool = true) -> bool:
 	if element_name in sim.name_id_map:
-		status_label.show_text("ERROR: element name already exists.", StatusLabel.TextType.ERROR)
+		status_label.show_text("ERROR: element name already exists, perhaps as a secret element.", StatusLabel.TextType.ERROR)
 		return false
 	
 	var prompt_name: String = clean_prompt(element_name)

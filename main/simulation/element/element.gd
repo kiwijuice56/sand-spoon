@@ -20,7 +20,7 @@ class_name Element extends Resource
 @export_range(0, 10000, 0.1, "suffix:K") var initial_temperature: float = 293
 ## The proportion of frames that this particle updates its temperature.
 ## More conductive elements will react faster to local changes in temperature.
-@export_range(0, 1) var conductivity: float = 0.5
+@export_range(0, 1) var conductivity: float = 0.1
 @export_subgroup("High")
 ## The temperature at which this element will transform into high_heat_transformation. 
 ## No effect if set to -1.
@@ -35,7 +35,7 @@ class_name Element extends Resource
 @export_group("Explosion")
 ## The resistance this element has to destruction when interacted with by elements such as lasers
 ## and bombs.
-@export_range(0, 1) var explosion_resistance: float = 0.1
+@export_range(0, 1) var explosion_resistance: float = 0.4
 
 @export_group("Decay")
 ## The probability that this element will decay into decay_transformation when processed.

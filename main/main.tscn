@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://0hq7inj0b37n"]
+[gd_scene load_steps=54 format=3 uid="uid://0hq7inj0b37n"]
 
 [ext_resource type="Script" path="res://main/simulation/simulation.gd" id="1_7t74s"]
 [ext_resource type="Script" path="res://main/simulation/element/element.gd" id="2_55j5a"]
@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://bv8gs1iin5gag" path="res://main/simulation/element/solid/powder/sand.tres" id="5_57l7a"]
 [ext_resource type="Script" path="res://main/brush_size_selector.gd" id="5_clowm"]
 [ext_resource type="PackedScene" uid="uid://djwfdmokkyr3v" path="res://main/ui/brush_size_selector/brush_size_button.tscn" id="6_wd80n"]
+[ext_resource type="PackedScene" uid="uid://cw6kjctg4syfk" path="res://main/ui/clear_button/clear_button.tscn" id="7_n6bcl"]
 [ext_resource type="Resource" uid="uid://bbvp7saksab8l" path="res://main/simulation/element/fluid/oil.tres" id="8_l1nvi"]
 [ext_resource type="PackedScene" uid="uid://p1cupggik6ba" path="res://main/ui/element_selector/element_selector.tscn" id="8_vvhhn"]
 [ext_resource type="Resource" uid="uid://cwnhltdvq4ic4" path="res://main/simulation/element/solid/rock.tres" id="9_bp35h"]
@@ -119,23 +120,29 @@ follow_focus = true
 scroll_vertical_custom_step = 1.0
 sim = NodePath("../../../Simulation")
 prompter = NodePath("../../../Simulation/Prompter")
-eraser_button = NodePath("../ToolContainer/Eraser")
+eraser_button = NodePath("../ToolContainer/TopToolContainer/Eraser")
 
-[node name="ToolContainer" type="HBoxContainer" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer"]
+[node name="ToolContainer" type="VBoxContainer" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Eraser" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer/ToolContainer" instance=ExtResource("3_xciq7")]
+[node name="TopToolContainer" type="HBoxContainer" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer/ToolContainer"]
+layout_mode = 2
+
+[node name="Eraser" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer/ToolContainer/TopToolContainer" instance=ExtResource("3_xciq7")]
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
 text = "eraser
 "
 assigned_element = ExtResource("4_oq8j5")
 
-[node name="BrushSizeSelector" type="HBoxContainer" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer/ToolContainer"]
+[node name="BrushSizeSelector" type="HBoxContainer" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer/ToolContainer/TopToolContainer"]
 layout_mode = 2
 script = ExtResource("5_clowm")
 sizes = Array[int]([1, 3, 6])
 brush_size_button_scene = ExtResource("6_wd80n")
+
+[node name="ClearButton" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer/ToolContainer" instance=ExtResource("7_n6bcl")]
+layout_mode = 2
 
 [node name="TitleLabel2" type="Label" parent="MainContainer/ScreenContainer/SidebarContainer/VBoxContainer"]
 layout_mode = 2
@@ -170,11 +177,12 @@ chunk_size = 6
 random_awaken_chance = 0.05
 debug_heat_gradient = SubResource("GradientTexture1D_hwk0e")
 
-[node name="Painter" type="Node" parent="MainContainer/ScreenContainer/Simulation" node_paths=PackedStringArray("sim", "selector", "brush_size_selector")]
+[node name="Painter" type="Node" parent="MainContainer/ScreenContainer/Simulation" node_paths=PackedStringArray("sim", "selector", "brush_size_selector", "clear_button")]
 script = ExtResource("3_3diiu")
 sim = NodePath("..")
 selector = NodePath("../../SidebarContainer/VBoxContainer/ElementSelector")
-brush_size_selector = NodePath("../../SidebarContainer/VBoxContainer/ToolContainer/BrushSizeSelector")
+brush_size_selector = NodePath("../../SidebarContainer/VBoxContainer/ToolContainer/TopToolContainer/BrushSizeSelector")
+clear_button = NodePath("../../SidebarContainer/VBoxContainer/ToolContainer/ClearButton")
 brush_radius = 3
 powder_skip_proportion = 0.9
 critter_skip_proportion = 0.75
