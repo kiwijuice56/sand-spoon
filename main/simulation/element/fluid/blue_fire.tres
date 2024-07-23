@@ -19,6 +19,7 @@ unique_name = "blue fire"
 hidden = false
 ui_color = Color(0.317647, 0.729412, 0.854902, 1)
 pixel_color = SubResource("GradientTexture1D_4abpj")
+generated = false
 initial_temperature = 4500.0
 conductivity = 0.01
 high_heat_point = -1.0

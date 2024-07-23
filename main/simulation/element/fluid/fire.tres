@@ -19,6 +19,7 @@ unique_name = "fire"
 hidden = false
 ui_color = Color(1, 0.344, 0.18, 1)
 pixel_color = SubResource("GradientTexture1D_x1jki")
+generated = false
 initial_temperature = 1900.0
 conductivity = 0.01
 high_heat_point = -1.0

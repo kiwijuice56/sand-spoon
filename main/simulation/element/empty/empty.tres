@@ -15,6 +15,7 @@ unique_name = "empty"
 hidden = true
 ui_color = Color(0.121569, 0.129412, 0.160784, 1)
 pixel_color = SubResource("GradientTexture1D_721sb")
+generated = false
 initial_temperature = 293.0
 conductivity = 0.5
 high_heat_point = -1.0

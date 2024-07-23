@@ -50,7 +50,16 @@ func _on_request_completed(_result: int, _response_code: int, _headers: PackedSt
 	
 	properties_received.emit(json as Dictionary)
 
-func imagine_element(element_name: String, properties) -> Element:
+func clean_prompt(original_prompt: String) -> String:
+	var prompt_name: String = ""
+	for c in original_prompt:
+		if c.to_lower() in "abcdefghijklmnopqrstuvwxyz0123456789":
+			prompt_name += c.to_lower()
+		if c == " ":
+			prompt_name += "_"
+	return prompt_name
+
+func realize_element(element_name: String, properties, hidden: bool = false) -> Element:
 	var element: Element
 	match properties["state"]:
 		"liquid":
@@ -113,10 +122,15 @@ func imagine_element(element_name: String, properties) -> Element:
 			element.high_heat_transformation = "explosion"
 			element.high_heat_point = min(10000, 2.5 * properties["temperature"])
 	
-	element.unique_name = element_name
-	element.generated = true
+	element.initial_temperature = properties["temperature"]
 	
-	element.ui_color = properties["color_0"]
+	if "heat_transformation" in properties and not properties["state"] == "explosive":
+		element.high_heat_transformation = properties["heat_transformation"]
+		element.high_heat_point = min(10000, 2.5 * properties["temperature"])
+	
+	if "cold_transformation" in properties:
+		element.low_heat_transformation = properties["cold_transformation"]
+		element.low_heat_point = min(10000, 0.65 * properties["temperature"])
 	
 	element.pixel_color = GradientTexture1D.new()
 	element.pixel_color.gradient = Gradient.new()
@@ -124,40 +138,43 @@ func imagine_element(element_name: String, properties) -> Element:
 	# Add HDR glow to hot elements
 	if properties["temperature"] > 1000:
 		element.pixel_color.use_hdr = true
-		element.pixel_color.gradient.set_color(0, Color(properties["color_0"]) * 2)
-		element.pixel_color.gradient.set_color(0, Color(properties["color_1"]) * 2)
+		element.pixel_color.gradient.set_color(0, Color(0.25, 0.25, 0.25) + Color(properties["color_0"]) * 2.5)
+		element.pixel_color.gradient.set_color(0, Color(0.25, 0.25, 0.25) + Color(properties["color_1"]) * 2.5)
 	else:
 		element.pixel_color.gradient.set_color(0, properties["color_0"])
 		element.pixel_color.gradient.set_color(1, properties["color_1"])
 	
-	element.initial_temperature = properties["temperature"]
+	element.ui_color = properties["color_0"]
+	
+	element.unique_name = element_name
+	element.generated = true
+	if hidden:
+		element.hidden = true
+	
+	# Save the element to the simulation and storage
+	sim.add_element(element, false, true)
+	ResourceSaver.save(element, "user://" + str(randi() % 9999999999) + element_name + ".tres")
 	
 	return element
 
-func prompt(element_name: String) -> void:
-	status_label.show_text("STATUS: querying server, please wait...", StatusLabel.TextType.WORKING)
-	
+func create_element_from_text(element_name: String, directly_prompted: bool = true) -> bool:
 	if element_name in sim.name_id_map:
 		status_label.show_text("ERROR: element name already exists.", StatusLabel.TextType.ERROR)
-		_enable_button()
-		return
+		return false
 	
-	# Clean prompt name
-	var prompt_name: String = ""
-	for c in element_name:
-		if c.to_lower() in "abcdefghijklmnopqrstuvwxyz0123456789":
-			prompt_name += c
-		if c == " ":
-			prompt_name += "_"
+	var prompt_name: String = clean_prompt(element_name)
 	
 	if len(prompt_name) == 0:
 		status_label.show_text("ERROR: enter a valid element name.", StatusLabel.TextType.ERROR)
-		_enable_button()
-		return
+		return false
 	
+	# A JSON Dictionary... cannot be typed in case it is null
 	var properties
 	while true:
-		request("https://122412240.xyz/?element_name=" + prompt_name)
+		if directly_prompted:
+			request("https://122412240.xyz/sand-spoon/?reactions=1&element_name=" + prompt_name)
+		else:
+			request("https://122412240.xyz/sand-spoon/?element_name=" + prompt_name)
 		properties = await properties_received
 		if not properties:
 			# Wait some time before retrying; most errors are caused by the request limit.
@@ -167,15 +184,23 @@ func prompt(element_name: String) -> void:
 	
 	if "warning" in properties:
 		status_label.show_text("ERROR: query breaks content policy.", StatusLabel.TextType.ERROR)
-		_enable_button()
-		return
+		return false
 	
-	var element: Element = imagine_element(element_name, properties)
-	sim.add_element(element, false, true)
-	element_created.emit()
+	if directly_prompted:
+		var reaction_elements: Array = [properties["heat_transformation"], properties["cold_transformation"]]
+		for reaction_element_name in reaction_elements:
+			if reaction_element_name in sim.name_id_map:
+				continue
+			if not await create_element_from_text(reaction_element_name, false):
+				return false
 	
-	ResourceSaver.save(element, "user://" + str(randi() % 999999) + prompt_name + ".tres")
+	realize_element(element_name, properties, not directly_prompted)
 	
-	status_label.show_text("SUCCESS: element created!", StatusLabel.TextType.SUCCESS)
-	
+	return true
+
+func prompt(element_name: String) -> void:
+	status_label.show_text("STATUS: querying server, please wait...", StatusLabel.TextType.WORKING)
+	if await create_element_from_text(element_name):
+		element_created.emit()
+		status_label.show_text("SUCCESS: element created!", StatusLabel.TextType.SUCCESS)
 	_enable_button()

@@ -17,6 +17,7 @@ unique_name = "copper"
 hidden = false
 ui_color = Color(0.737136, 0.403958, 0.248965, 1)
 pixel_color = SubResource("GradientTexture1D_tu24i")
+generated = false
 initial_temperature = 293.0
 conductivity = 1.0
 high_heat_point = 1800.0

@@ -17,6 +17,7 @@ unique_name = "spark"
 hidden = true
 ui_color = Color(0, 0, 0, 1)
 pixel_color = SubResource("GradientTexture1D_8f7no")
+generated = false
 initial_temperature = 7000.0
 conductivity = 0.0
 high_heat_point = -1.0

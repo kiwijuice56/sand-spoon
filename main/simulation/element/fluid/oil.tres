@@ -17,6 +17,7 @@ unique_name = "oil"
 hidden = false
 ui_color = Color(0.55, 0.45925, 0.2475, 1)
 pixel_color = SubResource("GradientTexture1D_p7pwv")
+generated = false
 initial_temperature = 293.0
 conductivity = 0.4
 high_heat_point = 500.0

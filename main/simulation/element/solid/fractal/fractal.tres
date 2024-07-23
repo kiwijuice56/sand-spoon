@@ -18,6 +18,7 @@ unique_name = "fractal"
 hidden = false
 ui_color = Color(0.312384, 0.770354, 0.682802, 1)
 pixel_color = SubResource("GradientTexture1D_t25rk")
+generated = false
 initial_temperature = 293.0
 conductivity = 0.5
 high_heat_point = 350.0

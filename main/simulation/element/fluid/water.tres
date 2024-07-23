@@ -17,6 +17,7 @@ unique_name = "water"
 hidden = false
 ui_color = Color(0.1692, 0.657373, 0.94, 1)
 pixel_color = SubResource("GradientTexture1D_3kkdy")
+generated = false
 initial_temperature = 293.0
 conductivity = 0.2
 high_heat_point = 373.0

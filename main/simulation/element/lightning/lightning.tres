@@ -19,6 +19,7 @@ unique_name = "lightning"
 hidden = false
 ui_color = Color(0.688053, 0.76, 0.2204, 1)
 pixel_color = SubResource("GradientTexture1D_ss1au")
+generated = false
 initial_temperature = 9000.0
 conductivity = 0.0
 high_heat_point = -1.0

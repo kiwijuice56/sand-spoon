@@ -14,6 +14,7 @@ unique_name = "glass"
 hidden = false
 ui_color = Color(0.4554, 0.64308, 0.69, 1)
 pixel_color = SubResource("GradientTexture1D_qb12j")
+generated = false
 initial_temperature = 293.0
 conductivity = 0.1
 high_heat_point = 1600.0

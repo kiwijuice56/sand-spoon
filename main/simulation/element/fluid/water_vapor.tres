@@ -17,6 +17,7 @@ unique_name = "water vapor"
 hidden = true
 ui_color = Color(0.654902, 0.698039, 0.780392, 1)
 pixel_color = SubResource("GradientTexture1D_jkw6h")
+generated = false
 initial_temperature = 293.0
 conductivity = 0.02
 high_heat_point = -1.0

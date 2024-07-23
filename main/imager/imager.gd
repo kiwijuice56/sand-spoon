@@ -24,10 +24,12 @@ func create_elements(template_element: Element) -> void:
 	palette.append(background_color)
 	for i in len(palette):
 		var color: Color = palette[i]
+		var color_x: Color = color
+		color_x.s *= 1.15
 		var new_element: Element = template_element.duplicate()
 		var new_gradient: Gradient = Gradient.new()
-		new_gradient.set_color(0, color.darkened(random_variation))
-		new_gradient.set_color(1, color.lightened(random_variation))
+		new_gradient.set_color(0, color_x.darkened(random_variation))
+		new_gradient.set_color(1, color_x.lightened(random_variation))
 		new_element.pixel_color = GradientTexture1D.new()
 		new_element.pixel_color.gradient = new_gradient
 		new_element.unique_name = "_internal_palette_" + str(i)

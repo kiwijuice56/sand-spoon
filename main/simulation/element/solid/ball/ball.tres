@@ -16,6 +16,7 @@ unique_name = "bouncy ball"
 hidden = false
 ui_color = Color(0.649431, 0.482745, 0.924514, 1)
 pixel_color = SubResource("GradientTexture1D_rgh1a")
+generated = false
 initial_temperature = 293.0
 conductivity = 0.5
 high_heat_point = -1.0

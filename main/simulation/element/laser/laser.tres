@@ -17,6 +17,7 @@ unique_name = "laser"
 hidden = false
 ui_color = Color(0.95, 0.323, 0.68875, 1)
 pixel_color = SubResource("GradientTexture1D_vlc4b")
+generated = false
 initial_temperature = 6000.0
 conductivity = 0.0
 high_heat_point = -1.0

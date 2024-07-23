@@ -18,6 +18,7 @@ unique_name = "mercury"
 hidden = true
 ui_color = Color(0.429, 0.505633, 0.55, 1)
 pixel_color = SubResource("GradientTexture1D_6sdfh")
+generated = false
 initial_temperature = 293.0
 conductivity = 0.9
 high_heat_point = 620.0

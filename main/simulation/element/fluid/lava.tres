@@ -19,6 +19,7 @@ unique_name = "lava"
 hidden = false
 ui_color = Color(1, 0.516667, 0, 1)
 pixel_color = SubResource("GradientTexture1D_06wvk")
+generated = false
 initial_temperature = 1300.0
 conductivity = 0.02
 high_heat_point = -1.0
